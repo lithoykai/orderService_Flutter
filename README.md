@@ -1,6 +1,6 @@
-# Ordens de Serviço | Aplicativo
+# Service Orders | Application
 
-Aplicativo de ordens de serviços baseado na rotina de serviços de uma empresa em que trabalhei.
+Application of work orders based on the service routine of a company I worked for.
 
 ## Getting Started
 
