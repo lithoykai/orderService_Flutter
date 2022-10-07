@@ -9,8 +9,16 @@ import 'package:orders_project/models/orders.dart';
 import '../utils/constants.dart';
 
 class OrderList with ChangeNotifier {
+  final String _token;
+  final String _userId;
   List<Orders> _items = [];
   List<Orders> get items => [..._items];
+
+  OrderList([
+    this._token = '',
+    this._userId = '',
+    this._items = const [],
+  ]);
 
   Future<void> loadOrder() async {
     _items.clear();
@@ -20,19 +28,19 @@ class OrderList with ChangeNotifier {
     );
     if (response.body == 'null') return;
     Map<String, dynamic> data = jsonDecode(response.body);
-
-    data.forEach((productId, productData) {
+    // print(data);
+    data.forEach((orderId, orderData) {
       _items.add(
         Orders(
-          id: productId,
-          nameClient: productData['nameClient'],
-          description: productData['description'],
-          adressClient: productData['adressClient'],
-          loginPPOE: productData['loginPPOE'],
-          passwordPPOE: productData['passwordPPOE'],
-          priority: Pri.values.elementAt(productData['priority']),
-          type: Type.values.elementAt(productData['type']),
-          dateTime: productData['dateTime'],
+          id: orderId,
+          nameClient: orderData['nameClient'],
+          description: orderData['description'],
+          adressClient: orderData['adressClient'],
+          loginPPOE: orderData['loginPPOE'],
+          passwordPPOE: orderData['passwordPPOE'],
+          priority: Pri.values.elementAt(orderData['priority']),
+          type: Type.values.elementAt(orderData['type']),
+          dateTime: orderData['dateTime'],
         ),
       );
     });

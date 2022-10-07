@@ -9,9 +9,17 @@ import '../utils/constants.dart';
 import 'orders.dart';
 
 class FinishOrderList with ChangeNotifier {
+  final String _token;
+  final String _userId;
   List<FinishOrder> _items = [];
   List<FinishOrder> get items => [..._items];
   List<FinishOrder> get listShow => [...items];
+
+  FinishOrderList([
+    this._token = '',
+    this._userId = '',
+    this._items = const [],
+  ]);
 
   onChanged(String value) {
     List<FinishOrder> _lisTemp;

@@ -4,13 +4,15 @@ import 'package:orders_project/models/finish_order_list.dart';
 import 'package:orders_project/models/map_adress.dart';
 import 'package:orders_project/models/orders_list.dart';
 import 'package:orders_project/pages/add_form_page.dart';
+import 'package:orders_project/pages/auth_or_home.dart';
 import 'package:orders_project/pages/finihed_orders_page.dart';
 import 'package:orders_project/pages/finish_form_page.dart';
-import 'package:orders_project/pages/home_page.dart';
 import 'package:orders_project/pages/order_detail_page.dart';
 import 'package:orders_project/pages/orders_overview_page.dart';
 import 'package:orders_project/utils/app_routers.dart';
 import 'package:provider/provider.dart';
+
+import 'models/auth.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,14 +29,30 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
+          create: (_) => Auth(),
+        ),
+        ChangeNotifierProxyProvider<Auth, OrderList>(
           create: (_) => OrderList(),
+          update: (context, auth, previous) {
+            return OrderList(
+              auth.token ?? '',
+              auth.userId ?? '',
+              previous?.items ?? [],
+            );
+          },
         ),
         ChangeNotifierProvider(
           create: (_) => MapAdress(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => FinishOrderList(),
-        ),
+        ChangeNotifierProxyProvider<Auth, FinishOrderList>(
+            create: (_) => FinishOrderList(),
+            update: (context, auth, previous) {
+              return FinishOrderList(
+                auth.token ?? '',
+                auth.userId ?? '',
+                previous?.items ?? [],
+              );
+            }),
       ],
       child: MaterialApp(
         color: Colors.white,
@@ -46,7 +64,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         routes: {
-          AppRoutes.HOME_PAGE: (ctx) => HomePage(),
+          AppRoutes.AUTH_OR_HOME: (ctx) => AuthOrHomePage(),
           AppRoutes.ORDERS_OVERVIEW_PAGE: (ctx) => OrderOverview(),
           AppRoutes.ADD_ORDERS_PAGE: (ctx) => AddFormPage(),
           AppRoutes.ORDER_DETAIL: (ctx) => OrderDetailPage(),
