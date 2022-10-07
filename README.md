@@ -1,6 +1,6 @@
-# orders_project
+# Ordens de Serviço | Aplicativo
 
-A new Flutter project.
+Aplicativo de ordens de serviços baseado na rotina de serviços de uma empresa em que trabalhei.
 
 ## Getting Started
 
