@@ -26,6 +26,9 @@ class _HomePageState extends State<HomePage> {
       FinishedOrdersPage(),
       AddFormPage(),
     ];
+    // return Center(
+    //   child: Text('Texto'),
+    // );
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -44,12 +47,6 @@ class _HomePageState extends State<HomePage> {
         // ),
         // // leadingWidth: 40,
         elevation: 0,
-        actions: [
-          IconButton(
-              onPressed: () {},
-              icon: Image.network(
-                  'https://cdn-icons-png.flaticon.com/512/149/149071.png'))
-        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

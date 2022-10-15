@@ -1,16 +1,22 @@
-# orders_project
+# Service Orders | Application
+Application of work orders based on the service routine of a company I worked for.
 
-A new Flutter project.
+## About the Application
+I made this app because I saw the need for organization in my old job. It's basic and simple.
+The app still needs improvement, but the necessary has been implemented.
 
-## Getting Started
+## Images
+Login Page:
+![Login page](/assets/img/login_page.png)
 
-This project is a starting point for a Flutter application.
+Home Page:
+![Home page](/assets/img/home_page.png)
 
-A few resources to get you started if this is your first Flutter project:
+Finished Orders Page:
+![Finished Orders Page](/assets/img/finish_orders_page.png)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+New service page: 
+![Finished Orders Page](/assets/img/new_orders_page.png)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Detail.
+![Detail Page](/assets/img/datail_page.png)
