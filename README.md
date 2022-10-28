@@ -1,10 +1,11 @@
 # Service Orders | Application
 
-Application of work orders based on the service routine of a company I worked for.
+Um simples aplicativo de ordens de serviço baseado na rotina de serviços de uma empresa que trabalhei.
 
 ## About the Application
-I made this app because I saw the need for organization in my old job. It's basic and simple.
-The app still needs improvement, but the necessary has been implemented.
+
+Eu criei este aplicativo porque eu percebi a necessidade de organização no meu antigo trabalho. É basico e simples.
+O aplicativo ainda precisa de aprimoramentos, porém o necessário já foi implementado.
 
 ## Images
 Login Page:
