@@ -18,115 +18,108 @@ class _AddFormPageState extends State<AddFormPage> {
   Type _dropDownValue = Type.instalacao;
   Pri _dropDownValuePri = Pri.normal;
   Type _selectedValue = Type.instalacao;
+  ////////////Focus
+  final _nameFocus = FocusNode();
+  final _adressFocus = FocusNode();
+  final _descriptionFocus = FocusNode();
+  final _priorityFocus = FocusNode();
+  final _typeFocus = FocusNode();
+  final _loginPPOEFocus = FocusNode();
+  final _passwordPPOEFocus = FocusNode();
+  /////////////
+  final _formData = Map<String, Object>();
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (_formData.isEmpty) {
+      final arg = ModalRoute.of(context)?.settings.arguments;
+
+      if (arg != null) {
+        final order = arg as Orders;
+        _formData['id'] = order.id;
+        _formData['nameClient'] = order.nameClient;
+        _formData['adressClient'] = order.adressClient;
+        _formData['loginPPOE'] = order.loginPPOE ?? 'Não informado';
+        _formData['passwordPPOE'] = order.passwordPPOE ?? 'Não informado';
+        _formData['description'] = order.description ?? '';
+        _formData['priority'] = order.priority;
+        _formData['type'] = order.type;
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _nameFocus.dispose();
+    _adressFocus.dispose();
+    _descriptionFocus.dispose();
+
+    _priorityFocus.dispose();
+    _typeFocus.dispose();
+  }
+
+  Future<void> _submitForm() async {
+    final isValid = _formKey.currentState?.validate() ?? false;
+
+    if (!isValid) {
+      return;
+    }
+
+    if (_formData['type'] == 1) {}
+
+    _formKey.currentState?.save();
+
+    try {
+      await Provider.of<OrderList>(
+        context,
+        listen: false,
+      ).saveOrder(_formData);
+      Navigator.of(context).pop();
+    } catch (error) {
+      await showDialog<void>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('Ocorreu um erro!'),
+          content: Text(error.toString()),
+          actions: [
+            TextButton(
+              child: Text('Ok'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        ),
+      );
+    } finally {}
+    // Provider.of<OrderList>(
+    //   context,
+    //   listen: false,
+    // ).saveOrder(_formData);
+    // Navigator.of(context).pop();
+
+    // print(_formData);
+  }
+
+  void dropDownCallBack(Type? selectedValue) {
+    if (selectedValue is Type) {
+      _dropDownValue = selectedValue;
+      setState(() {
+        _selectedValue = selectedValue;
+      });
+    }
+  }
+
+  void dropDownCallBackPri(Pri? selectedValue) {
+    if (selectedValue is Pri) {
+      _dropDownValuePri = selectedValue;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    ////////////Focus
-    final _nameFocus = FocusNode();
-    final _adressFocus = FocusNode();
-    final _descriptionFocus = FocusNode();
-    final _priorityFocus = FocusNode();
-    final _typeFocus = FocusNode();
-    final _loginPPOEFocus = FocusNode();
-    final _passwordPPOEFocus = FocusNode();
-    /////////////
-    final _formData = Map<String, Object>();
-    final _formKey = GlobalKey<FormState>();
-
-    @override
-    void didChangeDependencies() {
-      super.didChangeDependencies();
-
-      if (_formData.isEmpty) {
-        final arg = ModalRoute.of(context)?.settings.arguments;
-
-        if (arg != null) {
-          final order = arg as Orders;
-          _formData['id'] = order.id;
-          _formData['nameClient'] = order.nameClient;
-          _formData['adressClient'] = order.adressClient;
-          _formData['loginPPOE'] = order.loginPPOE ?? 'Não informado';
-          _formData['passwordPPOE'] = order.passwordPPOE ?? 'Não informado';
-          _formData['description'] = order.description ?? '';
-          _formData['priority'] = order.priority;
-          _formData['type'] = order.type;
-        }
-      }
-    }
-
-    void updateImage() {
-      setState(() {});
-    }
-
-    @override
-    void dispose() {
-      super.dispose();
-      _nameFocus.dispose();
-      _adressFocus.dispose();
-      _descriptionFocus.dispose();
-
-      _priorityFocus.removeListener(updateImage);
-      _priorityFocus.dispose();
-      _typeFocus.removeListener(updateImage);
-      _typeFocus.dispose();
-    }
-
-    Future<void> _submitForm() async {
-      final isValid = _formKey.currentState?.validate() ?? false;
-
-      if (!isValid) {
-        return;
-      }
-
-      if (_formData['type'] == 1) {}
-
-      _formKey.currentState?.save();
-
-      try {
-        await Provider.of<OrderList>(
-          context,
-          listen: false,
-        ).saveOrder(_formData);
-        Navigator.of(context).pop();
-      } catch (error) {
-        await showDialog<void>(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            title: Text('Ocorreu um erro!'),
-            content: Text(error.toString()),
-            actions: [
-              TextButton(
-                child: Text('Ok'),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          ),
-        );
-      } finally {}
-      // Provider.of<OrderList>(
-      //   context,
-      //   listen: false,
-      // ).saveOrder(_formData);
-      // Navigator.of(context).pop();
-
-      // print(_formData);
-    }
-
-    void dropDownCallBack(Type? selectedValue) {
-      if (selectedValue is Type) {
-        _dropDownValue = selectedValue;
-        setState(() {
-          _selectedValue = selectedValue;
-        });
-      }
-    }
-
-    void dropDownCallBackPri(Pri? selectedValue) {
-      if (selectedValue is Pri) {
-        _dropDownValuePri = selectedValue;
-      }
-    }
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
