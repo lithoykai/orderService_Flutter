@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
-import '../data/store.dart';
-import '../exceptions/auth_exception.dart';
+import '../../data/store.dart';
+import '../../exceptions/auth_exception.dart';
 
 class Auth with ChangeNotifier {
   String? _token;

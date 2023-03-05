@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:orders_project/components/badge.dart';
 import 'package:orders_project/components/order_detail.dart';
-import 'package:orders_project/models/map_adress.dart';
 import 'package:orders_project/utils/app_routers.dart';
 import 'package:provider/provider.dart';
-import '../models/finish_order_list.dart';
-import '../models/orders.dart';
-import '../models/orders_list.dart';
+import '../core/models/map_adress.dart';
+import '../core/models/orders.dart';
+import '../core/services/finish_order_list.dart';
+import '../core/services/orders_list.dart';
 
 class OrderBox extends StatefulWidget {
   final Orders order;

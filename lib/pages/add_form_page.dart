@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:orders_project/models/map_adress.dart';
-import 'package:orders_project/models/orders_list.dart';
 import 'package:provider/provider.dart';
 
-import '../models/orders.dart';
+import '../core/models/orders.dart';
+import '../core/services/orders_list.dart';
 
 class AddFormPage extends StatefulWidget {
   AddFormPage({

@@ -1,5 +1,5 @@
 class AppRoutes {
-  static const AUTH_OR_HOME = '/';
+  static const AUTH_OR_HOME = '/auth_home';
   static const ORDERS_OVERVIEW_PAGE = '/order_overview';
   static const ADD_ORDERS_PAGE = '/add_orders';
   static const ORDER_DETAIL = '/order_detail';

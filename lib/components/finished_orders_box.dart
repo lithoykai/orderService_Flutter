@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:orders_project/models/finish_order.dart';
 import 'package:orders_project/utils/app_routers.dart';
+
+import '../core/models/finish_order.dart';
 
 class FinishedOrdersBox extends StatelessWidget {
   final FinishOrder finishedOrder;

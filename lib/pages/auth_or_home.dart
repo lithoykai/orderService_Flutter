@@ -3,7 +3,7 @@ import 'package:orders_project/pages/home_page.dart';
 import 'package:orders_project/pages/orders_overview_page.dart';
 import 'package:provider/provider.dart';
 
-import '../models/auth.dart';
+import '../core/models/auth.dart';
 import 'auth_page.dart';
 
 class AuthOrHomePage extends StatelessWidget {
@@ -24,7 +24,7 @@ class AuthOrHomePage extends StatelessWidget {
             child: Text('Ocorreu um erro!'),
           );
         } else {
-          return auth.isAuth ? HomePage() : AuthPage();
+          return auth.isAuth ? OrderOverview() : AuthPage();
         }
       },
     );

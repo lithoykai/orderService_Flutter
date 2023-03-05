@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1007066030066",
+    "firebase_url": "https://ordensdeservico-4c038-default-rtdb.firebaseio.com",
+    "project_id": "ordensdeservico-4c038",
+    "storage_bucket": "ordensdeservico-4c038.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1007066030066:android:45d791d1fdaac5a8e5956b",
+        "android_client_info": {
+          "package_name": "com.br.ordens"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1007066030066-d2fu7uda2jamhq8ed0jun1mbjinqgksp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUlqTlgYwRGFJKBNKAmBBJQF60BsU7y5o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1007066030066-d2fu7uda2jamhq8ed0jun1mbjinqgksp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

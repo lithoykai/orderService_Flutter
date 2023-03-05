@@ -4,9 +4,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:darq/darq.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:orders_project/models/orders.dart';
 
-import '../utils/constants.dart';
+import '../../utils/constants.dart';
+import '../models/orders.dart';
 
 class OrderList with ChangeNotifier {
   final String _token;
@@ -44,6 +44,7 @@ class OrderList with ChangeNotifier {
         ),
       );
     });
+    print(_items);
     _items = _items
         .orderBy((element) => element.priorityNumber)
         .thenBy((element) => element)

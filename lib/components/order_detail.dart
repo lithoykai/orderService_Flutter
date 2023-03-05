@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
-import 'package:orders_project/models/finish_order_list.dart';
-import 'package:orders_project/models/orders.dart';
-import 'package:orders_project/models/orders_list.dart';
 import 'package:provider/provider.dart';
-import '../models/map_adress.dart';
-// import '../models/sizeConfig.dart';
+import '../core/models/map_adress.dart';
+import '../core/models/orders.dart';
+import '../core/services/finish_order_list.dart';
+import '../core/services/orders_list.dart';
 import '../utils/app_routers.dart';
 import '../utils/text_theme.dart';
 

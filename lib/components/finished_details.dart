@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:orders_project/components/finished_orders_box.dart';
-import 'package:orders_project/models/finish_order.dart';
 import 'package:orders_project/utils/text_theme.dart';
+
+import '../core/models/finish_order.dart';
 
 class FinishedDetailsWidget extends StatelessWidget {
   const FinishedDetailsWidget({Key? key}) : super(key: key);
@@ -113,6 +114,13 @@ class FinishedDetailsWidget extends StatelessWidget {
                   color: Color.fromARGB(255, 121, 121, 121),
                 ),
               ),
+              if (finishedOrder.description == '' ||
+                  finishedOrder.description == null)
+                Text(
+                  'Não informado.',
+                  textAlign: TextAlign.start,
+                  style: TextThemeClass.styleTextBold,
+                ),
               Text(
                 finishedOrder.description ?? 'Não informado.',
                 textAlign: TextAlign.start,

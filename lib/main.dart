@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:orders_project/components/finished_details.dart';
-import 'package:orders_project/models/finish_order_list.dart';
-import 'package:orders_project/models/map_adress.dart';
-import 'package:orders_project/models/orders_list.dart';
 import 'package:orders_project/pages/add_form_page.dart';
 import 'package:orders_project/pages/auth_or_home.dart';
 import 'package:orders_project/pages/finihed_orders_page.dart';
@@ -11,8 +8,10 @@ import 'package:orders_project/pages/order_detail_page.dart';
 import 'package:orders_project/pages/orders_overview_page.dart';
 import 'package:orders_project/utils/app_routers.dart';
 import 'package:provider/provider.dart';
-
-import 'models/auth.dart';
+import 'core/models/auth.dart';
+import 'core/models/map_adress.dart';
+import 'core/services/finish_order_list.dart';
+import 'core/services/orders_list.dart';
 
 void main() {
   runApp(MyApp());
@@ -56,6 +55,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         color: Colors.white,
+        home: AuthOrHomePage(),
         title: 'Ordens de Serviço',
         theme: theme.copyWith(
           colorScheme: theme.colorScheme.copyWith(

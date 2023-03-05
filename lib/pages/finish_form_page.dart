@@ -1,37 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:orders_project/models/finish_order_list.dart';
 import 'package:provider/provider.dart';
 
-import '../models/orders.dart';
-import '../models/orders_list.dart';
+import '../core/models/orders.dart';
+import '../core/services/finish_order_list.dart';
+import '../core/services/orders_list.dart';
 
 class FinishFormPage extends StatelessWidget {
-  const FinishFormPage({Key? key}) : super(key: key);
+  FinishFormPage({Key? key}) : super(key: key);
+  final _redeFocus = FocusNode();
+  final _ctoBoxFocus = FocusNode();
+  final _portFocus = FocusNode();
+  final _popInternetFocus = FocusNode();
+  final _signalStreetFocus = FocusNode();
+  final _signalClientFocus = FocusNode();
+  final _descriptionFocus = FocusNode();
+  ///////////////////////////////
+  final _formData = Map<String, Object>();
+  final _formKey = GlobalKey<FormState>();
+  ////////////////////////////////
+  TextEditingController signalController = TextEditingController();
+  TextStyle style = const TextStyle(
+    fontFamily: 'Lato',
+    fontSize: 18,
+  );
+  ////////////////////
 
   @override
   Widget build(BuildContext context) {
-    final _redeFocus = FocusNode();
-    final _ctoBoxFocus = FocusNode();
-    final _portFocus = FocusNode();
-    final _popInternetFocus = FocusNode();
-    final _signalStreetFocus = FocusNode();
-    final _signalClientFocus = FocusNode();
-    final _descriptionFocus = FocusNode();
-    ///////////////////////////////
-    final _formData = Map<String, Object>();
-    final _formKey = GlobalKey<FormState>();
-    ////////////////////////////////
     final Orders order = ModalRoute.of(context)!.settings.arguments as Orders;
-    TextEditingController signalController = TextEditingController();
-    TextStyle style = const TextStyle(
-      fontFamily: 'Lato',
-      fontSize: 18,
-    );
-    ////////////////////
+
     Future<void> _submitForm() async {
       final isValid = _formKey.currentState?.validate() ?? false;
 
-      // print(_formData);
       if (!isValid) {
         return;
       }
@@ -48,7 +48,7 @@ class FinishFormPage extends StatelessWidget {
             'adressClient': order.adressClient,
             'priority': order.priority,
             'type': order.type,
-            'description': _formData['description'] as String,
+            'description': _formData['description'] ?? 'Não informado.',
             'loginPPOE': order.loginPPOE ?? '',
             'passwordPPOE': order.passwordPPOE ?? '',
             'signalClient': 0.0,
@@ -77,11 +77,11 @@ class FinishFormPage extends StatelessWidget {
         await showDialog<void>(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: Text('Ocorreu um erro!'),
+            title: const Text('Ocorreu um erro!'),
             content: Text(error.toString()),
             actions: [
               TextButton(
-                child: Text('Ok'),
+                child: const Text('Ok'),
                 onPressed: () => Navigator.of(context).pop(context),
               ),
             ],
@@ -93,8 +93,6 @@ class FinishFormPage extends StatelessWidget {
       //   listen: false,
       // ).saveOrder(_formData);
       // Navigator.of(context).pop();
-
-      print(_formData);
     }
 
     return Scaffold(

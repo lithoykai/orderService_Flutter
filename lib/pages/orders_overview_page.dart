@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:orders_project/components/order_box.dart';
-import 'package:orders_project/models/orders_list.dart';
-import 'package:orders_project/pages/add_form_page.dart';
-import 'package:orders_project/pages/finihed_orders_page.dart';
-import 'package:orders_project/utils/app_routers.dart';
+import 'package:orders_project/core/models/auth.dart';
+import 'package:orders_project/core/models/completed_order.dart';
+import 'package:orders_project/core/services/completed_orders_services.dart';
+
 import 'package:provider/provider.dart';
-import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
+
+import '../core/services/orders_list.dart';
 
 class OrderOverview extends StatefulWidget {
   const OrderOverview({Key? key}) : super(key: key);
@@ -34,24 +35,33 @@ class _OrderOverviewState extends State<OrderOverview> {
   @override
   Widget build(BuildContext context) {
     OrderList orders = Provider.of<OrderList>(context);
-    // WidgetsBinding.instance!.addPostFrameCallback((_) {
-    //   Provider.of<OrderList>(context, listen: false).reloadOrder;
-    //   setState(() {});
-    // });
-
     return _isLoading
-        ? Center(
+        ? const Center(
             child: CircularProgressIndicator(),
           )
         : orders.itemsCount == 0
-            ? Center(
+            ? const Center(
                 child: Text('Não há ordens de serviços!'),
               )
-            : RefreshIndicator(
-                onRefresh: () => _refreshOrders(context),
-                child: ListView.builder(
-                    itemCount: orders.itemsCount,
-                    itemBuilder: (ctx, i) => OrderBox(orders.items[i])),
+            : Scaffold(
+                appBar: AppBar(
+                  title: Text('Ordens de serviço'),
+                  actions: [
+                    IconButton(
+                      onPressed: () async {
+                        CompletedOrderServices().saveData();
+                        // Provider.of<Auth>(context, listen: false).logout();
+                      },
+                      icon: Icon(Icons.logout),
+                    )
+                  ],
+                ),
+                body: RefreshIndicator(
+                  onRefresh: () => _refreshOrders(context),
+                  child: ListView.builder(
+                      itemCount: orders.itemsCount,
+                      itemBuilder: (ctx, i) => OrderBox(orders.items[i])),
+                ),
               );
   }
 }

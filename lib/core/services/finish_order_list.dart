@@ -3,10 +3,9 @@ import 'package:darq/darq.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:orders_project/components/finished_orders_box.dart';
-import 'package:orders_project/models/finish_order.dart';
-
-import '../utils/constants.dart';
-import 'orders.dart';
+import '../../utils/constants.dart';
+import '../models/finish_order.dart';
+import '../models/orders.dart';
 
 class FinishOrderList with ChangeNotifier {
   final String _token;
@@ -51,6 +50,7 @@ class FinishOrderList with ChangeNotifier {
     Map<String, dynamic> data = jsonDecode(response.body);
 
     data.forEach((orderId, orderData) {
+      print(orderData);
       _items.add(
         FinishOrder(
           id: orderId,
@@ -71,7 +71,7 @@ class FinishOrderList with ChangeNotifier {
         ),
       );
     });
-    _items.reverse();
+    _items = items.reversed.toList();
     notifyListeners();
   }
 
@@ -91,8 +91,8 @@ class FinishOrderList with ChangeNotifier {
       id: order.id,
       nameClient: order.nameClient,
       adressClient: order.adressClient,
-      loginPPOE: order.loginPPOE ?? 'Não informado',
-      passwordPPOE: order.passwordPPOE ?? 'Não informado',
+      loginPPOE: order.loginPPOE ?? 'Não informado.',
+      passwordPPOE: order.passwordPPOE ?? 'Não informado.',
       priority: order.priority,
       type: order.type,
       dateTime: DateTime.now().toIso8601String(),
@@ -100,11 +100,11 @@ class FinishOrderList with ChangeNotifier {
       rede: hasRede ? data['rede'] as int : 0,
       port: hasPort ? data['port'] as int : 0,
       popInternet:
-          hasPopInternet ? data['popInternet'] as String : 'Não informado',
+          hasPopInternet ? data['popInternet'] as String : 'Não informado.',
       signalClient: hasSignalClient ? data['signalClient'] as double : 0.0,
       signalStreet: hasSignalStreet ? data['signalStreet'] as double : 0.0,
       description:
-          hasDescription ? data['description'] as String : 'Não informado',
+          hasDescription ? data['description'] as String : 'Não informado.',
     );
     print(orderFinished.rede);
     print(orderFinished.nameClient);
