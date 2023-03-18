@@ -27,11 +27,11 @@ class Badged extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 color: color ?? Theme.of(context).colorScheme.secondary,
               ),
-              constraints: BoxConstraints(minHeight: 16, minWidth: 16),
+              constraints: const BoxConstraints(minHeight: 16, minWidth: 16),
               child: Text(
                 value,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 8),
+                style: const TextStyle(fontSize: 8),
               )),
         )
       ],

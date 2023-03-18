@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:orders_project/components/finished_orders_box.dart';
 import 'package:orders_project/utils/text_theme.dart';
 
-import '../core/models/finish_order.dart';
+import '../core/models/old_models/finish_order.dart';
 
 class FinishedDetailsWidget extends StatelessWidget {
   const FinishedDetailsWidget({Key? key}) : super(key: key);
@@ -56,7 +55,7 @@ class FinishedDetailsWidget extends StatelessWidget {
                 textAlign: TextAlign.start,
                 style: TextThemeClass.styleTextBold,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               const Text(
@@ -72,7 +71,7 @@ class FinishedDetailsWidget extends StatelessWidget {
                 textAlign: TextAlign.start,
                 style: TextThemeClass.styleTextBold,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               const Text(
@@ -88,7 +87,7 @@ class FinishedDetailsWidget extends StatelessWidget {
                 textAlign: TextAlign.start,
                 style: TextThemeClass.styleTextBold,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               const Text(
@@ -104,7 +103,7 @@ class FinishedDetailsWidget extends StatelessWidget {
                 textAlign: TextAlign.start,
                 style: TextThemeClass.styleTextBold,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               const Text(
@@ -116,7 +115,7 @@ class FinishedDetailsWidget extends StatelessWidget {
               ),
               if (finishedOrder.description == '' ||
                   finishedOrder.description == null)
-                Text(
+                const Text(
                   'Não informado.',
                   textAlign: TextAlign.start,
                   style: TextThemeClass.styleTextBold,
@@ -126,12 +125,12 @@ class FinishedDetailsWidget extends StatelessWidget {
                 textAlign: TextAlign.start,
                 style: TextThemeClass.styleTextBold,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               finishedOrder.typeText == 'Instalação'
                   ? infoInstalationWidget(finishedOrder: finishedOrder)
-                  : Text(''),
+                  : const Text(''),
             ],
           ),
         ),
@@ -193,7 +192,7 @@ class infoInstalationWidget extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -236,7 +235,7 @@ class infoInstalationWidget extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(

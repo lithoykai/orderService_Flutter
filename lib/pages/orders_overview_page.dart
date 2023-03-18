@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:orders_project/components/order_box.dart';
-import 'package:orders_project/core/models/auth.dart';
-import 'package:orders_project/core/models/completed_order.dart';
-import 'package:orders_project/core/services/completed_orders_services.dart';
+import 'package:orders_project/components/order_box_widget.dart';
+import 'package:orders_project/core/models/order.dart';
+import 'package:orders_project/core/services/company_client_services.dart';
+
+import 'package:orders_project/core/services/order_services.dart';
+import 'package:orders_project/data/dummy_data.dart';
+import 'package:orders_project/utils/app_routers.dart';
 
 import 'package:provider/provider.dart';
 
-import '../core/services/orders_list.dart';
 
 class OrderOverview extends StatefulWidget {
   const OrderOverview({Key? key}) : super(key: key);
@@ -16,52 +18,87 @@ class OrderOverview extends StatefulWidget {
 }
 
 class _OrderOverviewState extends State<OrderOverview> {
-  bool _isLoading = true;
+  final bool _isLoading = true;
+
+  Future<void> _refreshOrders(BuildContext context) {
+    return Provider.of<OrderService>(context, listen: false).fetchOrdersData();
+  }
+
   @override
   void initState() {
     super.initState();
-    Provider.of<OrderList>(
-      context,
-      listen: false,
-    ).loadOrder().then((value) {
-      setState(() => _isLoading = false);
-    });
-  }
-
-  Future<void> _refreshOrders(BuildContext context) {
-    return Provider.of<OrderList>(context, listen: false).loadOrder();
+    OrderService().fetchOrdersData();
   }
 
   @override
   Widget build(BuildContext context) {
-    OrderList orders = Provider.of<OrderList>(context);
-    return _isLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
-        : orders.itemsCount == 0
-            ? const Center(
-                child: Text('Não há ordens de serviços!'),
-              )
-            : Scaffold(
-                appBar: AppBar(
-                  title: Text('Ordens de serviço'),
-                  actions: [
-                    IconButton(
-                      onPressed: () async {
-                        CompletedOrderServices().saveData();
-                        // Provider.of<Auth>(context, listen: false).logout();
-                      },
-                      icon: Icon(Icons.logout),
-                    )
-                  ],
-                ),
-                body: RefreshIndicator(
-                  onRefresh: () => _refreshOrders(context),
-                  child: ListView.builder(
-                      itemCount: orders.itemsCount,
-                      itemBuilder: (ctx, i) => OrderBox(orders.items[i])),
-                ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Ordens de serviço'),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              // _refreshOrders(context);
+              Navigator.of(context).pushNamed(AppRoutes.ADD_ORDER_PAGE);
+            },
+            icon: const Icon(Icons.add),
+          ),
+          IconButton(
+            onPressed: () async {
+              // _refreshOrders(context).then((value) {
+              //   setState(() {});
+              // });
+              Order _order = Order(
+                  id: UniqueKey().toString(),
+                  problem: 'sdsadadsa',
+                  client: DummyData.companyClient,
+                  technical: DummyData.employee);
+              CompanyClientServices()
+                  .addDataInFirebase(DummyData.companyClient)
+                  .then(
+                (value) {
+                  setState(() {});
+                },
               );
+            },
+            icon: const Icon(Icons.refresh),
+          ),
+        ],
+      ),
+      body: FutureBuilder(
+        future:
+            Provider.of<OrderService>(context, listen: false).fetchOrdersData(),
+        builder: (ctx, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  CircularProgressIndicator(),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Text('Carregando as ordens de serviço...'),
+                ],
+              ),
+            );
+          } else if (snapshot.error != null) {
+            return const Center(
+              child: Text('Ocorreu um erro!'),
+            );
+          } else {
+            return Consumer<OrderService>(
+              builder: (ctx, orders, child) => RefreshIndicator(
+                onRefresh: () => _refreshOrders(context),
+                child: ListView.builder(
+                  itemCount: orders.itemsCount,
+                  itemBuilder: (ctx, i) => OrderBoxWidget(orders.items[i]),
+                ),
+              ),
+            );
+          }
+        },
+      ),
+    );
   }
 }

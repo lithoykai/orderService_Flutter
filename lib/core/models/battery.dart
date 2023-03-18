@@ -1,20 +1,21 @@
 enum BatteryType { estacionaria, selada, litio }
 
 class Battery {
+  final String id;
   final String rightPlace;
-  final BatteryType batteryType;
+  final BatteryType whatType;
   final String rightPlaceImage;
   final String manufacture;
   final String capacity;
   final String model;
   final int bank;
   final int batteryForBank;
-  final double chargerVoltage;
-  final double chargerCurrent;
+  final Charger charger;
   final DateTime manufacturingDate;
   final bool hasBreaker;
 
   Battery({
+    required this.id,
     required this.rightPlace,
     required this.rightPlaceImage,
     required this.manufacture,
@@ -22,15 +23,15 @@ class Battery {
     required this.model,
     required this.bank,
     required this.batteryForBank,
-    required this.chargerVoltage,
-    required this.chargerCurrent,
+    required this.charger,
     required this.manufacturingDate,
     required this.hasBreaker,
-    required this.batteryType,
+    required this.whatType,
   });
 
   factory Battery.fromJson(Map<String, dynamic> json) {
     return Battery(
+      id: json['id'],
       rightPlace: json['rightPlace'],
       rightPlaceImage: json['rightPlaceImage'],
       manufacture: json['manufacture'],
@@ -38,31 +39,30 @@ class Battery {
       model: json['model'],
       bank: json['bank'],
       batteryForBank: json['batteryForBank'],
-      chargerVoltage: json['chargerVoltage'],
-      chargerCurrent: json['chargerCurrent'],
-      manufacturingDate: json['manufacturingDate'],
+      charger: json['charger'],
+      manufacturingDate: DateTime.parse(json['manufacturingDate']),
       hasBreaker: json['hasBreaker'],
-      batteryType: BatteryType.values.elementAt(json['batteryType']),
+      whatType: BatteryType.values.elementAt(json['whatType']),
     );
   }
 
   Map<String, dynamic> toJson() => {
+        'id': id,
         'rightPlace': rightPlace,
         'rightPlaceImage': rightPlaceImage,
+        'whatType': whatType.index,
         'manufacture': manufacture,
         'capacity': capacity,
         'model': model,
         'bank': bank,
         'batteryForBank': batteryForBank,
-        'chargerVoltage': chargerVoltage,
-        'chargerCurrent': chargerCurrent,
+        'charger': charger.toJson(),
         'manufacturingDate': manufacturingDate.toIso8601String(),
         'hasBreaker': hasBreaker,
-        'batteryType': batteryType.index,
       };
 
   String? get batteryTypeText {
-    switch (batteryType) {
+    switch (whatType) {
       case BatteryType.estacionaria:
         return 'Estacionária';
       case BatteryType.litio:
@@ -73,8 +73,30 @@ class Battery {
       default:
         'Estacionária';
     }
+    return null;
   }
 }
+
+class Charger {
+  final double voltage;
+  final double current;
+
+  Charger({
+    required this.voltage,
+    required this.current,
+  });
+
+  factory Charger.fromJson(Map<String, dynamic> json) {
+    return Charger(voltage: json['voltage'], current: json['current']);
+  }
+
+  Map<String, dynamic> toJson() => {
+        'voltage': voltage,
+        'current': current,
+      };
+}
+
+
 //-------Baterias
 //Enum - Tipo de bateria = estacionária, selada ou litio.
 //String - Local adequado observação. <= Foto
@@ -86,7 +108,7 @@ class Battery {
 //int - Quantidade de baterias por banco
 //Double - tensão do carregador de baterias
 //Double - corrente do carregador
-//Enum - Disjuntor de baterias (enum yes or not)
+//bool - Disjuntor de baterias
 //DateTime - Data de fabricação da bateria (datetime)
 
 

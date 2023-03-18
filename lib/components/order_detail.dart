@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../core/models/map_adress.dart';
-import '../core/models/orders.dart';
+import '../core/models/old_models/orders.dart';
 import '../core/services/finish_order_list.dart';
 import '../core/services/orders_list.dart';
 import '../utils/app_routers.dart';
@@ -14,10 +14,10 @@ class OrderDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final heigh = MediaQuery.of(context).size.height;
-    final key = new GlobalKey<ScaffoldState>();
+    final key = GlobalKey<ScaffoldState>();
 
     DateTime _dateTime = DateTime.parse(order.dateTime);
-    return Container(
+    return SizedBox(
       height: heigh * 0.65,
       child: SingleChildScrollView(
         child: Padding(
@@ -122,7 +122,7 @@ class OrderDetail extends StatelessWidget {
                         SelectableText(
                           order.loginPPOE ?? 'Sem informações.',
                           style: TextThemeClass.styleTextBold,
-                          toolbarOptions: ToolbarOptions(
+                          toolbarOptions: const ToolbarOptions(
                             copy: true,
                             cut: true,
                           ),
@@ -143,7 +143,7 @@ class OrderDetail extends StatelessWidget {
                         SelectableText(
                           order.passwordPPOE ?? 'Sem informações.',
                           style: TextThemeClass.styleTextBold,
-                          toolbarOptions: ToolbarOptions(
+                          toolbarOptions: const ToolbarOptions(
                             copy: true,
                             cut: true,
                           ),
@@ -151,11 +151,11 @@ class OrderDetail extends StatelessWidget {
                       ],
                     )
                   : Container(),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               ElevatedButton.icon(
-                icon: Icon(Icons.beenhere),
+                icon: const Icon(Icons.beenhere),
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.green),
                 ),
@@ -203,12 +203,12 @@ class OrderDetail extends StatelessWidget {
                                                         listen: false)
                                                     .loadOrder()));
                               },
-                              child: Text('Sim')),
+                              child: const Text('Sim')),
                           TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-                              child: Text('Não')),
+                              child: const Text('Não')),
                         ],
                       ),
                     );
@@ -221,12 +221,12 @@ class OrderDetail extends StatelessWidget {
                 },
                 label: Text('FINALIZAR ${order.typeText.toUpperCase()}'),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               ElevatedButton.icon(
-                icon: Icon(Icons.location_pin),
-                label: Text('SEGUIR ROTA'),
+                icon: const Icon(Icons.location_pin),
+                label: const Text('SEGUIR ROTA'),
                 onPressed: () async {
                   MapAdress.openMap(
                       (order.adressClient.toUpperCase()).toString());

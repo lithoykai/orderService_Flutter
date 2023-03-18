@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../core/models/orders.dart';
-import '../core/services/finish_order_list.dart';
-import '../core/services/orders_list.dart';
+import '../../core/models/old_models/orders.dart';
+import '../../core/services/finish_order_list.dart';
+import '../../core/services/orders_list.dart';
 
 class FinishFormPage extends StatelessWidget {
   FinishFormPage({Key? key}) : super(key: key);
@@ -15,7 +15,7 @@ class FinishFormPage extends StatelessWidget {
   final _signalClientFocus = FocusNode();
   final _descriptionFocus = FocusNode();
   ///////////////////////////////
-  final _formData = Map<String, Object>();
+  final _formData = <String, Object>{};
   final _formKey = GlobalKey<FormState>();
   ////////////////////////////////
   TextEditingController signalController = TextEditingController();
@@ -104,12 +104,12 @@ class FinishFormPage extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
             color: Colors.black,
           ),
         ),
-        title: Text(
+        title: const Text(
           'Finalizar O.S',
           style: TextStyle(
             color: Colors.black,
@@ -143,7 +143,7 @@ class FinishFormPage extends StatelessWidget {
                       order.typeText,
                       style: style,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Text(
@@ -156,7 +156,7 @@ class FinishFormPage extends StatelessWidget {
                       order.nameClient,
                       style: style,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                   ],
@@ -183,8 +183,10 @@ class FinishFormPage extends StatelessWidget {
                             Flexible(
                               child: TextFormField(
                                 focusNode: _redeFocus,
-                                decoration: InputDecoration(labelText: 'Rede:'),
-                                keyboardType: TextInputType.numberWithOptions(),
+                                decoration:
+                                    const InputDecoration(labelText: 'Rede:'),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(),
                                 onSaved: (rede) {
                                   _formData['rede'] = int.tryParse(rede!) ?? 0;
                                 },
@@ -198,19 +200,20 @@ class FinishFormPage extends StatelessWidget {
                                 },
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             Flexible(
                               child: TextFormField(
                                 focusNode: _ctoBoxFocus,
                                 decoration:
-                                    InputDecoration(labelText: 'Caixa:'),
+                                    const InputDecoration(labelText: 'Caixa:'),
                                 onSaved: (ctoBox) {
                                   _formData['ctoBox'] =
                                       int.tryParse(ctoBox!) ?? 0;
                                 },
-                                keyboardType: TextInputType.numberWithOptions(),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(),
                                 validator: (_caixa) {
                                   final caixa = _caixa ?? '';
                                   if (caixa.trim().isEmpty) {
@@ -224,7 +227,7 @@ class FinishFormPage extends StatelessWidget {
                           ],
                         ),
                       if (order.type.index == 0)
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                       if (order.type.index == 0)
@@ -234,8 +237,10 @@ class FinishFormPage extends StatelessWidget {
                             Flexible(
                               child: TextFormField(
                                 focusNode: _portFocus,
-                                decoration: InputDecoration(labelText: 'Port:'),
-                                keyboardType: TextInputType.numberWithOptions(),
+                                decoration:
+                                    const InputDecoration(labelText: 'Port:'),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(),
                                 onSaved: (port) {
                                   _formData['port'] =
                                       int.tryParse(port ?? '') ?? 0;
@@ -250,13 +255,14 @@ class FinishFormPage extends StatelessWidget {
                                 },
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             Flexible(
                               child: TextFormField(
                                 focusNode: _popInternetFocus,
-                                decoration: InputDecoration(labelText: 'POP:'),
+                                decoration:
+                                    const InputDecoration(labelText: 'POP:'),
                                 onSaved: (popInternet) {
                                   _formData['popInternet'] =
                                       popInternet ?? 'Não informado.';
@@ -276,25 +282,25 @@ class FinishFormPage extends StatelessWidget {
                       if (order.type.index == 0)
                         TextFormField(
                           focusNode: _signalStreetFocus,
-                          decoration:
-                              InputDecoration(labelText: 'Sinal na Caixa:'),
+                          decoration: const InputDecoration(
+                              labelText: 'Sinal na Caixa:'),
                           onSaved: (signalStreet) {
                             _formData['signalStreet'] =
                                 double.tryParse(signalStreet ?? '') ?? 0.0;
                           },
-                          keyboardType: TextInputType.numberWithOptions(),
+                          keyboardType: const TextInputType.numberWithOptions(),
                           controller: signalController,
                         ),
                       if (order.type.index == 0)
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                       if (order.type.index == 0)
                         TextFormField(
                           focusNode: _signalClientFocus,
-                          decoration:
-                              InputDecoration(labelText: 'Sinal no Cliente:'),
-                          keyboardType: TextInputType.numberWithOptions(),
+                          decoration: const InputDecoration(
+                              labelText: 'Sinal no Cliente:'),
+                          keyboardType: const TextInputType.numberWithOptions(),
                           onSaved: (signalClient) {
                             _formData['signalClient'] =
                                 double.tryParse(signalClient ?? '') ?? 0.0;
@@ -315,13 +321,13 @@ class FinishFormPage extends StatelessWidget {
                             return null;
                           },
                         ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       if (order.type.index == 1)
                         TextFormField(
                           focusNode: _descriptionFocus,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                               labelText: 'Descrição do que foi feito:'),
                           onSaved: (description) {
                             _formData['description'] =
@@ -337,10 +343,10 @@ class FinishFormPage extends StatelessWidget {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: _submitForm,
-                          child: Text('Enviar'),
+                          child: const Text('Enviar'),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.orangeAccent.shade200,
-                            fixedSize: Size(400, 40),
+                            backgroundColor: Colors.orangeAccent.shade200,
+                            fixedSize: const Size(400, 40),
                           ),
                         ),
                       ),

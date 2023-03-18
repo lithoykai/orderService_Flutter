@@ -3,14 +3,14 @@ import 'package:orders_project/components/order_detail.dart';
 import 'package:orders_project/utils/app_routers.dart';
 import 'package:provider/provider.dart';
 import '../core/models/map_adress.dart';
-import '../core/models/orders.dart';
+import '../core/models/old_models/orders.dart';
 import '../core/services/finish_order_list.dart';
 import '../core/services/orders_list.dart';
 
 class OrderBox extends StatefulWidget {
   final Orders order;
 
-  OrderBox(this.order);
+  const OrderBox(this.order, {Key? key}) : super(key: key);
 
   @override
   State<OrderBox> createState() => _OrderBoxState(order);
@@ -51,12 +51,12 @@ class _OrderBoxState extends State<OrderBox> {
             children: [
               Text(
                 widget.order.typeText,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 14, fontFamily: 'Lato', color: Colors.grey),
               ),
               Text(
                 widget.order.nameClient,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -76,11 +76,11 @@ class _OrderBoxState extends State<OrderBox> {
                           color: widget.order.priorityColor,
                         ),
                         constraints:
-                            BoxConstraints(minHeight: 16, minWidth: 16),
+                            const BoxConstraints(minHeight: 16, minWidth: 16),
                         child: Text(
                           widget.order.priorityText,
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                   ],
                 ),
@@ -92,7 +92,7 @@ class _OrderBoxState extends State<OrderBox> {
           //   backgroundColor: widget.order.priorityColor ?? Colors.black,
           // ),
           trailing: IconButton(
-            icon: Icon(Icons.expand_more),
+            icon: const Icon(Icons.expand_more),
             onPressed: () {
               setState(() {
                 _expanded = !_expanded;
@@ -122,7 +122,7 @@ class _OrderBoxState extends State<OrderBox> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     TextButton.icon(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.beenhere,
                         color: Colors.green,
                       ),
@@ -183,12 +183,12 @@ class _OrderBoxState extends State<OrderBox> {
                                             ).loadOrder();
                                           }
                                         },
-                                        child: Text('Sim')),
+                                        child: const Text('Sim')),
                                     TextButton(
                                         onPressed: () async {
                                           Navigator.pop(context);
                                         },
-                                        child: Text('Não')),
+                                        child: const Text('Não')),
                                   ],
                                 );
                               },
@@ -207,8 +207,8 @@ class _OrderBoxState extends State<OrderBox> {
                       },
                     ),
                     TextButton.icon(
-                      icon: Icon(Icons.location_pin),
-                      label: Text('Seguir rota.'),
+                      icon: const Icon(Icons.location_pin),
+                      label: const Text('Seguir rota.'),
                       onPressed: () async {
                         MapAdress.openMap(
                             (widget.order.adressClient.toUpperCase())

@@ -6,7 +6,7 @@ import 'package:darq/darq.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../utils/constants.dart';
-import '../models/orders.dart';
+import '../models/old_models/orders.dart';
 
 class OrderList with ChangeNotifier {
   final String _token;
@@ -44,7 +44,7 @@ class OrderList with ChangeNotifier {
         ),
       );
     });
-    print(_items);
+    // print(_items);
     _items = _items
         .orderBy((element) => element.priorityNumber)
         .thenBy((element) => element)

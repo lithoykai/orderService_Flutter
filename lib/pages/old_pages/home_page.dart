@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../components/order_box.dart';
-import '../core/services/orders_list.dart';
-import '../utils/app_routers.dart';
+import '../../components/order_box.dart';
+import '../../core/services/orders_list.dart';
+import '../../utils/app_routers.dart';
 import 'finihed_orders_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (ctx, i) => OrderBox(orderList.items[i])),
         ),
       ),
-      FinishedOrdersPage(),
+      const FinishedOrdersPage(),
       // AddFormPage(),
     ];
     // return Center(
@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.white,
         title: Text(
           _currentIndex == 0 ? 'Ordens de Serviço' : 'Ordens finalizadas',
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black,
             fontFamily: 'Oswald',
             fontSize: 22,
@@ -62,16 +62,16 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).pushNamed(AppRoutes.ADD_ORDERS_PAGE).then(
+          Navigator.of(context).pushNamed(AppRoutes.ADD_ORDER_PAGE).then(
               (value) =>
                   Provider.of<OrderList>(context, listen: false).loadOrder());
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         backgroundColor: Colors.orangeAccent,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.dashboard),
             label: 'Ordens',

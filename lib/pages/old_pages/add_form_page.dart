@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../core/models/orders.dart';
-import '../core/services/orders_list.dart';
+import '../../core/models/old_models/orders.dart';
+import '../../core/services/orders_list.dart';
 
 class AddFormPage extends StatefulWidget {
-  AddFormPage({
+  const AddFormPage({
     Key? key,
   }) : super(key: key);
 
@@ -26,7 +26,7 @@ class _AddFormPageState extends State<AddFormPage> {
   final _loginPPOEFocus = FocusNode();
   final _passwordPPOEFocus = FocusNode();
   /////////////
-  final _formData = Map<String, Object>();
+  final _formData = <String, Object>{};
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -82,11 +82,11 @@ class _AddFormPageState extends State<AddFormPage> {
       await showDialog<void>(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: Text('Ocorreu um erro!'),
+          title: const Text('Ocorreu um erro!'),
           content: Text(error.toString()),
           actions: [
             TextButton(
-              child: Text('Ok'),
+              child: const Text('Ok'),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],
@@ -128,12 +128,12 @@ class _AddFormPageState extends State<AddFormPage> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
             color: Colors.black,
           ),
         ),
-        title: Text(
+        title: const Text(
           'Adicionar Ordem de Serviço',
           style: TextStyle(
             color: Colors.black,
@@ -146,7 +146,7 @@ class _AddFormPageState extends State<AddFormPage> {
         actions: [
           IconButton(
             onPressed: _submitForm,
-            icon: Icon(Icons.save),
+            icon: const Icon(Icons.save),
             color: Colors.black,
           ),
         ],

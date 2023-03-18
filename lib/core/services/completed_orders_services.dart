@@ -1,60 +1,62 @@
 import 'dart:convert';
-
-import 'package:orders_project/core/models/battery.dart';
+import 'package:flutter/material.dart';
 import 'package:orders_project/core/models/completed_order.dart';
-import 'package:orders_project/core/models/nobreak.dart';
-import 'package:orders_project/core/models/place.dart';
 import 'package:http/http.dart' as http;
-
+import '../../data/dummy_data.dart';
 import '../../utils/constants.dart';
+import 'firebase_services.dart';
 
-class CompletedOrderServices {
+class CompletedOrderServices with ChangeNotifier {
+  final List<CompletedOrder> _items = [];
+  List<CompletedOrder> get items => [..._items];
+
+// Get CompletedOrders from Firebase to _items;
+  Future<void> fetchOrdersData() async {
+    final response =
+        await http.get(Uri.parse('${Constants.URL_ORDER_COMPLETED}.json'));
+
+    if (response.body == 'null') return;
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = jsonDecode(response.body);
+      data.forEach((orderId, orderData) {
+        CompletedOrder _completedOrder =
+            CompletedOrder.fromJson(orderData, orderId);
+
+        _items.add(_completedOrder);
+      });
+    } else {
+      throw Exception('Falha em carregar as ordens finalizadas.');
+    }
+    notifyListeners();
+  }
+
+// Salve CompletedOrderData to Firebase and _items;
+// Currently, It's just save dummy_data to firebase
   Future<void> saveData() async {
-    //  CRUD = Create Read Update Delete
-    //          post   get  put   delete
-    Battery battery = Battery(
-      rightPlace: 'rightPlace',
-      rightPlaceImage: 'rightPlaceImage',
-      manufacture: 'manufacture',
-      capacity: 'capacity',
-      model: 'model',
-      bank: 1,
-      batteryForBank: 1,
-      chargerVoltage: 1.5,
-      chargerCurrent: 1.5,
-      manufacturingDate: DateTime.now(),
-      hasBreaker: true,
-      batteryType: BatteryType.litio,
-    );
-
-    Place place = Place(
-      cleanPlace: true,
-      reverseKey: true,
-      inputFrame: false,
-      outputFrame: false,
-      hasMaterialsClose: true,
-    );
-
-    Nobreak nobreak = Nobreak(
-      display: true,
-      nobreakWasOpened: true,
-      hasCommunicationBoard: false,
-      inputCurrent: 'inputCurrent',
-      outputCurrent: 'outputCurrent',
-      outputVoltage: 'outputVoltage',
-      inputVoltage: 'inputVoltage',
-      frequencyEquip: 'frequencyEquip',
-    );
-
     CompletedOrder _completedOrder = CompletedOrder(
-      battery: battery.toJson(),
-      nobreak: nobreak.toJson(),
-      place: place.toJson(),
+      battery: DummyData.batteryData.toJson(),
+      nobreak: DummyData.nobreakData.toJson(),
+      place: DummyData.placeData.toJson(),
+      id: 'id',
     );
 
     final response = await http.post(
       Uri.parse('${Constants.URL_ORDER_COMPLETED}.json'),
       body: jsonEncode(_completedOrder.toJson()),
     );
+  }
+
+  Future<void> addDataInFirebase(CompletedOrder completedOrder) async {
+    Map<String, dynamic> orderJson = completedOrder.toJson();
+    FirebaseServices().addDataInFirebase(
+      orderJson,
+      Constants.URL_ORDER_COMPLETED,
+    );
+
+    CompletedOrder jsonData =
+        CompletedOrder.fromJson(orderJson, completedOrder.id);
+    _items.add(jsonData);
+    notifyListeners();
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:orders_project/pages/home_page.dart';
 import 'package:orders_project/pages/orders_overview_page.dart';
 import 'package:provider/provider.dart';
 
@@ -16,15 +15,15 @@ class AuthOrHomePage extends StatelessWidget {
       future: auth.tryAutoLogin(),
       builder: (ctx, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.error != null) {
-          return Center(
+          return const Center(
             child: Text('Ocorreu um erro!'),
           );
         } else {
-          return auth.isAuth ? OrderOverview() : AuthPage();
+          return auth.isAuth ? const OrderOverview() : const AuthPage();
         }
       },
     );

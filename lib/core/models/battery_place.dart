@@ -2,18 +2,20 @@ enum Ventilation { naotem, arcondicionado, exautor }
 
 enum Ilumination { normal, good, moderate, bad }
 
-class Place {
-  String? temp;
-  Ilumination? lights;
-  Ventilation? ventilation;
-  bool cleanPlace;
-  bool reverseKey;
-  bool inputFrame;
-  bool outputFrame;
-  bool hasMaterialsClose;
-  String? materialsClose;
+class BatteryPlace {
+  final String id;
+  final String? temp;
+  final Ilumination? lights;
+  final Ventilation? ventilation;
+  final bool cleanPlace;
+  final bool reverseKey;
+  final bool inputFrame;
+  final bool outputFrame;
+  final bool hasMaterialsClose;
+  final String? materialsClose;
 
-  Place({
+  BatteryPlace({
+    required this.id,
     required this.cleanPlace,
     required this.reverseKey,
     required this.inputFrame,
@@ -25,9 +27,23 @@ class Place {
     this.materialsClose,
   });
 
-  // factory Place.fromJson(Map<String, dynamic> json) {}
+  factory BatteryPlace.fromJson(Map<String, dynamic> json, id) {
+    return BatteryPlace(
+      id: id,
+      cleanPlace: json['cleanPlace'],
+      reverseKey: json['reverseKey'],
+      inputFrame: json['inputFrame'],
+      outputFrame: json['outputFrame'],
+      hasMaterialsClose: json['hasMaterialsClose'],
+      temp: json['temp'] ?? '',
+      lights: Ilumination.values.elementAt(json['lights']),
+      ventilation: Ventilation.values.elementAt(json['ventilation']),
+      materialsClose: json['materialsClose'] ?? '',
+    );
+  }
 
   Map<String, dynamic> toJson() => {
+        'id': id,
         'cleanPlace': cleanPlace,
         'reverseKey': reverseKey,
         'inputFrame': inputFrame,

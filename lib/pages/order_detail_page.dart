@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:orders_project/components/order_detail.dart';
-import '../core/models/orders.dart';
+import '../core/models/old_models/orders.dart';
 
 class OrderDetailPage extends StatelessWidget {
-  OrderDetailPage({
+  const OrderDetailPage({
     Key? key,
   }) : super(key: key);
 
@@ -13,7 +13,7 @@ class OrderDetailPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detalhes do Serviço'),
+        title: const Text('Detalhes do Serviço'),
       ),
       body: SingleChildScrollView(child: OrderDetail(order: order)),
     );

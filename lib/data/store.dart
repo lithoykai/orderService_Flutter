@@ -10,6 +10,7 @@ class Store {
 
   static Future<bool?> saveMap(String key, Map<String, dynamic> value) async {
     saveString(key, jsonEncode(value));
+    return null;
   }
 
   static Future<String> getString(String key,
@@ -29,5 +30,6 @@ class Store {
   static Future<bool?> remove(String key) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.remove(key);
+    return null;
   }
 }

@@ -1,46 +1,96 @@
 class Nobreak {
-  bool display;
-  bool nobreakWasOpened;
-  bool hasCommunicationBoard;
-  String inputVoltage;
-  String outputVoltage;
-  String inputCurrent;
-  String outputCurrent;
-  String frequencyEquip;
-  String? ipCommunication;
-  String? passwordCommunication;
+  final String id;
+  final Voltage voltage;
+  final UPSCurrent upsCurrent;
+  final String frequencyEquip;
+  final String? ipCommunication;
+  final String? passwordCommunication;
+  final bool display;
+  final bool nobreakWasOpened;
+  final bool hasCommunicationBoard;
 
   Nobreak({
+    required this.id,
     required this.display,
     required this.nobreakWasOpened,
     required this.hasCommunicationBoard,
-    required this.inputCurrent,
-    required this.outputCurrent,
-    required this.outputVoltage,
-    required this.inputVoltage,
+    required this.upsCurrent,
+    required this.voltage,
     required this.frequencyEquip,
     this.ipCommunication,
     this.passwordCommunication,
   });
 
-  // factory Nobreak.fromJson(Map<String, dynamic> json) {}
+  factory Nobreak.fromJson(Map<String, dynamic> json) {
+    return Nobreak(
+      id: json['id'],
+      display: json['display'],
+      nobreakWasOpened: json['nobreakWasOpened'],
+      hasCommunicationBoard: json['hasCommunicationBoard'],
+      upsCurrent: json['upsCurrent'],
+      voltage: json['voltage'],
+      frequencyEquip: json['frequencyEquip'],
+      ipCommunication: json['ipCommunication'] ?? '',
+      passwordCommunication: json['passwordCommunication'] ?? '',
+    );
+  }
 
   Map<String, dynamic> toJson() => {
+        'id': id,
         'display': display,
         'nobreakWasOpened': nobreakWasOpened,
         'hasCommunicationBoard': hasCommunicationBoard,
-        'inputCurrent': inputCurrent,
-        'outputCurrent': outputCurrent,
-        'outputVoltage': outputVoltage,
-        'inputVoltage': inputVoltage,
+        'upsCurrent': upsCurrent.toJson(),
+        'voltage': voltage.toJson(),
         'frequencyEquip': frequencyEquip,
         'ipCommunication': ipCommunication ?? '',
         'passwordCommunication': passwordCommunication ?? '',
       };
 }
 
+class Voltage {
+  final String input;
+  final String output;
 
+  Voltage({
+    required this.input,
+    required this.output,
+  });
 
+  factory Voltage.fromJson(Map<String, dynamic> json) {
+    return Voltage(
+      input: json['input'],
+      output: json['output'],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'input': input,
+        'output': output,
+      };
+}
+
+class UPSCurrent {
+  final String input;
+  final String output;
+
+  UPSCurrent({
+    required this.input,
+    required this.output,
+  });
+
+  factory UPSCurrent.fromJson(Map<String, dynamic> json) {
+    return UPSCurrent(
+      input: json['input'],
+      output: json['output'],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'input': input,
+        'output': output,
+      };
+}
 //--------Nobreak 
 //Enum - display funcional - enum (yes or not)
 //String - tensão de entrada do nobreak

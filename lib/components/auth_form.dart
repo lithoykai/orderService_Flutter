@@ -17,7 +17,7 @@ class _AuthFormState extends State<AuthForm> {
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   AuthMode _authMode = AuthMode.Login;
-  Map<String, String> _authData = {
+  final Map<String, String> _authData = {
     'email': '',
     'password': '',
   };
@@ -40,12 +40,12 @@ class _AuthFormState extends State<AuthForm> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Ocorreu um erro.'),
+            title: const Text('Ocorreu um erro.'),
             content: Text(msg),
             actions: [
               TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text('Fechar.'))
+                  child: const Text('Fechar.'))
             ],
           );
         });
@@ -105,7 +105,7 @@ class _AuthFormState extends State<AuthForm> {
             child: Column(
               children: [
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'E-mail'),
+                  decoration: const InputDecoration(labelText: 'E-mail'),
                   keyboardType: TextInputType.emailAddress,
                   onSaved: (email) => _authData['email'] = email ?? '',
                   validator: (_email) {
@@ -117,7 +117,7 @@ class _AuthFormState extends State<AuthForm> {
                   },
                 ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Senha'),
+                  decoration: const InputDecoration(labelText: 'Senha'),
                   obscureText: true,
                   controller: _passwordController,
                   onSaved: (password) => _authData['password'] = password ?? '',
@@ -131,7 +131,7 @@ class _AuthFormState extends State<AuthForm> {
                 ),
                 if (_isSignup())
                   TextFormField(
-                      decoration: InputDecoration(labelText: 'Confirmar Senha'),
+                      decoration: const InputDecoration(labelText: 'Confirmar Senha'),
                       obscureText: true,
                       validator: _isLogin()
                           ? null
@@ -143,11 +143,11 @@ class _AuthFormState extends State<AuthForm> {
                                 return null;
                               }
                             }),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 if (isLoading)
-                  CircularProgressIndicator()
+                  const CircularProgressIndicator()
                 else
                   ElevatedButton(
                     onPressed: _submit,
@@ -162,7 +162,7 @@ class _AuthFormState extends State<AuthForm> {
                           horizontal: 30,
                         )),
                   ),
-                Spacer(),
+                const Spacer(),
                 TextButton(
                   onPressed: _switchAuthMode,
                   child: Text(
