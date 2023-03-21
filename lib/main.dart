@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:orders_project/components/finished_details.dart';
+import 'package:orders_project/core/services/company_client_services.dart';
 import 'package:orders_project/core/services/completed_orders_services.dart';
+import 'package:orders_project/core/services/employee_services.dart';
 import 'package:orders_project/core/services/order_services.dart';
 import 'package:orders_project/pages/add_order_page.dart';
 import 'package:orders_project/pages/auth_or_home.dart';
@@ -13,8 +15,8 @@ import 'package:orders_project/utils/app_routers.dart';
 import 'package:provider/provider.dart';
 import 'core/models/auth.dart';
 import 'core/models/map_adress.dart';
-import 'core/services/finish_order_list.dart';
-import 'core/services/orders_list.dart';
+import 'core/services/old_services/finish_order_list.dart';
+import 'core/services/old_services/orders_list.dart';
 
 void main() {
   runApp(MyApp());
@@ -42,6 +44,12 @@ class MyApp extends StatelessWidget {
             }),
         ChangeNotifierProvider(
           create: (_) => CompletedOrderServices(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => EmployeeServices(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => CompanyClientServices(),
         ),
         ChangeNotifierProxyProvider<Auth, OrderList>(
           create: (_) => OrderList(),
@@ -79,7 +87,7 @@ class MyApp extends StatelessWidget {
         routes: {
           AppRoutes.AUTH_OR_HOME: (ctx) => const AuthOrHomePage(),
           AppRoutes.ORDERS_OVERVIEW_PAGE: (ctx) => const OrderOverview(),
-          AppRoutes.ADD_ORDER_PAGE: (ctx) => const AddOrderPage(),
+          AppRoutes.ADD_ORDER_PAGE: (ctx) => AddOrderPage(),
           AppRoutes.ORDER_DETAIL: (ctx) => const OrderDetailPage(),
           AppRoutes.FINISH_FORM_PAGE: (ctx) => FinishFormPage(),
           AppRoutes.FINISHED_ORDER_PAGE: (ctx) => const FinishedOrdersPage(),

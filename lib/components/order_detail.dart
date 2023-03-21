@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../core/models/map_adress.dart';
 import '../core/models/old_models/orders.dart';
-import '../core/services/finish_order_list.dart';
-import '../core/services/orders_list.dart';
+import '../core/services/old_services/finish_order_list.dart';
+import '../core/services/old_services/orders_list.dart';
 import '../utils/app_routers.dart';
 import '../utils/text_theme.dart';
 

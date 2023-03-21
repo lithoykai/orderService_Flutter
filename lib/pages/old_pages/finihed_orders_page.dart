@@ -3,7 +3,7 @@ import 'package:orders_project/components/finished_orders_box.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/models/old_models/finish_order.dart';
-import '../../core/services/finish_order_list.dart';
+import '../../core/services/old_services/finish_order_list.dart';
 
 class FinishedOrdersPage extends StatefulWidget {
   const FinishedOrdersPage({Key? key}) : super(key: key);

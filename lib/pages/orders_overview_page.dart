@@ -9,7 +9,6 @@ import 'package:orders_project/utils/app_routers.dart';
 
 import 'package:provider/provider.dart';
 
-
 class OrderOverview extends StatefulWidget {
   const OrderOverview({Key? key}) : super(key: key);
 
@@ -53,8 +52,8 @@ class _OrderOverviewState extends State<OrderOverview> {
                   problem: 'sdsadadsa',
                   client: DummyData.companyClient,
                   technical: DummyData.employee);
-              CompanyClientServices()
-                  .addDataInFirebase(DummyData.companyClient)
+              Provider.of<CompanyClientServices>(context, listen: false)
+                  .fetchOrdersData()
                   .then(
                 (value) {
                   setState(() {});

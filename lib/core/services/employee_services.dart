@@ -3,15 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:orders_project/core/services/firebase_services.dart';
-import 'package:orders_project/data/dummy_data.dart';
 import '../../utils/constants.dart';
 import '../models/employee.dart';
 
 class EmployeeServices with ChangeNotifier {
-  final List<Employee> _items = [
-    DummyData.employee,
-  ];
-  List<Employee> get employees => [...employees];
+  final List<Employee> _items = [];
+  List<Employee> get items => [..._items];
   int get itemCounts => _items.length;
 
   Future<void> addDataInFirebase(Employee employee) async {
@@ -23,6 +20,10 @@ class EmployeeServices with ChangeNotifier {
     Employee jsonData = Employee.fromJson(employee.toJson(), employee.id);
     _items.add(jsonData);
     notifyListeners();
+  }
+
+  List<String> get employeesNames {
+    return _items.map((e) => e.name).toList();
   }
 
   Future<void> fetchOrdersData() async {
@@ -46,6 +47,7 @@ class EmployeeServices with ChangeNotifier {
     } else {
       throw Exception('Falha em carregar as ordens finalizadas.');
     }
+    print(_items);
     notifyListeners();
   }
 }

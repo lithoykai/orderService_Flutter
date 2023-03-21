@@ -3,14 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:orders_project/core/models/company_client.dart';
 import 'package:http/http.dart' as http;
+import 'package:orders_project/core/models/employee.dart';
 import 'package:orders_project/data/dummy_data.dart';
 import '../../utils/constants.dart';
 import 'firebase_services.dart';
 
 class CompanyClientServices with ChangeNotifier {
-  final List<CompanyClient> _clients = [
-    DummyData.companyClient,
-  ];
+  final List<CompanyClient> _clients = [];
   List<CompanyClient> get clients => [..._clients];
   int get itemsCount => _clients.length;
 
@@ -24,8 +23,12 @@ class CompanyClientServices with ChangeNotifier {
     CompanyClient jsonData =
         CompanyClient.fromJson(companyClientJson, companyClientJson['id']);
     _clients.add(jsonData);
-
+    print(_clients);
     notifyListeners();
+  }
+
+  List<String> get clientNamesList {
+    return _clients.map((e) => e.name).toList();
   }
 
   // Get CompanyClients from Firebase to _clients;
@@ -38,7 +41,6 @@ class CompanyClientServices with ChangeNotifier {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> data = jsonDecode(response.body);
-      print(data.keys);
       data.forEach((clientId, clientData) {
         CompanyClient _companyClient = CompanyClient.fromJson(
           clientData as Map<String, dynamic>,

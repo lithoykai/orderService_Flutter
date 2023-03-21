@@ -52,6 +52,17 @@ class OrderService with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> saveData(Map<String, dynamic> formData) async {
+    Order newOrder = Order(
+      id: UniqueKey().toString(),
+      problem: formData['problem'] as String,
+      client: formData['companyNames'] as CompanyClient,
+      technical: formData['employee'] as Employee,
+    );
+
+    addDataInFirebase(newOrder);
+  }
+
   Future<void> addDataInFirebase(Order order) async {
     Map<String, dynamic> orderJson = order.toJson();
     FirebaseServices().addDataInFirebase(

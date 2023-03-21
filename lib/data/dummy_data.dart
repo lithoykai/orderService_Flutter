@@ -43,7 +43,7 @@ class DummyData {
   static CompanyClient companyClient = CompanyClient(
     id: '1',
     name: 'Casas Bahia',
-    tradingName: 'Casas Bahia',
+    tradingName: 'Magazine Luiza',
     district: 'district',
     city: 'city',
     address: 'address',
