@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:orders_project/core/services/company_client_services.dart';
 import 'package:orders_project/utils/app_routers.dart';
+import 'package:provider/provider.dart';
 
 import '../core/models/order.dart';
 
@@ -9,18 +11,20 @@ class OrderBoxWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final client = Provider.of<CompanyClientServices>(context);
     return ListTile(
       title: Text(
-        order.client.name,
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-      ),
+          // order.client.name,
+          // style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          'Nome do cliente'),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(order.problem),
-          Text(
-            order.client.address,
-          )
+          Text(client.clients.map((e) {
+            e.id == order.clientID;
+          }).toString() // order.client.address,
+              ),
         ],
       ),
       trailing: ElevatedButton.icon(
@@ -29,6 +33,7 @@ class OrderBoxWidget extends StatelessWidget {
               MaterialStateColor.resolveWith((states) => Colors.white),
         ),
         onPressed: () {
+          print(order.technicalID);
           Navigator.pushNamed(context, AppRoutes.COMPLETED_ORDER_PAGE);
         },
         icon: const Icon(

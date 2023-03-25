@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
+
 class Employee {
   String id;
+  String userID;
   String name;
   String district;
   String address;
@@ -10,6 +13,7 @@ class Employee {
 
   Employee({
     required this.id,
+    required this.userID,
     required this.name,
     required this.district,
     required this.address,
@@ -19,9 +23,11 @@ class Employee {
     this.landmark,
   });
 
-  factory Employee.fromJson(Map<String, dynamic> json, String id) {
+  factory Employee.fromJson(
+      Map<String, dynamic> json, String id, String? userID) {
     return Employee(
       id: id,
+      userID: userID ?? json['userID'],
       name: json['name'],
       district: json['district'],
       address: json['address'],
@@ -34,6 +40,7 @@ class Employee {
 
   Map<String, dynamic> toJson() => {
         'id': id,
+        'userID': userID,
         'name': name,
         'district': district,
         'address': address,

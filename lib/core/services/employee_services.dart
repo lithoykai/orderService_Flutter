@@ -7,18 +7,26 @@ import '../../utils/constants.dart';
 import '../models/employee.dart';
 
 class EmployeeServices with ChangeNotifier {
+  final String _token;
   final List<Employee> _items = [];
   List<Employee> get items => [..._items];
   int get itemCounts => _items.length;
 
-  Future<void> addDataInFirebase(Employee employee) async {
-    FirebaseServices().addDataInFirebase(
-      employee.toJson(),
-      Constants.URL_EMPLOYEES,
-    );
+  EmployeeServices(this._token);
 
-    Employee jsonData = Employee.fromJson(employee.toJson(), employee.id);
+  Future<void> addDataInFirebase(Employee employee) async {
+    FirebaseServices()
+        .addDataInFirebase(
+          employee.toJson(),
+          Constants.URL_EMPLOYEES,
+          _token,
+        )
+        .then((value) => print('Dados do Usuário adicionado no Firebase'));
+
+    Employee jsonData =
+        Employee.fromJson(employee.toJson(), employee.id, employee.userID);
     _items.add(jsonData);
+    print('Dados do Usuário adicionados no código');
     notifyListeners();
   }
 
@@ -26,11 +34,11 @@ class EmployeeServices with ChangeNotifier {
     return _items.map((e) => e.name).toList();
   }
 
-  Future<void> fetchOrdersData() async {
+  Future<void> fetchData() async {
     _items.clear();
 
-    final response =
-        await http.get(Uri.parse('${Constants.URL_EMPLOYEES}.json'));
+    final response = await http
+        .get(Uri.parse('${Constants.URL_EMPLOYEES}.json?auth=$_token'));
 
     if (response.body == 'null') return;
 
@@ -41,13 +49,13 @@ class EmployeeServices with ChangeNotifier {
         Employee _employee = Employee.fromJson(
           employeeData as Map<String, dynamic>,
           employeeID,
+          employeeData['userID'],
         );
         _items.add(_employee);
       });
     } else {
       throw Exception('Falha em carregar as ordens finalizadas.');
     }
-    print(_items);
     notifyListeners();
   }
 }

@@ -27,20 +27,7 @@ class AuthPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
-                // Container(
-                //     padding: const EdgeInsets.symmetric(
-                //       vertical: 10,
-                //       horizontal: 70,
-                //     ),
-                //     child: Image(
-                //       image: AssetImage('assets/img/logo.png'),
-                // //     )),
-                // SizedBox(
-                //   height: 10,
-                // ),
-                AuthForm()
-              ],
+              children: const [AuthForm()],
             ),
           )
         ],

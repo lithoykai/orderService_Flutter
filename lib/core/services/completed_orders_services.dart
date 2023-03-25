@@ -7,13 +7,16 @@ import '../../utils/constants.dart';
 import 'firebase_services.dart';
 
 class CompletedOrderServices with ChangeNotifier {
-  final List<CompletedOrder> _items = [];
+  final String _token;
+  List<CompletedOrder> _items = [];
   List<CompletedOrder> get items => [..._items];
 
+  CompletedOrderServices(this._token, this._items);
+
 // Get CompletedOrders from Firebase to _items;
-  Future<void> fetchOrdersData() async {
-    final response =
-        await http.get(Uri.parse('${Constants.URL_ORDER_COMPLETED}.json'));
+  Future<void> fetchCompletedOrdersData() async {
+    final response = await http
+        .get(Uri.parse('${Constants.URL_ORDER_COMPLETED}.json?auth=$_token'));
 
     if (response.body == 'null') return;
 
@@ -49,10 +52,8 @@ class CompletedOrderServices with ChangeNotifier {
 
   Future<void> addDataInFirebase(CompletedOrder completedOrder) async {
     Map<String, dynamic> orderJson = completedOrder.toJson();
-    FirebaseServices().addDataInFirebase(
-      orderJson,
-      Constants.URL_ORDER_COMPLETED,
-    );
+    FirebaseServices()
+        .addDataInFirebase(orderJson, Constants.URL_ORDER_COMPLETED, _token);
 
     CompletedOrder jsonData =
         CompletedOrder.fromJson(orderJson, completedOrder.id);

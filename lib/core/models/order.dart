@@ -4,29 +4,29 @@ import 'package:orders_project/core/models/employee.dart';
 class Order {
   String id;
   String problem;
-  CompanyClient client;
-  Employee technical;
+  String clientID;
+  String technicalID;
 
   Order({
     required this.id,
     required this.problem,
-    required this.client,
-    required this.technical,
+    required this.clientID,
+    required this.technicalID,
   });
 
   factory Order.fromJson(Map<String, dynamic> json) {
     return Order(
       id: json['id'],
-      client: json['client'],
+      clientID: json['clientID'],
       problem: json['problem'],
-      technical: json['technical'],
+      technicalID: json['technicalID'],
     );
   }
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'problem': problem,
-        'client': client.toJson(),
-        'technical': technical.toJson(),
+        'clientID': clientID,
+        'technicalID': technicalID,
       };
 }

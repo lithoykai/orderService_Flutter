@@ -50,13 +50,4 @@ class DummyData {
     cnpj: 14324234232,
     stateRegistration: 1212121212,
   );
-
-  static Employee employee = Employee(
-    id: 'id',
-    name: 'name',
-    district: 'district',
-    address: 'address',
-    email: 'email',
-    CPF: 212121212,
-  );
 }

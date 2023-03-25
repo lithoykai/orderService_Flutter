@@ -8,4 +8,5 @@ class AppRoutes {
   static const FINISHED_ORDER_PAGE = '/finished_order_page';
   static const FINISHED_DETAILS = '/finished_details';
   static const COMPLETED_ORDER_PAGE = '/completed_order_page';
+  static const ADD_EMPLOYEES_PAGE = '/add_employees';
 }

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:orders_project/components/order_box_widget.dart';
-import 'package:orders_project/core/models/order.dart';
-import 'package:orders_project/core/services/company_client_services.dart';
+import 'package:orders_project/core/models/auth.dart';
 
 import 'package:orders_project/core/services/order_services.dart';
-import 'package:orders_project/data/dummy_data.dart';
 import 'package:orders_project/utils/app_routers.dart';
 
 import 'package:provider/provider.dart';
@@ -24,12 +22,6 @@ class _OrderOverviewState extends State<OrderOverview> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    OrderService().fetchOrdersData();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -37,30 +29,21 @@ class _OrderOverviewState extends State<OrderOverview> {
         actions: [
           IconButton(
             onPressed: () async {
-              // _refreshOrders(context);
               Navigator.of(context).pushNamed(AppRoutes.ADD_ORDER_PAGE);
             },
             icon: const Icon(Icons.add),
           ),
           IconButton(
             onPressed: () async {
-              // _refreshOrders(context).then((value) {
-              //   setState(() {});
-              // });
-              Order _order = Order(
-                  id: UniqueKey().toString(),
-                  problem: 'sdsadadsa',
-                  client: DummyData.companyClient,
-                  technical: DummyData.employee);
-              Provider.of<CompanyClientServices>(context, listen: false)
-                  .fetchOrdersData()
-                  .then(
-                (value) {
-                  setState(() {});
-                },
-              );
+              Navigator.of(context).pushNamed(AppRoutes.ADD_EMPLOYEES_PAGE);
             },
             icon: const Icon(Icons.refresh),
+          ),
+          IconButton(
+            onPressed: () async {
+              Provider.of<Auth>(context, listen: false).logout();
+            },
+            icon: const Icon(Icons.logout),
           ),
         ],
       ),

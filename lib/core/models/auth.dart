@@ -3,6 +3,11 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:orders_project/core/models/employee.dart';
+import 'package:orders_project/core/services/employee_services.dart';
+import 'package:orders_project/core/services/firebase_services.dart';
+import 'package:orders_project/utils/constants.dart';
+import 'package:provider/provider.dart';
 
 import '../../data/store.dart';
 import '../../exceptions/auth_exception.dart';
@@ -31,10 +36,39 @@ class Auth with ChangeNotifier {
     return isAuth ? _userId : null;
   }
 
+  Future<void> signupEmployee(
+    Map<String, dynamic> data,
+  ) async {
+    final String _employeeID;
+    final _url =
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${Constants.TOKEN}';
+    final response = await http.post(
+      Uri.parse(_url),
+      body: jsonEncode({
+        'email': data['email'],
+        'password': data['password'],
+        'returnSecureToken': true,
+      }),
+    );
+    print('Usuário criado no Authentication');
+    final body = jsonDecode(response.body);
+    // print(data);
+    if (body['error'] != null) {
+      throw AuthException(body['error']['message']);
+    } else {
+      _employeeID = body['localId'];
+      print('userID criado: $_employeeID');
+      Employee newEmployee =
+          Employee.fromJson(data, UniqueKey().toString(), _employeeID);
+      print('Usuário de nome: ${newEmployee.name}');
+      await EmployeeServices(_token ?? '').addDataInFirebase(newEmployee);
+    }
+  }
+
   Future<void> _authenticate(
       String email, String password, String fragmentUrl) async {
     final _url =
-        'https://identitytoolkit.googleapis.com/v1/accounts:$fragmentUrl?key=AIzaSyDuSbOh_me-m7vhueQ5GTqEeYWIj2_DT4w';
+        'https://identitytoolkit.googleapis.com/v1/accounts:$fragmentUrl?key=${Constants.TOKEN}';
     final response = await http.post(
       Uri.parse(_url),
       body: jsonEncode({
@@ -45,14 +79,13 @@ class Auth with ChangeNotifier {
     );
 
     final body = jsonDecode(response.body);
-
+    // print(data);
     if (body['error'] != null) {
       throw AuthException(body['error']['message']);
     } else {
       _token = body['idToken'];
       _email = body['email'];
       _userId = body['localId'];
-
       _expiryDate = DateTime.now().add(
         Duration(
           seconds: int.parse(body['expiresIn']),
@@ -111,7 +144,7 @@ class Auth with ChangeNotifier {
     _logoutTimer = null;
   }
 
-  void autoLogout() {
+  Future<void> autoLogout() async {
     clearLogoutTimer();
     final _timeToLogout = _expiryDate?.difference(DateTime.now()).inSeconds;
     _logoutTimer = Timer(

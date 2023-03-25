@@ -131,7 +131,8 @@ class _AuthFormState extends State<AuthForm> {
                 ),
                 if (_isSignup())
                   TextFormField(
-                      decoration: const InputDecoration(labelText: 'Confirmar Senha'),
+                      decoration:
+                          const InputDecoration(labelText: 'Confirmar Senha'),
                       obscureText: true,
                       validator: _isLogin()
                           ? null
