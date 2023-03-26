@@ -1,7 +1,7 @@
 class CompanyClient {
   String id;
   String name; //nome da empresa
-  String tradingName; // nome fantasia
+  String? tradingName; // nome fantasia
   String district;
   String city;
   String address;
@@ -13,7 +13,7 @@ class CompanyClient {
   CompanyClient(
       {required this.id,
       required this.name,
-      required this.tradingName,
+      this.tradingName,
       required this.district,
       required this.city,
       required this.address,
@@ -26,7 +26,7 @@ class CompanyClient {
     return CompanyClient(
       id: id,
       name: json['name'],
-      tradingName: json['tradingName'],
+      tradingName: json['tradingName'] ?? '',
       district: json['district'],
       city: json['city'],
       address: json['address'],
@@ -40,7 +40,7 @@ class CompanyClient {
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
-        'tradingName': tradingName,
+        'tradingName': tradingName ?? '',
         'district': district,
         'city': city,
         'address': address,

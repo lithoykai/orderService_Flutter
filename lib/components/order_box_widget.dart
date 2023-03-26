@@ -11,19 +11,23 @@ class OrderBoxWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final client = Provider.of<CompanyClientServices>(context);
+    final company = Provider.of<CompanyClientServices>(context);
     return ListTile(
       title: Text(
-          // order.client.name,
-          // style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-          'Nome do cliente'),
+        company.clients
+            .firstWhere((element) => element.id == order.clientID)
+            .name
+            .toString(),
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+      ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(order.problem),
-          Text(client.clients.map((e) {
-            e.id == order.clientID;
-          }).toString() // order.client.address,
+          Text(company.clients
+                  .firstWhere((element) => element.id == order.clientID)
+                  .address
+                  .toString() // order.client.address,
               ),
         ],
       ),
@@ -33,8 +37,7 @@ class OrderBoxWidget extends StatelessWidget {
               MaterialStateColor.resolveWith((states) => Colors.white),
         ),
         onPressed: () {
-          print(order.technicalID);
-          Navigator.pushNamed(context, AppRoutes.COMPLETED_ORDER_PAGE);
+          Navigator.of(context).pushNamed(AppRoutes.COMPLETED_ORDER_PAGE);
         },
         icon: const Icon(
           Icons.forward,

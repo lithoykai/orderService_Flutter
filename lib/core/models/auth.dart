@@ -5,9 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:orders_project/core/models/employee.dart';
 import 'package:orders_project/core/services/employee_services.dart';
-import 'package:orders_project/core/services/firebase_services.dart';
 import 'package:orders_project/utils/constants.dart';
-import 'package:provider/provider.dart';
 
 import '../../data/store.dart';
 import '../../exceptions/auth_exception.dart';
@@ -40,7 +38,7 @@ class Auth with ChangeNotifier {
     Map<String, dynamic> data,
   ) async {
     final String _employeeID;
-    final _url =
+    const _url =
         'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${Constants.TOKEN}';
     final response = await http.post(
       Uri.parse(_url),

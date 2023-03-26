@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:orders_project/core/models/company_client.dart';
 import 'package:http/http.dart' as http;
 import '../../utils/constants.dart';
-import 'firebase_services.dart';
 
 class CompanyClientServices with ChangeNotifier {
   final String _token;
@@ -14,13 +13,18 @@ class CompanyClientServices with ChangeNotifier {
 
   CompanyClientServices(this._token);
 
-  Future<void> addDataInFirebase(CompanyClient companyClient) async {
-    Map<String, dynamic> companyClientJson = companyClient.toJson();
-    FirebaseServices()
-        .addDataInFirebase(companyClientJson, Constants.URL_CLIENTS, _token);
+  //Add the CompanyClient in Firebase and _clients list
+  Future<void> addData(Map<String, dynamic> companyClient) async {
+    CompanyClient companyClientJson =
+        CompanyClient.fromJson(companyClient, UniqueKey().toString());
+    final response = await http.post(
+      Uri.parse('${Constants.URL_CLIENTS}.json?auth=$_token'),
+      body: jsonEncode(companyClientJson),
+    );
 
-    CompanyClient jsonData =
-        CompanyClient.fromJson(companyClientJson, companyClientJson['id']);
+    final id = jsonDecode(response.body)['name'];
+
+    CompanyClient jsonData = CompanyClient.fromJson(companyClient, id);
     _clients.add(jsonData);
     notifyListeners();
   }

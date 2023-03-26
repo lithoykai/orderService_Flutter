@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:orders_project/exceptions/auth_exception.dart';
 import 'package:provider/provider.dart';
 
 import '../core/models/auth.dart';
@@ -30,10 +29,26 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
     Auth _auth = Provider.of(context, listen: false);
     print(_formData);
 
-    print('Enviando para o SignUpEmployee');
-    await _auth
-        .signupEmployee(_formData)
-        .then((value) => print('Funcionário adicionado com sucesso.'));
+    try {
+      print('Enviando para o SignUpEmployee');
+      await _auth
+          .signupEmployee(_formData)
+          .then((value) => Navigator.of(context).pop(true));
+    } catch (error) {
+      await showDialog<void>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Ocorreu um erro!'),
+          content: Text(error.toString()),
+          actions: [
+            TextButton(
+              child: const Text('Ok'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        ),
+      );
+    } finally {}
 
     setState(() {
       isLoading = false;
@@ -46,48 +61,49 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
       appBar: AppBar(
         title: const Text('Adicionar novo funcionário'),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 16.0),
-                  const Text(
-                    'Informações do funcionário',
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const SizedBox(height: 16.0),
+                        const Text(
+                          'Informações do funcionário',
+                          style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 12.0),
+                        _buildNameField(),
+                        const SizedBox(height: 12.0),
+                        _buildEmailField(),
+                        const SizedBox(height: 12.0),
+                        _buildDistrictField(),
+                        const SizedBox(height: 12.0),
+                        _buildAddressField(),
+                        const SizedBox(height: 12.0),
+                        _buildComplementField(),
+                        const SizedBox(height: 12.0),
+                        _buildLandmarkField(),
+                        const SizedBox(height: 12.0),
+                        _buildCpfField(),
+                        const SizedBox(height: 12.0),
+                        _buildPassword(),
+                        const SizedBox(height: 32.0),
+                        _buildSubmitButton(),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 12.0),
-                  _buildNameField(),
-                  const SizedBox(height: 12.0),
-                  _buildEmailField(),
-                  const SizedBox(height: 12.0),
-                  _buildDistrictField(),
-                  const SizedBox(height: 12.0),
-                  _buildAddressField(),
-                  const SizedBox(height: 12.0),
-                  _buildComplementField(),
-                  const SizedBox(height: 12.0),
-                  _buildLandmarkField(),
-                  const SizedBox(height: 12.0),
-                  _buildCpfField(),
-                  const SizedBox(height: 12.0),
-                  _buildPassword(),
-                  if (isLoading)
-                    const CircularProgressIndicator()
-                  else
-                    const SizedBox(height: 32.0),
-                  _buildSubmitButton(),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-      ),
     );
   }
 

@@ -1,5 +1,3 @@
-import 'package:orders_project/core/models/company_client.dart';
-import 'package:orders_project/core/models/employee.dart';
 
 class Order {
   String id;

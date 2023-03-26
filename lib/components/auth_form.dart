@@ -16,24 +16,12 @@ class AuthForm extends StatefulWidget {
 class _AuthFormState extends State<AuthForm> {
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  AuthMode _authMode = AuthMode.Login;
+  final AuthMode _authMode = AuthMode.Login;
   final Map<String, String> _authData = {
     'email': '',
     'password': '',
   };
   bool isLoading = false;
-  bool _isLogin() => _authMode == AuthMode.Login;
-  bool _isSignup() => _authMode == AuthMode.Signup;
-
-  void _switchAuthMode() {
-    setState(() {
-      if (_isLogin()) {
-        _authMode = AuthMode.Signup;
-      } else {
-        _authMode = AuthMode.Login;
-      }
-    });
-  }
 
   void _showErrorDialog(String msg) {
     showDialog(
@@ -65,19 +53,10 @@ class _AuthFormState extends State<AuthForm> {
     Auth _auth = Provider.of(context, listen: false);
 
     try {
-      if (_isLogin()) {
-        //Login
-        await _auth.login(
-          _authData['email']!,
-          _authData['password']!,
-        );
-      } else {
-        // Registro
-        await _auth.signup(
-          _authData['email']!,
-          _authData['password']!,
-        );
-      }
+      await _auth.login(
+        _authData['email']!,
+        _authData['password']!,
+      );
     } on AuthException catch (error) {
       _showErrorDialog(error.toString());
     } catch (error) {
@@ -98,7 +77,7 @@ class _AuthFormState extends State<AuthForm> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Container(
         padding: const EdgeInsets.all(16),
-        height: _isLogin() ? 300 : 350,
+        height: 260,
         width: deviceSize.width * 0.75,
         child: Form(
             key: _formKey,
@@ -129,23 +108,8 @@ class _AuthFormState extends State<AuthForm> {
                     return null;
                   },
                 ),
-                if (_isSignup())
-                  TextFormField(
-                      decoration:
-                          const InputDecoration(labelText: 'Confirmar Senha'),
-                      obscureText: true,
-                      validator: _isLogin()
-                          ? null
-                          : (_password) {
-                              final password = _password ?? '';
-                              if (password != _passwordController.text) {
-                                return 'As senhas não conferem!';
-                              } else {
-                                return null;
-                              }
-                            }),
                 const SizedBox(
-                  height: 20,
+                  height: 50,
                 ),
                 if (isLoading)
                   const CircularProgressIndicator()
@@ -164,12 +128,6 @@ class _AuthFormState extends State<AuthForm> {
                         )),
                   ),
                 const Spacer(),
-                TextButton(
-                  onPressed: _switchAuthMode,
-                  child: Text(
-                    _isLogin() ? 'CRIAR UMA CONTA' : 'JÁ POSSUI CONTA?',
-                  ),
-                )
               ],
             )),
       ),

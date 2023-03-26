@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:orders_project/components/order_box_widget.dart';
 import 'package:orders_project/core/models/auth.dart';
+import 'package:orders_project/core/services/firebase_services.dart';
 
 import 'package:orders_project/core/services/order_services.dart';
 import 'package:orders_project/utils/app_routers.dart';
@@ -16,6 +17,17 @@ class OrderOverview extends StatefulWidget {
 
 class _OrderOverviewState extends State<OrderOverview> {
   final bool _isLoading = true;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   Provider.of<CompanyClientServices>(context, listen: false).fetchData().then(
+  //       (_) => Provider.of<EmployeeServices>(context, listen: false)
+  //               .fetchData()
+  //               .then((_) {
+  //             setState(() {});
+  //           }));
+  // }
 
   Future<void> _refreshOrders(BuildContext context) {
     return Provider.of<OrderService>(context, listen: false).fetchOrdersData();
@@ -37,7 +49,13 @@ class _OrderOverviewState extends State<OrderOverview> {
             onPressed: () async {
               Navigator.of(context).pushNamed(AppRoutes.ADD_EMPLOYEES_PAGE);
             },
-            icon: const Icon(Icons.refresh),
+            icon: const Icon(Icons.add_alarm),
+          ),
+          IconButton(
+            onPressed: () async {
+              Navigator.of(context).pushNamed(AppRoutes.ADD_COMPANY_PAGE);
+            },
+            icon: const Icon(Icons.add_a_photo),
           ),
           IconButton(
             onPressed: () async {
@@ -48,8 +66,8 @@ class _OrderOverviewState extends State<OrderOverview> {
         ],
       ),
       body: FutureBuilder(
-        future:
-            Provider.of<OrderService>(context, listen: false).fetchOrdersData(),
+        future: Provider.of<FirebaseServices>(context, listen: false)
+            .fetchAllData(context),
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
