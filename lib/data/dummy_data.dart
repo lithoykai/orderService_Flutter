@@ -5,21 +5,6 @@ import '../core/models/nobreak.dart';
 import '../core/models/battery_place.dart';
 
 class DummyData {
-  static Battery batteryData = Battery(
-    id: '5454',
-    rightPlace: 'Local de armazenamento limpo e adequado.',
-    rightPlaceImage: 'path',
-    manufacture: 'BateriasTops',
-    capacity: '5kW',
-    model: 'Modelo 23434',
-    bank: 5,
-    batteryForBank: 23,
-    charger: Charger(voltage: 0.5, current: 3),
-    manufacturingDate: DateTime.now(),
-    hasBreaker: true,
-    whatType: BatteryType.estacionaria,
-  );
-
   static BatteryPlace placeData = BatteryPlace(
     id: '1',
     cleanPlace: true,

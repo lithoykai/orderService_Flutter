@@ -1,11 +1,19 @@
+import 'package:orders_project/core/models/battery.dart';
+import 'package:orders_project/core/models/battery_place.dart';
+import 'package:orders_project/core/models/nobreak.dart';
+
 class CompletedOrder {
   String id;
-  Map<String, dynamic> battery;
-  Map<String, dynamic> place;
-  Map<String, dynamic> nobreak;
+  String employeeID;
+  String clientID;
+  Battery battery;
+  BatteryPlace place;
+  Nobreak nobreak;
 
   CompletedOrder({
     required this.id,
+    required this.employeeID,
+    required this.clientID,
     required this.battery,
     required this.nobreak,
     required this.place,
@@ -14,6 +22,8 @@ class CompletedOrder {
   factory CompletedOrder.fromJson(Map<String, dynamic> json, String id) {
     return CompletedOrder(
         id: id,
+        employeeID: json['employeeID'],
+        clientID: json['clientID'],
         battery: json['battery'],
         nobreak: json['nobreak'],
         place: json['place']);
@@ -21,8 +31,8 @@ class CompletedOrder {
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'battery': battery,
-        'nobreak': nobreak,
-        'place': place,
+        'battery': battery.toJson(),
+        'nobreak': nobreak.toJson(),
+        'place': place.toJson(),
       };
 }

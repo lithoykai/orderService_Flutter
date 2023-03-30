@@ -1,10 +1,12 @@
+import 'dart:io';
+
 enum BatteryType { estacionaria, selada, litio }
 
 class Battery {
   final String id;
   final String rightPlace;
-  final BatteryType whatType;
-  final String rightPlaceImage;
+  late final BatteryType whatType;
+  final File rightPlaceImage;
   final String manufacture;
   final String capacity;
   final String model;

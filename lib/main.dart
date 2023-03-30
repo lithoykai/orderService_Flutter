@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:orders_project/components/battery_place_form.dart';
 import 'package:orders_project/core/services/company_client_services.dart';
 import 'package:orders_project/core/services/completed_orders_services.dart';
 import 'package:orders_project/core/services/employee_services.dart';
@@ -81,9 +82,10 @@ class MyApp extends StatelessWidget {
           AppRoutes.AUTH_OR_HOME: (ctx) => const AuthOrHomePage(),
           AppRoutes.ORDERS_OVERVIEW_PAGE: (ctx) => const OrderOverview(),
           AppRoutes.ADD_ORDER_PAGE: (ctx) => const AddOrderPage(),
-          AppRoutes.COMPLETED_ORDER_PAGE: (ctx) => const BatteryForm(),
+          AppRoutes.COMPLETED_ORDER_PAGE: (ctx) => const CompletedOrderForm(),
           AppRoutes.ADD_EMPLOYEES_PAGE: (ctx) => const AddEmployeePage(),
           AppRoutes.ADD_COMPANY_PAGE: (ctx) => const AddCompanyPage(),
+          AppRoutes.BATTERY_PLACE_FORM: (ctx) => const BatteryPlaceForm(),
         },
         debugShowCheckedModeBanner: false,
       ),
