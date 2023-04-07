@@ -24,11 +24,11 @@ class Nobreak {
   factory Nobreak.fromJson(Map<String, dynamic> json) {
     return Nobreak(
       id: json['id'],
-      display: json['display'],
-      nobreakWasOpened: json['nobreakWasOpened'],
-      hasCommunicationBoard: json['hasCommunicationBoard'],
-      upsCurrent: json['upsCurrent'],
-      voltage: json['voltage'],
+      display: json['display'] ?? false,
+      nobreakWasOpened: json['nobreakWasOpened'] ?? false,
+      hasCommunicationBoard: json['hasCommunicationBoard'] ?? false,
+      upsCurrent: UPSCurrent.fromJson(json['upsCurrent']),
+      voltage: Voltage.fromJson(json['voltage']),
       frequencyEquip: json['frequencyEquip'],
       ipCommunication: json['ipCommunication'] ?? '',
       passwordCommunication: json['passwordCommunication'] ?? '',
@@ -57,7 +57,7 @@ class Voltage {
     required this.output,
   });
 
-  factory Voltage.fromJson(Map<String, dynamic> json) {
+  factory Voltage.fromJson(Map<dynamic, dynamic> json) {
     return Voltage(
       input: json['input'],
       output: json['output'],
@@ -79,7 +79,7 @@ class UPSCurrent {
     required this.output,
   });
 
-  factory UPSCurrent.fromJson(Map<String, dynamic> json) {
+  factory UPSCurrent.fromJson(Map<dynamic, dynamic> json) {
     return UPSCurrent(
       input: json['input'],
       output: json['output'],

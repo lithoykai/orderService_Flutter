@@ -22,11 +22,11 @@ class CompletedOrder {
   factory CompletedOrder.fromJson(Map<String, dynamic> json, String id) {
     return CompletedOrder(
         id: id,
-        employeeID: json['employeeID'],
-        clientID: json['clientID'],
-        battery: json['battery'],
-        nobreak: json['nobreak'],
-        place: json['place']);
+        employeeID: json['employeeID'] ?? 'Não informado.',
+        clientID: json['clientID'] ?? 'Não informado.',
+        battery: Battery.fromJson(json['battery']),
+        nobreak: Nobreak.fromJson(json['nobreak']),
+        place: BatteryPlace.fromJson(json['place']));
   }
 
   Map<String, dynamic> toJson() => {

@@ -18,17 +18,6 @@ class OrderOverview extends StatefulWidget {
 class _OrderOverviewState extends State<OrderOverview> {
   final bool _isLoading = true;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   Provider.of<CompanyClientServices>(context, listen: false).fetchData().then(
-  //       (_) => Provider.of<EmployeeServices>(context, listen: false)
-  //               .fetchData()
-  //               .then((_) {
-  //             setState(() {});
-  //           }));
-  // }
-
   Future<void> _refreshOrders(BuildContext context) {
     return Provider.of<OrderService>(context, listen: false).fetchOrdersData();
   }

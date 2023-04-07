@@ -64,17 +64,6 @@ class _AddOrderPageState extends State<AddOrderPage> {
     _employeeFocus.dispose();
   }
 
-  void buttonTest() {
-    final isValid = _formKey.currentState?.validate() ?? false;
-
-    if (!isValid) {
-      return;
-    }
-    if (_formData['type'] == 1) {}
-
-    _formKey.currentState?.save();
-  }
-
   void onSubmit() async {
     final isValid = _formKey.currentState?.validate() ?? false;
 

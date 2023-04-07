@@ -55,10 +55,10 @@ class MyApp extends StatelessWidget {
           },
         ),
         ChangeNotifierProxyProvider<Auth, CompletedOrderServices>(
-          create: (_) => CompletedOrderServices('', []),
+          create: (_) => CompletedOrderServices('', [], ''),
           update: (context, auth, previous) {
             return CompletedOrderServices(
-                auth.token ?? '', previous?.items ?? []);
+                auth.token ?? '', previous?.items ?? [], auth.userId ?? '');
           },
         ),
         ChangeNotifierProvider(

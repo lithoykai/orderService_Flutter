@@ -5,8 +5,8 @@ enum BatteryType { estacionaria, selada, litio }
 class Battery {
   final String id;
   final String rightPlace;
-  late final BatteryType whatType;
-  final File rightPlaceImage;
+  final BatteryType whatType;
+  final String rightPlaceImage;
   final String manufacture;
   final String capacity;
   final String model;
@@ -14,7 +14,7 @@ class Battery {
   final int batteryForBank;
   final Charger charger;
   final DateTime manufacturingDate;
-  final bool hasBreaker;
+  bool hasBreaker = false;
 
   Battery({
     required this.id,
@@ -41,10 +41,10 @@ class Battery {
       model: json['model'],
       bank: json['bank'],
       batteryForBank: json['batteryForBank'],
-      charger: json['charger'],
+      charger: Charger.fromJson(json['charger']),
       manufacturingDate: DateTime.parse(json['manufacturingDate']),
-      hasBreaker: json['hasBreaker'],
-      whatType: BatteryType.values.elementAt(json['whatType']),
+      whatType: json['whatType'],
+      hasBreaker: json['hasBreaker'] ?? false,
     );
   }
 
@@ -62,21 +62,6 @@ class Battery {
         'manufacturingDate': manufacturingDate.toIso8601String(),
         'hasBreaker': hasBreaker,
       };
-
-  String? get batteryTypeText {
-    switch (whatType) {
-      case BatteryType.estacionaria:
-        return 'Estacionária';
-      case BatteryType.litio:
-        return 'Lítio';
-      case BatteryType.selada:
-        return 'Selada';
-
-      default:
-        'Estacionária';
-    }
-    return null;
-  }
 }
 
 class Charger {
@@ -88,8 +73,11 @@ class Charger {
     required this.current,
   });
 
-  factory Charger.fromJson(Map<String, dynamic> json) {
-    return Charger(voltage: json['voltage'], current: json['current']);
+  factory Charger.fromJson(Map<dynamic, dynamic> json) {
+    return Charger(
+      voltage: json['voltage'],
+      current: json['current'],
+    );
   }
 
   Map<String, dynamic> toJson() => {

@@ -45,6 +45,7 @@ dependencies:
   cloud_firestore: ^4.4.3
   image_picker: ^0.8.7
   path_provider: ^2.0.14
+  firebase_storage: ^11.1.0
 
 dev_dependencies:
   flutter_test:
@@ -107,6 +108,24 @@ flutter:
         - asset: assets\fonts\Oswald-Regular.ttf
         - asset: assets\fonts\Oswald-ExtraLight.ttf
         - asset: assets\fonts\Oswald-SemiBold.ttf
+          weight: 700
+    - family: Lora
+      fonts:
+        - asset: assets\fonts\Lora-Regular.ttf
+        - asset: assets\fonts\Lora-Bold.ttf
+        - asset: assets\fonts\Lora-BoldItalic.ttf
+        - asset: assets\fonts\Lora-Italic.ttf
+        - asset: assets\fonts\Lora-Medium.ttf
+        - asset: assets\fonts\Lora-MediumItalic.ttf
+        - asset: assets\fonts\Lora-SemiBold.ttf
+        - asset: assets\fonts\Lora-SemiBoldItalic.ttf
+          weight: 700
+    - family: AvenirNext
+      fonts:
+        - asset: assets\fonts\AvenirNextLTPro-Bold.otf
+        - asset: assets\fonts\AvenirNextLTPro-It.otf
+        - asset: assets\fonts\AvenirNextLTPro-Regular.otf
+   
           weight: 700
   #   - family: Trajan Pro
   #     fonts:

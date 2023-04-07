@@ -25,6 +25,21 @@ class _CompletedOrderFormState extends State<CompletedOrderForm> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Finalizar ordem de serviço.'),
+        actions: [
+          // IconButton(
+          //   onPressed: () {
+          //     Provider.of<CompletedOrderServices>(context, listen: false)
+          //         .returnPageForm();
+          //   },
+          //   icon: Icon(Icons.arrow_back_ios),
+          // ),
+          IconButton(
+              onPressed: () {
+                Provider.of<CompletedOrderServices>(context, listen: false)
+                    .switchPageForm();
+              },
+              icon: Icon(Icons.arrow_forward_ios))
+        ],
       ),
       body: SingleChildScrollView(
         child: Consumer<CompletedOrderServices>(

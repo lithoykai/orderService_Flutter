@@ -27,17 +27,17 @@ class BatteryPlace {
     this.materialsClose,
   });
 
-  factory BatteryPlace.fromJson(Map<String, dynamic> json, id) {
+  factory BatteryPlace.fromJson(Map<String, dynamic> json) {
     return BatteryPlace(
-      id: id,
-      cleanPlace: json['cleanPlace'],
-      reverseKey: json['reverseKey'],
-      inputFrame: json['inputFrame'],
-      outputFrame: json['outputFrame'],
-      hasMaterialsClose: json['hasMaterialsClose'],
+      id: json['id'],
+      cleanPlace: json['cleanPlace'] ?? false,
+      reverseKey: json['reverseKey'] ?? false,
+      inputFrame: json['inputFrame'] ?? false,
+      outputFrame: json['outputFrame'] ?? false,
+      hasMaterialsClose: json['hasMaterialsClose'] ?? false,
       temp: json['temp'] ?? '',
-      lights: Ilumination.values.elementAt(json['lights']),
-      ventilation: Ventilation.values.elementAt(json['ventilation']),
+      lights: json['lights'],
+      ventilation: json['ventilation'],
       materialsClose: json['materialsClose'] ?? '',
     );
   }

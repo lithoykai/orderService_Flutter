@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:orders_project/core/services/company_client_services.dart';
-import 'package:orders_project/core/services/completed_orders_services.dart';
 import 'package:orders_project/core/services/employee_services.dart';
 import 'package:orders_project/core/services/order_services.dart';
 import 'package:provider/provider.dart';
@@ -40,8 +39,8 @@ class FirebaseServices with ChangeNotifier {
         .fetchData();
     await Provider.of<EmployeeServices>(context, listen: false).fetchData();
     await Provider.of<OrderService>(context, listen: false).fetchOrdersData();
-    await Provider.of<CompletedOrderServices>(context, listen: false)
-        .fetchCompletedOrdersData();
+    // await Provider.of<CompletedOrderServices>(context, listen: false)
+    // .fetchCompletedOrdersData();
 
     notifyListeners();
   }

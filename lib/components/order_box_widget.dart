@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:orders_project/core/models/completed_order.dart';
 import 'package:orders_project/core/services/company_client_services.dart';
+import 'package:orders_project/core/services/completed_orders_services.dart';
 import 'package:orders_project/utils/app_routers.dart';
 import 'package:provider/provider.dart';
 
@@ -37,7 +39,12 @@ class OrderBoxWidget extends StatelessWidget {
               MaterialStateColor.resolveWith((states) => Colors.white),
         ),
         onPressed: () {
-          Navigator.of(context).pushNamed(AppRoutes.COMPLETED_ORDER_PAGE);
+          Provider.of<CompletedOrderServices>(context, listen: false)
+              .addOrderData(order);
+          Navigator.of(context).pushNamed(
+            AppRoutes.COMPLETED_ORDER_PAGE,
+            arguments: order,
+          );
         },
         icon: const Icon(
           Icons.forward,
