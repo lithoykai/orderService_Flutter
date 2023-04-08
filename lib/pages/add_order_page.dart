@@ -14,7 +14,7 @@ class AddOrderPage extends StatefulWidget {
 
 class _AddOrderPageState extends State<AddOrderPage> {
   List<String> companyNames = [];
-  bool _isLoading = true;
+  bool _isLoading = false;
 
   String dropdownValueClients = '';
   String dropdownValueEmployees = '';
@@ -26,18 +26,18 @@ class _AddOrderPageState extends State<AddOrderPage> {
   final _problemFocus = FocusNode();
   final _employeeFocus = FocusNode();
 
-  @override
-  void initState() {
-    super.initState();
-    Provider.of<CompanyClientServices>(context, listen: false).fetchData().then(
-        (_) => Provider.of<EmployeeServices>(context, listen: false)
-                .fetchData()
-                .then((_) {
-              setState(() {
-                _isLoading = false;
-              });
-            }));
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   Provider.of<CompanyClientServices>(context, listen: false).fetchData().then(
+  //       (_) => Provider.of<EmployeeServices>(context, listen: false)
+  //               .fetchData()
+  //               .then((_) {
+  //             setState(() {
+  //               _isLoading = false;
+  //             });
+  //           }));
+  // }
 
   @override
   void didChangeDependencies() {
@@ -73,11 +73,17 @@ class _AddOrderPageState extends State<AddOrderPage> {
     if (_formData['type'] == 1) {}
 
     _formKey.currentState?.save();
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
       await Provider.of<OrderService>(
         context,
         listen: false,
-      ).saveData(_formData);
+      ).saveData(_formData).then((value) => setState(() {
+            _isLoading = false;
+          }));
       Navigator.of(context).pop(true);
     } catch (error) {
       await showDialog<void>(
@@ -115,85 +121,193 @@ class _AddOrderPageState extends State<AddOrderPage> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : Form(
-              key: _formKey,
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Qual técnico efetuará o serviço?'),
-                      DropdownButtonFormField(
-                        focusNode: _employeeFocus,
-                        onSaved: (_employee) {
-                          String newEmployee = employees.items
-                              .firstWhere(
-                                  (element) => element.name == _employee)
-                              .userID;
-                          _formData['technicalID'] = newEmployee;
-                        },
-                        value: dropdownValueEmployees,
-                        onChanged: (String? newValue) {
-                          dropdownValueEmployees = newValue!;
-                        },
-                        items: employees.employeesNames
-                            .map<DropdownMenuItem<String>>(
-                          (String value) {
-                            return DropdownMenuItem<String>(
-                              key: ValueKey<String>(value),
-                              value: value,
-                              child: Text(value),
-                            );
-                          },
-                        ).toList(),
-                      ),
-                      const Text('Qual cliente está com problemas?'),
-                      DropdownButtonFormField(
-                        focusNode: _clientFocus,
-                        onSaved: (_companyNames) => _formData['clientID'] =
-                            companyNames.clients
-                                .firstWhere(
-                                    (client) => client.name == _companyNames)
-                                .id,
-                        value: dropdownValueClients,
-                        onChanged: (String? newValue) {
-                          dropdownValueClients = newValue!;
-                        },
-                        items: companyNames.clientNamesList
-                            .map<DropdownMenuItem<String>>(
-                          (String value) {
-                            return DropdownMenuItem<String>(
-                              key: ValueKey<String>(value),
-                              value: value,
-                              child: Text(value),
-                            );
-                          },
-                        ).toList(),
-                      ),
-                      const Text('Detalhe o problema.'),
-                      TextFormField(
-                        onFieldSubmitted: (_) {
-                          FocusScope.of(context).requestFocus(_problemFocus);
-                        },
-                        initialValue: _formData['problem']?.toString(),
-                        onSaved: (problem) => _formData['problem'] =
-                            problem ?? 'Problema não detalhado.',
-                        focusNode: _problemFocus,
-                        maxLines: 5,
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: onSubmit,
-                          child: const Text('Enviar ordem de serviço'),
+          : SafeArea(
+              child: SingleChildScrollView(
+                child: Card(
+                  margin: const EdgeInsets.all(5),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              const SizedBox(height: 16.0),
+                              Text(
+                                'Qual técnico efetuará o serviço?'
+                                    .toUpperCase(),
+                                style: const TextStyle(
+                                  fontSize: 15.0,
+                                  fontFamily: 'AvenirNext',
+                                  color: Colors.black38,
+                                ),
+                              ),
+                              const SizedBox(height: 16.0),
+                              dropDowntechnical(employees),
+                              const SizedBox(height: 16.0),
+                              Text(
+                                'Qual cliente está com problemas?'
+                                    .toUpperCase(),
+                                style: const TextStyle(
+                                  fontSize: 15.0,
+                                  fontFamily: 'AvenirNext',
+                                  color: Colors.black38,
+                                ),
+                              ),
+                              const SizedBox(height: 16.0),
+                              _dropDownClient(companyNames),
+                              const SizedBox(height: 16.0),
+                              Text(
+                                'Detalhe o problema.'.toUpperCase(),
+                                style: const TextStyle(
+                                  fontSize: 15.0,
+                                  fontFamily: 'AvenirNext',
+                                  color: Colors.black38,
+                                ),
+                              ),
+                              const SizedBox(height: 16.0),
+                              textFieldFormPattern(
+                                  focusNode: _problemFocus,
+                                  isOptional: false,
+                                  label: 'Detalhe o problema.',
+                                  nameData: 'problem',
+                                  isNumber: false,
+                                  msgValidator:
+                                      'Por favor, detalhe qual problema está ocorrendo.'),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
+                                child: SizedBox(
+                                  height: 45,
+                                  child: ElevatedButton(
+                                    child: Text(
+                                      'Salvar'.toUpperCase(),
+                                      style: const TextStyle(
+                                        fontFamily: 'AvenirNext',
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    onPressed: onSubmit,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
             ),
+    );
+  }
+
+  Widget textFieldFormPattern({
+    required FocusNode focusNode,
+    required String label,
+    required String nameData,
+    String? msgValidator,
+    required bool isOptional,
+    bool? isNumber = false,
+    bool? enabled,
+  }) {
+    return TextFormField(
+      maxLines: 5,
+      enabled: enabled,
+      focusNode: focusNode,
+      keyboardType: isNumber == true ? TextInputType.number : null,
+      onSaved: (msg) {
+        isNumber == true
+            ? _formData[nameData.toString()] = int.parse(msg ?? '')
+            : _formData[nameData.toString()] = msg ?? '';
+      },
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        labelText: label,
+      ),
+      validator: isOptional
+          ? null
+          : (String? value) {
+              if (value == null || value.isEmpty) {
+                return msgValidator ?? 'Há algum problema na sua resposta.';
+              }
+              return null;
+            },
+    );
+  }
+
+  Widget dropDowntechnical(EmployeeServices employees) {
+    return DropdownButtonFormField(
+      borderRadius: BorderRadius.circular(8),
+      elevation: 0,
+      focusColor: Colors.transparent,
+      style: const TextStyle(
+          fontFamily: 'AvenirNext',
+          color: Colors.black,
+          fontWeight: FontWeight.w400),
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: 'Técnico responsável.',
+      ),
+      focusNode: _employeeFocus,
+      onSaved: (_employee) {
+        String newEmployee = employees.items
+            .firstWhere((element) => element.name == _employee)
+            .userID;
+        _formData['technicalID'] = newEmployee;
+      },
+      value: dropdownValueEmployees,
+      onChanged: (String? newValue) {
+        dropdownValueEmployees = newValue!;
+      },
+      items: employees.employeesNames.map<DropdownMenuItem<String>>(
+        (String value) {
+          return DropdownMenuItem<String>(
+            key: ValueKey<String>(value),
+            value: value,
+            child: Text(value),
+          );
+        },
+      ).toList(),
+    );
+  }
+
+  Widget _dropDownClient(CompanyClientServices companyNames) {
+    return DropdownButtonFormField(
+      borderRadius: BorderRadius.circular(8),
+      elevation: 0,
+      focusColor: Colors.transparent,
+      style: const TextStyle(
+          fontFamily: 'AvenirNext',
+          color: Colors.black,
+          fontWeight: FontWeight.w400),
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: 'Cliente',
+      ),
+      focusNode: _clientFocus,
+      onSaved: (_companyNames) => _formData['clientID'] = companyNames.clients
+          .firstWhere((client) => client.name == _companyNames)
+          .id,
+      value: dropdownValueClients,
+      onChanged: (String? newValue) {
+        dropdownValueClients = newValue!;
+      },
+      items: companyNames.clientNamesList.map<DropdownMenuItem<String>>(
+        (String value) {
+          return DropdownMenuItem<String>(
+            key: ValueKey<String>(value),
+            value: value,
+            child: Text(value),
+          );
+        },
+      ).toList(),
     );
   }
 }

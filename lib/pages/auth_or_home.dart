@@ -10,6 +10,7 @@ class AuthOrHomePage extends StatelessWidget {
 
   Future<void> init(BuildContext context) async {
     Auth auth = Provider.of(context);
+
     await Firebase.initializeApp();
     await auth.tryAutoLogin();
   }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:orders_project/core/services/company_client_services.dart';
 import 'package:provider/provider.dart';
 
-
 class AddCompanyPage extends StatefulWidget {
   const AddCompanyPage({Key? key}) : super(key: key);
 
@@ -11,52 +10,128 @@ class AddCompanyPage extends StatefulWidget {
 }
 
 class _AddCompanyPageState extends State<AddCompanyPage> {
+  final FocusNode _nameFocus = FocusNode();
+  final FocusNode _tradingNameFocus = FocusNode();
+  final FocusNode _districtFocus = FocusNode();
+  final FocusNode _cityFocus = FocusNode();
+  final FocusNode _andressFocus = FocusNode();
+  final FocusNode _complementFocus = FocusNode();
+  final FocusNode _landmarkFocus = FocusNode();
+  final FocusNode _cnpjFocus = FocusNode();
+  final FocusNode _stateRegistrationFocus = FocusNode();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final Map<String, dynamic> _formData = {};
+
+  @override
+  void dispose() {
+    super.dispose();
+    _nameFocus.dispose();
+    _tradingNameFocus.dispose();
+    _districtFocus.dispose();
+    _cityFocus.dispose();
+    _andressFocus.dispose();
+    _complementFocus.dispose();
+    _landmarkFocus.dispose();
+    _cnpjFocus.dispose();
+    _stateRegistrationFocus.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Adicionar nova empresa'),
+        title: const Text('Adicionar uma nova empresa'),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 16.0),
-                  const Text(
-                    'Informações da empresa',
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 16.0),
-                  _buildNameField(),
-                  const SizedBox(height: 16.0),
-                  _buildTradingNameField(),
-                  const SizedBox(height: 16.0),
-                  _buildAddressField(),
-                  const SizedBox(height: 16.0),
-                  _buildDistrictField(),
-                  const SizedBox(height: 16.0),
-                  _buildCityField(),
-                  const SizedBox(height: 16.0),
-                  _buildComplementField(),
-                  const SizedBox(height: 16.0),
-                  _buildLandmarkField(),
-                  const SizedBox(height: 16.0),
-                  _buildCnpjField(),
-                  const SizedBox(height: 16.0),
-                  _buildStateRegistrationField(),
-                  const SizedBox(height: 32.0),
-                  _buildSubmitButton(),
-                  const SizedBox(height: 16.0),
-                ],
+          child: Card(
+            margin: const EdgeInsets.all(5),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(height: 16.0),
+                    Text(
+                      'Informações da empresa'.toUpperCase(),
+                      style: const TextStyle(
+                        fontSize: 20.0,
+                        fontFamily: 'AvenirNext',
+                        color: Colors.black38,
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    textFieldFormPattern(
+                      focusNode: _nameFocus,
+                      label: 'Nome da empresa',
+                      nameData: 'name',
+                      msgValidator: 'O nome da empresa é obrigatório.',
+                      isOptional: false,
+                    ),
+                    const SizedBox(height: 16.0),
+                    textFieldFormPattern(
+                      focusNode: _tradingNameFocus,
+                      label: 'Nome fantasia (opcional)',
+                      nameData: 'trandingName',
+                      isOptional: true,
+                    ),
+                    const SizedBox(height: 16.0),
+                    textFieldFormPattern(
+                        focusNode: _andressFocus,
+                        label: 'Endereço',
+                        nameData: 'address',
+                        isOptional: false,
+                        msgValidator: 'O endereço é obrigatório.'),
+                    const SizedBox(height: 16.0),
+                    textFieldFormPattern(
+                        focusNode: _districtFocus,
+                        label: 'Bairro',
+                        nameData: 'district',
+                        isOptional: false,
+                        msgValidator: 'O bairro é obrigatório.'),
+                    const SizedBox(height: 16.0),
+                    textFieldFormPattern(
+                        focusNode: _cityFocus,
+                        label: 'Cidade',
+                        nameData: 'city',
+                        isOptional: false,
+                        msgValidator: 'A cidade é obrigatório.'),
+                    const SizedBox(height: 16.0),
+                    textFieldFormPattern(
+                      focusNode: _complementFocus,
+                      label: 'Complemento (opcional)',
+                      nameData: 'complement',
+                      isOptional: true,
+                    ),
+                    const SizedBox(height: 16.0),
+                    textFieldFormPattern(
+                      focusNode: _landmarkFocus,
+                      label: 'Ponto de Referência (opcional)',
+                      nameData: 'landmark',
+                      isOptional: true,
+                    ),
+                    const SizedBox(height: 16.0),
+                    textFieldFormPattern(
+                        focusNode: _cnpjFocus,
+                        label: 'CNPJ da empresa',
+                        nameData: 'cnpj',
+                        isOptional: false,
+                        isNumber: true),
+                    const SizedBox(height: 16.0),
+                    textFieldFormPattern(
+                        focusNode: _stateRegistrationFocus,
+                        label: 'Inscrição estadual',
+                        nameData: 'stateRegistration',
+                        isOptional: false,
+                        isNumber: true),
+                    const SizedBox(height: 16.0),
+                    _saveButton(),
+                    const SizedBox(height: 16.0),
+                  ],
+                ),
               ),
             ),
           ),
@@ -65,146 +140,70 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
     );
   }
 
-  Widget _buildNameField() {
-    return TextFormField(
-      onSaved: (name) => _formData['name'] = name,
-      decoration: const InputDecoration(
-        labelText: 'Nome da empresa',
-        hintText: 'Digite o nome da empresa',
+  Widget _saveButton() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: SizedBox(
+        height: 45,
+        child: ElevatedButton(
+          child: Text(
+            'Salvar'.toUpperCase(),
+            style: const TextStyle(
+              fontFamily: 'AvenirNext',
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          onPressed: onSubmit,
+        ),
       ),
-      validator: (name) {
-        if (name == null || name.isEmpty) {
-          return 'Por favor, digite o nome da empresa';
-        }
-        return null;
+    );
+  }
+
+  Widget textFieldFormPattern({
+    required FocusNode focusNode,
+    required String label,
+    required String nameData,
+    String? msgValidator,
+    required bool isOptional,
+    bool? isNumber = false,
+    bool? enabled,
+  }) {
+    return TextFormField(
+      enabled: enabled,
+      focusNode: focusNode,
+      keyboardType: isNumber == true ? TextInputType.number : null,
+      onSaved: (msg) {
+        isNumber == true
+            ? _formData[nameData.toString()] = int.parse(msg ?? '')
+            : _formData[nameData.toString()] = msg ?? '';
       },
-    );
-  }
-
-  Widget _buildTradingNameField() {
-    return TextFormField(
-      onSaved: (tradingName) => _formData['tradingName'] = tradingName,
-      decoration: const InputDecoration(
-        labelText: 'Nome fantasia (opcional)',
-        hintText: 'Digite o nome fantasia da empresa (opcional)',
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        labelText: label,
       ),
-    );
-  }
-
-  Widget _buildDistrictField() {
-    return TextFormField(
-      onSaved: (district) => _formData['district'] = district,
-      decoration: const InputDecoration(
-        labelText: 'Bairro',
-        hintText: 'Digite o bairro onde a empresa está localizada',
-      ),
-      validator: (district) {
-        if (district == null || district.isEmpty) {
-          return 'Por favor, digite o bairro onde a empresa está localizada';
-        }
-        return null;
-      },
-    );
-  }
-
-  Widget _buildCityField() {
-    return TextFormField(
-      onSaved: (city) => _formData['city'] = city,
-      decoration: const InputDecoration(
-        labelText: 'Cidade',
-        hintText: 'Digite a cidade onde a empresa está localizada',
-      ),
-      validator: (city) {
-        if (city == null || city.isEmpty) {
-          return 'Por favor, digite a cidade onde a empresa está localizada';
-        }
-        return null;
-      },
-    );
-  }
-
-  Widget _buildAddressField() {
-    return TextFormField(
-      onSaved: (address) => _formData['address'] = address,
-      decoration: const InputDecoration(
-        labelText: 'Endereço',
-        hintText: 'Digite o endereço da empresa',
-      ),
-      validator: (address) {
-        if (address == null || address.isEmpty) {
-          return 'Por favor, digite o endereço da empresa';
-        }
-        return null;
-      },
-    );
-  }
-
-  Widget _buildComplementField() {
-    return TextFormField(
-      onSaved: (complement) => _formData['complement'] = complement,
-      decoration: const InputDecoration(
-        labelText: 'Complemento (opcional)',
-        hintText: 'Digite o complemento (se houver)',
-      ),
-    );
-  }
-
-  Widget _buildLandmarkField() {
-    return TextFormField(
-      onSaved: (landmark) => _formData['landmark'] = landmark,
-      decoration: const InputDecoration(
-        labelText: 'Ponto de referência (opcional)',
-        hintText: 'Digite um ponto de referência (se houver)',
-      ),
-    );
-  }
-
-  Widget _buildCnpjField() {
-    return TextFormField(
-      onSaved: (cnpj) => _formData['cnpj'] = int.parse(cnpj ?? ''),
-      decoration: const InputDecoration(
-        labelText: 'CNPJ',
-        hintText: 'Digite o CNPJ da empresa',
-      ),
-      validator: (cnpj) {
-        if (cnpj == null || cnpj.isEmpty) {
-          return 'Por favor, digite o CNPJ da empresa';
-        }
-        if (cnpj.length != 14) {
-          return 'O CNPJ deve conter 14 dígitos';
-        }
-        if (int.tryParse(cnpj) == null) {
-          return 'O CNPJ deve conter apenas números';
-        }
-        return null;
-      },
-    );
-  }
-
-  Widget _buildStateRegistrationField() {
-    return TextFormField(
-      onSaved: (stateRegistration) =>
-          _formData['stateRegistration'] = int.parse(stateRegistration ?? ''),
-      decoration: const InputDecoration(
-        labelText: 'Inscrição estadual',
-        hintText: 'Digite a inscrição estadual da empresa',
-      ),
-      validator: (stateRegistration) {
-        if (stateRegistration == null || stateRegistration.isEmpty) {
-          return 'Por favor, digite a inscrição estadual da empresa';
-        }
-        if (int.tryParse(stateRegistration) == null) {
-          return 'A inscrição estadual deve conter apenas números';
-        }
-        return null;
-      },
-    );
-  }
-
-  Widget _buildSubmitButton() {
-    return ElevatedButton(
-      onPressed: onSubmit,
-      child: const Text('Salvar'),
+      validator: isOptional
+          ? null
+          : (String? value) {
+              if (nameData == 'cnpj') {
+                if (nameData == null || nameData.isEmpty) {
+                  return 'Por favor, digite o CNPJ da empresa';
+                }
+                if (nameData.length != 14) {
+                  return 'O CNPJ deve conter 14 dígitos';
+                }
+                if (int.tryParse(nameData) == null) {
+                  return 'O CNPJ deve conter apenas números';
+                }
+                return null;
+              } else {
+                if (value == null || value.isEmpty) {
+                  return msgValidator ?? 'Há algum problema na sua resposta.';
+                }
+                return null;
+              }
+            },
     );
   }
 

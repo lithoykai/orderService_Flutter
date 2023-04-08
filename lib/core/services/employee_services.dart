@@ -15,18 +15,15 @@ class EmployeeServices with ChangeNotifier {
   EmployeeServices(this._token);
 
   Future<void> addDataInFirebase(Employee employee) async {
-    FirebaseServices()
-        .addDataInFirebase(
-          employee.toJson(),
-          Constants.URL_EMPLOYEES,
-          _token,
-        )
-        .then((value) => print('Dados do Usuário adicionado no Firebase'));
+    FirebaseServices().addDataInFirebase(
+      employee.toJson(),
+      Constants.URL_EMPLOYEES,
+      _token,
+    );
 
     Employee jsonData =
         Employee.fromJson(employee.toJson(), employee.id, employee.userID);
     _items.add(jsonData);
-    print('Dados do Usuário adicionados no código');
     notifyListeners();
   }
 

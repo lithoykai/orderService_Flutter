@@ -11,12 +11,36 @@ class AddEmployeePage extends StatefulWidget {
 }
 
 class _AddEmployeePageState extends State<AddEmployeePage> {
+  final FocusNode _nameFocus = FocusNode();
+  final FocusNode _districtFocus = FocusNode();
+  final FocusNode _andressFocus = FocusNode();
+  final FocusNode _cityFocus = FocusNode();
+  final FocusNode _complementFocus = FocusNode();
+  final FocusNode _landmarkFocus = FocusNode();
+  final FocusNode _emailFocus = FocusNode();
+  final FocusNode _passwordFocus = FocusNode();
+  final FocusNode _cpfFocus = FocusNode();
+
   bool isLoading = false;
   final _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final Map<String, dynamic> _formData = {};
 
-  Future<void> _submit() async {
+  @override
+  void dispose() {
+    super.dispose();
+    _nameFocus.dispose();
+    _districtFocus.dispose();
+    _emailFocus.dispose();
+    _andressFocus.dispose();
+    _complementFocus.dispose();
+    _landmarkFocus.dispose();
+    _cityFocus.dispose();
+    _passwordFocus.dispose();
+    _cpfFocus.dispose();
+  }
+
+  Future<void> _onSubmit() async {
     final isValid = _formKey.currentState?.validate() ?? false;
     if (!isValid) {
       return;
@@ -27,10 +51,8 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
 
     _formKey.currentState?.save();
     Auth _auth = Provider.of(context, listen: false);
-    print(_formData);
 
     try {
-      print('Enviando para o SignUpEmployee');
       await _auth
           .signupEmployee(_formData)
           .then((value) => Navigator.of(context).pop(true));
@@ -67,38 +89,103 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
             )
           : SafeArea(
               child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const SizedBox(height: 16.0),
-                        const Text(
-                          'Informações do funcionário',
-                          style: TextStyle(
-                              fontSize: 20.0, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 12.0),
-                        _buildNameField(),
-                        const SizedBox(height: 12.0),
-                        _buildEmailField(),
-                        const SizedBox(height: 12.0),
-                        _buildDistrictField(),
-                        const SizedBox(height: 12.0),
-                        _buildAddressField(),
-                        const SizedBox(height: 12.0),
-                        _buildComplementField(),
-                        const SizedBox(height: 12.0),
-                        _buildLandmarkField(),
-                        const SizedBox(height: 12.0),
-                        _buildCpfField(),
-                        const SizedBox(height: 12.0),
-                        _buildPassword(),
-                        const SizedBox(height: 32.0),
-                        _buildSubmitButton(),
-                      ],
+                child: Card(
+                  margin: const EdgeInsets.all(5),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const SizedBox(height: 16.0),
+                          Text(
+                            'Informações do funcionário'.toUpperCase(),
+                            style: const TextStyle(
+                              fontSize: 20.0,
+                              fontFamily: 'AvenirNext',
+                              color: Colors.black38,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          textFieldFormPattern(
+                            focusNode: _nameFocus,
+                            isOptional: false,
+                            label: 'Nome do funcionário',
+                            nameData: 'name',
+                            isNumber: false,
+                            msgValidator:
+                                'Por favor, digite o nome do funcionário.',
+                          ),
+                          const SizedBox(height: 16),
+                          textFieldFormPattern(
+                            focusNode: _landmarkFocus,
+                            isOptional: false,
+                            label: 'CPF',
+                            nameData: 'cpf',
+                            isNumber: true,
+                          ),
+                          const SizedBox(height: 16.0),
+                          Text(
+                            'Informações de endereço'.toUpperCase(),
+                            style: const TextStyle(
+                              fontSize: 20.0,
+                              fontFamily: 'AvenirNext',
+                              color: Colors.black38,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          textFieldFormPattern(
+                            focusNode: _andressFocus,
+                            isOptional: false,
+                            label: 'Endereço',
+                            nameData: 'andress',
+                            isNumber: false,
+                            msgValidator:
+                                'Por favor, digite o endereço onde o funcionário mora.',
+                          ),
+                          const SizedBox(height: 16),
+                          textFieldFormPattern(
+                            focusNode: _districtFocus,
+                            isOptional: false,
+                            label: 'Bairro',
+                            nameData: 'district',
+                            isNumber: false,
+                            msgValidator:
+                                'Por favor, digite o bairro onde o funcionário mora.',
+                          ),
+                          const SizedBox(height: 16),
+                          textFieldFormPattern(
+                            focusNode: _complementFocus,
+                            isOptional: true,
+                            label: 'Complemento (opcional)',
+                            nameData: 'complement',
+                            isNumber: false,
+                          ),
+                          const SizedBox(height: 16),
+                          textFieldFormPattern(
+                            focusNode: _landmarkFocus,
+                            isOptional: true,
+                            label: 'Ponto de referência (opcional)',
+                            nameData: 'landmark',
+                            isNumber: false,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'Informações de login'.toUpperCase(),
+                            style: const TextStyle(
+                              fontSize: 20.0,
+                              fontFamily: 'AvenirNext',
+                              color: Colors.black38,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          _emailField(),
+                          const SizedBox(height: 16),
+                          _passwordFiel(),
+                          _saveButton(),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -107,39 +194,46 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
     );
   }
 
-  Widget _buildNameField() {
+  Widget textFieldFormPattern({
+    required FocusNode focusNode,
+    required String label,
+    required String nameData,
+    String? msgValidator,
+    required bool isOptional,
+    bool? isNumber = false,
+    bool? enabled,
+  }) {
     return TextFormField(
-      decoration: const InputDecoration(
-        labelText: 'Nome completo',
-        hintText: 'Digite o nome completo do funcionário',
+      enabled: enabled,
+      focusNode: focusNode,
+      keyboardType: isNumber == true ? TextInputType.number : null,
+      onSaved: (msg) {
+        isNumber == true
+            ? _formData[nameData.toString()] = int.parse(msg ?? '')
+            : _formData[nameData.toString()] = msg ?? '';
+      },
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        labelText: label,
       ),
-      onSaved: (name) => _formData['name'] = name,
+      validator: isOptional
+          ? null
+          : (String? value) {
+              if (value == null || value.isEmpty) {
+                return msgValidator ?? 'Há algum problema na sua resposta.';
+              }
+              return null;
+            },
     );
   }
 
-  Widget _buildDistrictField() {
+  Widget _emailField() {
     return TextFormField(
-      onSaved: (district) => _formData['district'] = district,
+      focusNode: _emailFocus,
+      textInputAction: TextInputAction.next,
       decoration: const InputDecoration(
-        labelText: 'Bairro',
-        hintText: 'Digite o bairro onde o funcionário mora',
-      ),
-    );
-  }
-
-  Widget _buildAddressField() {
-    return TextFormField(
-      onSaved: (address) => _formData['address'] = address,
-      decoration: const InputDecoration(
-        labelText: 'Endereço',
-        hintText: 'Digite o endereço do funcionário',
-      ),
-    );
-  }
-
-  Widget _buildEmailField() {
-    return TextFormField(
-      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
         labelText: 'E-mail',
         hintText: 'Digite o e-mail do funcionário',
       ),
@@ -155,41 +249,12 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
     );
   }
 
-  Widget _buildComplementField() {
+  Widget _passwordFiel() {
     return TextFormField(
-      onSaved: (complement) => _formData['complement'] = complement ?? '',
+      focusNode: _passwordFocus,
+      textInputAction: TextInputAction.next,
       decoration: const InputDecoration(
-        labelText: 'Complemento (opcional)',
-        hintText: 'Digite o complemento do endereço (opcional)',
-      ),
-    );
-  }
-
-  Widget _buildLandmarkField() {
-    return TextFormField(
-      onSaved: (landmark) => _formData['landmark'] = landmark,
-      decoration: const InputDecoration(
-        labelText: 'Ponto de referência (opcional)',
-        hintText:
-            'Digite um ponto de referência próximo ao endereço (opcional)',
-      ),
-    );
-  }
-
-  Widget _buildCpfField() {
-    return TextFormField(
-      onSaved: (cpf) => _formData['CPF'] = int.tryParse(cpf ?? '') ?? 0,
-      decoration: const InputDecoration(
-        labelText: 'CPF',
-        hintText: 'Digite o CPF do funcionário',
-      ),
-      keyboardType: TextInputType.number,
-    );
-  }
-
-  Widget _buildPassword() {
-    return TextFormField(
-      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
         labelText: 'Senha do funcionário',
         hintText: 'Digite a senha que o funcionário usará',
       ),
@@ -206,10 +271,23 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
     );
   }
 
-  Widget _buildSubmitButton() {
-    return ElevatedButton(
-      onPressed: _submit,
-      child: const Text('Adicionar funcionário'),
+  Widget _saveButton() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: SizedBox(
+        height: 45,
+        child: ElevatedButton(
+          child: Text(
+            'Salvar'.toUpperCase(),
+            style: const TextStyle(
+              fontFamily: 'AvenirNext',
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          onPressed: _onSubmit,
+        ),
+      ),
     );
   }
 }

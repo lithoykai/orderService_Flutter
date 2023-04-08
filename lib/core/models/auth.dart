@@ -48,17 +48,14 @@ class Auth with ChangeNotifier {
         'returnSecureToken': true,
       }),
     );
-    print('Usuário criado no Authentication');
     final body = jsonDecode(response.body);
     // print(data);
     if (body['error'] != null) {
       throw AuthException(body['error']['message']);
     } else {
       _employeeID = body['localId'];
-      print('userID criado: $_employeeID');
       Employee newEmployee =
           Employee.fromJson(data, UniqueKey().toString(), _employeeID);
-      print('Usuário de nome: ${newEmployee.name}');
       await EmployeeServices(_token ?? '').addDataInFirebase(newEmployee);
     }
   }

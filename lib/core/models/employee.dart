@@ -1,14 +1,14 @@
-
 class Employee {
-  String id;
-  String userID;
-  String name;
-  String district;
-  String address;
-  String email;
-  String? complement;
-  String? landmark;
-  int CPF;
+  final String id;
+  final String userID;
+  final String name;
+  final String district;
+  final String city;
+  final String address;
+  final String email;
+  final String? complement;
+  final String? landmark;
+  final int CPF;
 
   Employee({
     required this.id,
@@ -16,6 +16,7 @@ class Employee {
     required this.name,
     required this.district,
     required this.address,
+    required this.city,
     required this.email,
     required this.CPF,
     this.complement,
@@ -30,6 +31,7 @@ class Employee {
       name: json['name'],
       district: json['district'],
       address: json['address'],
+      city: json['city'] ?? '',
       email: json['email'],
       CPF: json['CPF'],
       complement: json['complement'] ?? '',
@@ -43,6 +45,7 @@ class Employee {
         'name': name,
         'district': district,
         'address': address,
+        'city': city,
         'email': email,
         'CPF': CPF,
         'complement': complement ?? '',
