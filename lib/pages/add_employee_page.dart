@@ -119,7 +119,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                           ),
                           const SizedBox(height: 16),
                           textFieldFormPattern(
-                            focusNode: _landmarkFocus,
+                            focusNode: _cpfFocus,
                             isOptional: false,
                             label: 'CPF',
                             nameData: 'cpf',

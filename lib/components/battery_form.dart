@@ -159,6 +159,8 @@ class _BatteryFormState extends State<BatteryForm> {
                         fontWeight: FontWeight.bold),
                   ),
                   AdaptativeDatePicker(
+                      firstData: DateTime(2005),
+                      lastDate: DateTime.now(),
                       selectedDate: _selectedDate,
                       onChangeDate: (newDate) {
                         setState(() {

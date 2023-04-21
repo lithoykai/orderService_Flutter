@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:orders_project/core/services/order_services.dart';
+import 'package:orders_project/utils/app_routers.dart';
 import 'package:provider/provider.dart';
 
+import '../core/models/order.dart';
 import '../core/services/completed_orders_services.dart';
 
 class NobreakForm extends StatefulWidget {
-  const NobreakForm({Key? key}) : super(key: key);
+  // Order order;
+  NobreakForm({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _NobreakFormState createState() => _NobreakFormState();
@@ -36,22 +42,46 @@ class _NobreakFormState extends State<NobreakForm> {
     _ipCommunicationFocus.dispose();
     _passwordCommunicationFocus.dispose();
     super.dispose();
+    context.mounted;
   }
 
   void _submitForm() async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      _formData['id'] = UniqueKey().toString();
+    Order order = ModalRoute.of(context)?.settings.arguments as Order;
+    final isValid = _formKey.currentState?.validate() ?? false;
+
+    if (!isValid) {
+      return;
+    }
+
+    _formData['id'] = UniqueKey().toString();
+    _formKey.currentState!.save();
+    try {
       await Provider.of<CompletedOrderServices>(context, listen: false)
           .saveNobreakFormData(_formData)
-          .then((value) => () {
-                Provider.of<CompletedOrderServices>(context, listen: false)
-                    .addDataInFirebase()
-                    .then(
-                      (value) => Navigator.pop(context),
-                    );
-              });
-    }
+          .then((value) async =>
+              await Provider.of<OrderService>(context, listen: false)
+                  .removeOrder(order));
+      Navigator.popUntil(context, ModalRoute.withName('/'));
+    } catch (error) {
+      if (mounted) {
+        await showDialog<void>(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Text('Ocorreu um erro!'),
+            content: Text(error.toString()),
+            actions: [
+              TextButton(
+                child: const Text('Ok'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+        );
+      } else {
+        print('Deu bronca, amigo');
+        print(error);
+      }
+    } finally {}
   }
 
   @override

@@ -7,6 +7,8 @@ import 'package:orders_project/core/models/completed_order.dart';
 import 'package:http/http.dart' as http;
 import 'package:orders_project/core/models/nobreak.dart';
 import 'package:orders_project/core/models/order.dart';
+import 'package:orders_project/core/services/order_services.dart';
+import 'package:provider/provider.dart';
 import '../../utils/constants.dart';
 import 'firebase_services.dart';
 import 'dart:io';
@@ -17,13 +19,12 @@ class CompletedOrderServices with ChangeNotifier {
   Battery? battery;
   BatteryPlace? batteryPlace;
   Nobreak? nobreak;
-
   final String _token;
   final String userID;
   List<CompletedOrder> _items = [];
   List<CompletedOrder> get items => [..._items];
-  int _indexToSwitch = 0;
-  int get indexToSwitch => _indexToSwitch;
+  int indexToSwitch = 0;
+  bool returnToIndexPage = false;
 
   Future<void> saveBatteryFormData(
       Map<String, dynamic> _batteryForm, File? image) async {
@@ -31,7 +32,6 @@ class CompletedOrderServices with ChangeNotifier {
     final imageURL = await _uploadImage(image, imageName);
     _batteryForm['rightPlaceImage'] = imageURL ?? 'Imagem não encontrada';
     battery = Battery.fromJson(_batteryForm);
-    print(battery!.whatType);
   }
 
   Future<void> addOrderData(Order order) async {
@@ -49,16 +49,13 @@ class CompletedOrderServices with ChangeNotifier {
     if (image == null) return 'Não funcionou';
 
     final storage = FirebaseStorage.instance;
-    print('Instância criada.');
     final imageRef = storage.ref().child('local_image').child(imageName);
     await imageRef.putFile(image).whenComplete(() => {});
     return await imageRef.getDownloadURL();
   }
 
   Future<void> saveNobreakFormData(Map<String, dynamic> _nobreakForm) async {
-    if (battery == null && batteryPlace == null) {
-      print('Algo está errado!');
-    }
+    if (battery == null && batteryPlace == null) {}
     nobreak = Nobreak.fromJson(_nobreakForm);
     await addDataInFirebase();
   }
@@ -68,7 +65,6 @@ class CompletedOrderServices with ChangeNotifier {
         batteryPlace == null &&
         nobreak == null &&
         orderData == null) return null;
-    print('saveCompletedOrder: VERIFICAÇÃO CONCLUÍDA, NÃO HÁ NULOS.');
     CompletedOrder _completedOrder = CompletedOrder(
       id: UniqueKey().toString(),
       employeeID: orderData?.technicalID ?? UniqueKey().toString(),
@@ -77,25 +73,14 @@ class CompletedOrderServices with ChangeNotifier {
       nobreak: nobreak!,
       place: batteryPlace!,
     );
-    print(
-        'saveCompletedOrder: DADOS SALVOS NO _completedOrder. VERIFICAÇÃO: ${_completedOrder.battery.rightPlaceImage}, ${_completedOrder.clientID}, ${_completedOrder.nobreak.frequencyEquip}');
     return _completedOrder;
   }
 
   int? switchPageForm() {
-    if (_indexToSwitch == 2) return null;
+    if (indexToSwitch == 2) return null;
     notifyListeners();
-    return _indexToSwitch += 1;
+    return indexToSwitch += 1;
   }
-
-  // void returnPageForm() {
-  //   if (_indexToSwitch == 0) {
-  //   } else {
-  //     _indexToSwitch += 1;
-  //   }
-
-  //   notifyListeners();
-  // }
 
 // Get CompletedOrders from Firebase to _items;
   Future<void> fetchCompletedOrdersData() async {
@@ -127,17 +112,12 @@ class CompletedOrderServices with ChangeNotifier {
   }
 
   Future<void> addDataInFirebase() async {
-    print('addDataInFirebase iniciado.');
     CompletedOrder? completedOrder = await saveCompletedOrder();
-    print('completedOrder criado no addDataInFirebase');
     Map<String, dynamic> orderJson = completedOrder!.toJson();
-    print('orderJson criado: $orderJson');
     FirebaseServices()
         .addDataInFirebase(orderJson, Constants.URL_ORDER_COMPLETED, _token);
-    print('Dados enviados para o firebase');
     _items.add(completedOrder);
-    print('Dados adicionados no _items');
-    _indexToSwitch = 0;
+
     battery = null;
     batteryPlace = null;
     nobreak = null;

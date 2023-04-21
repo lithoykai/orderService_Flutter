@@ -4,20 +4,28 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class AdaptativeDatePicker extends StatelessWidget {
+  final DateTime firstData;
+  final DateTime lastDate;
   final DateTime selectedDate;
   final Function(DateTime) onChangeDate;
 
   AdaptativeDatePicker({
     required this.selectedDate,
     required this.onChangeDate,
+    required this.firstData,
+    required this.lastDate,
   });
 
-  _showDatePicker(BuildContext context) {
+  _showDatePicker(
+    BuildContext context,
+    DateTime firstData,
+    DateTime lastDate,
+  ) {
     showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2005),
-      lastDate: DateTime.now(),
+      lastDate: DateTime(2025),
     ).then((pickedDate) {
       if (pickedDate == null) {
         return;
@@ -30,7 +38,7 @@ class AdaptativeDatePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Platform.isIOS
-        ? Container(
+        ? SizedBox(
             height: 180,
             child: CupertinoDatePicker(
               mode: CupertinoDatePickerMode.date,
@@ -40,7 +48,7 @@ class AdaptativeDatePicker extends StatelessWidget {
               onDateTimeChanged: onChangeDate,
             ),
           )
-        : Container(
+        : SizedBox(
             height: 70,
             child: Row(
               children: [
@@ -50,12 +58,13 @@ class AdaptativeDatePicker extends StatelessWidget {
                   child: Text(
                     selectedDate == null
                         ? 'Nenhuma data de fabricação foi selecionada.'
-                        : 'Data Selecionada: ${DateFormat('dd/MM/yy').format(selectedDate)}',
+                        : 'Data selecionada: ${DateFormat('dd/MM/yy').format(selectedDate)}',
                     style: const TextStyle(fontFamily: 'AvenirNext'),
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () => _showDatePicker(context),
+                  onPressed: () =>
+                      _showDatePicker(context, firstData, lastDate),
                   style: ElevatedButton.styleFrom(
                     primary: Colors.white,
                   ),

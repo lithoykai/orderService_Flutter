@@ -5,6 +5,8 @@ import 'package:orders_project/core/services/employee_services.dart';
 import 'package:orders_project/core/services/order_services.dart';
 import 'package:provider/provider.dart';
 
+import '../components/adaptative_date_picker.dart';
+
 class AddOrderPage extends StatefulWidget {
   const AddOrderPage({Key? key}) : super(key: key);
 
@@ -13,6 +15,8 @@ class AddOrderPage extends StatefulWidget {
 }
 
 class _AddOrderPageState extends State<AddOrderPage> {
+  DateTime _selectedDate = DateTime.now();
+
   List<String> companyNames = [];
   bool _isLoading = false;
 
@@ -70,8 +74,9 @@ class _AddOrderPageState extends State<AddOrderPage> {
     if (!isValid) {
       return;
     }
-    if (_formData['type'] == 1) {}
 
+    _formData['creationDate'] = DateTime.now();
+    _formData['deadline'] = _selectedDate;
     _formKey.currentState?.save();
     setState(() {
       _isLoading = true;
@@ -170,13 +175,31 @@ class _AddOrderPageState extends State<AddOrderPage> {
                               ),
                               const SizedBox(height: 16.0),
                               textFieldFormPattern(
-                                  focusNode: _problemFocus,
-                                  isOptional: false,
-                                  label: 'Detalhe o problema.',
-                                  nameData: 'problem',
-                                  isNumber: false,
-                                  msgValidator:
-                                      'Por favor, detalhe qual problema está ocorrendo.'),
+                                focusNode: _problemFocus,
+                                isOptional: false,
+                                label: 'Detalhe o problema.',
+                                nameData: 'problem',
+                                isNumber: false,
+                                msgValidator:
+                                    'Por favor, detalhe qual problema está ocorrendo.',
+                              ),
+                              const SizedBox(height: 16.0),
+                              const Text(
+                                'Prazo estimado:',
+                                style: TextStyle(
+                                    fontSize: 15.0,
+                                    fontFamily: 'AvenirNext',
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              AdaptativeDatePicker(
+                                  firstData: DateTime(2022),
+                                  lastDate: DateTime(2023),
+                                  selectedDate: _selectedDate,
+                                  onChangeDate: (newDate) {
+                                    setState(() {
+                                      _selectedDate = newDate;
+                                    });
+                                  }),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 16),

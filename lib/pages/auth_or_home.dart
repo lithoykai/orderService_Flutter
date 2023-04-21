@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:orders_project/pages/orders_overview_page.dart';
 import 'package:provider/provider.dart';
@@ -10,8 +12,10 @@ class AuthOrHomePage extends StatelessWidget {
 
   Future<void> init(BuildContext context) async {
     Auth auth = Provider.of(context);
+    if (Platform.isAndroid || Platform.isIOS) {
+      await Firebase.initializeApp();
+    }
 
-    await Firebase.initializeApp();
     await auth.tryAutoLogin();
   }
 
@@ -26,8 +30,10 @@ class AuthOrHomePage extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.error != null) {
-          return const Center(
-            child: Text('Ocorreu um erro!'),
+          return Scaffold(
+            body: const Center(
+              child: Text('Ocorreu um erro!!'),
+            ),
           );
         } else {
           return auth.isAuth ? const OrderOverview() : const AuthPage();

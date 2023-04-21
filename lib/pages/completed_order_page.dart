@@ -19,20 +19,13 @@ class _CompletedOrderFormState extends State<CompletedOrderForm> {
     List<Widget> _flowFormPages = [
       const BatteryForm(),
       const BatteryPlaceForm(),
-      const NobreakForm(),
+      NobreakForm(),
     ];
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Finalizar ordem de serviço.'),
         actions: [
-          // IconButton(
-          //   onPressed: () {
-          //     Provider.of<CompletedOrderServices>(context, listen: false)
-          //         .returnPageForm();
-          //   },
-          //   icon: Icon(Icons.arrow_back_ios),
-          // ),
           IconButton(
               onPressed: () {
                 Provider.of<CompletedOrderServices>(context, listen: false)
