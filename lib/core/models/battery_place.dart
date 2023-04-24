@@ -36,8 +36,8 @@ class BatteryPlace {
       outputFrame: json['outputFrame'] ?? false,
       hasMaterialsClose: json['hasMaterialsClose'] ?? false,
       temp: json['temp'] ?? '',
-      lights: json['lights'],
-      ventilation: json['ventilation'],
+      lights: Ilumination.values.elementAt(json['lights']),
+      ventilation: Ventilation.values.elementAt(json['ventilation']) ,
       materialsClose: json['materialsClose'] ?? '',
     );
   }

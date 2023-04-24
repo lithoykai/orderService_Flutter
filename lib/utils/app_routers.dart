@@ -6,4 +6,5 @@ class AppRoutes {
   static const ADD_EMPLOYEES_PAGE = '/add_employees';
   static const ADD_COMPANY_PAGE = '/add_company';
   static const BATTERY_PLACE_FORM = '/battery_place_form';
+  static const COMPLETED_ORDER_OVERVIEW_PAGE = '/completed_order_overview';
 }

@@ -84,6 +84,7 @@ class CompletedOrderServices with ChangeNotifier {
 
 // Get CompletedOrders from Firebase to _items;
   Future<void> fetchCompletedOrdersData() async {
+    _items.clear();
     final response = await http
         .get(Uri.parse('${Constants.URL_ORDER_COMPLETED}.json?auth=$_token'));
 

@@ -9,6 +9,7 @@ import 'package:orders_project/pages/add_employee_page.dart';
 import 'package:orders_project/pages/add_order_page.dart';
 import 'package:orders_project/pages/auth_or_home.dart';
 import 'package:orders_project/pages/completed_order_page.dart';
+import 'package:orders_project/pages/completed_overview_page.dart';
 import 'package:orders_project/pages/orders_overview_page.dart';
 import 'package:orders_project/utils/app_routers.dart';
 import 'package:provider/provider.dart';
@@ -86,6 +87,7 @@ class MyApp extends StatelessWidget {
           AppRoutes.ADD_EMPLOYEES_PAGE: (ctx) => const AddEmployeePage(),
           AppRoutes.ADD_COMPANY_PAGE: (ctx) => const AddCompanyPage(),
           AppRoutes.BATTERY_PLACE_FORM: (ctx) => const BatteryPlaceForm(),
+          AppRoutes.COMPLETED_ORDER_OVERVIEW_PAGE: (ctx) =>  CompletedOrderOverviewPage(),
         },
         debugShowCheckedModeBanner: false,
       ),

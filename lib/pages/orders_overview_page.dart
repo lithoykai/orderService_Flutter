@@ -67,6 +67,12 @@ class _OrderOverviewState extends State<OrderOverview>
             },
             icon: const Icon(Icons.logout),
           ),
+          IconButton(
+            onPressed: () async {
+              Navigator.of(context).pushNamed(AppRoutes.COMPLETED_ORDER_OVERVIEW_PAGE);
+            },
+            icon: const Icon(Icons.check),
+          ),
         ],
       ),
       body: FutureBuilder(

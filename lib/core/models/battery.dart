@@ -43,7 +43,7 @@ class Battery {
       batteryForBank: json['batteryForBank'],
       charger: Charger.fromJson(json['charger']),
       manufacturingDate: DateTime.parse(json['manufacturingDate']),
-      whatType: json['whatType'],
+      whatType: BatteryType.values.elementAt(json['whatType']),
       hasBreaker: json['hasBreaker'] ?? false,
     );
   }

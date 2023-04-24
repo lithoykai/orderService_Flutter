@@ -187,7 +187,7 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
           ? null
           : (String? value) {
               if (nameData == 'cnpj') {
-                if (nameData == null || nameData.isEmpty) {
+                if (nameData.isEmpty) {
                   return 'Por favor, digite o CNPJ da empresa';
                 }
                 if (nameData.length != 14) {

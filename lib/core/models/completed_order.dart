@@ -34,5 +34,8 @@ class CompletedOrder {
         'battery': battery.toJson(),
         'nobreak': nobreak.toJson(),
         'place': place.toJson(),
+        'clientID': clientID,
+        'employeeID': employeeID,
+
       };
 }
