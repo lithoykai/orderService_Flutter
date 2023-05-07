@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:orders_project/components/menu_drawer.dart';
 import 'package:orders_project/components/no_order.dart';
 import 'package:orders_project/components/order_box_widget.dart';
 import 'package:orders_project/core/models/auth.dart';
-import 'package:orders_project/core/services/completed_orders_services.dart';
 import 'package:orders_project/core/services/firebase_services.dart';
 
 import 'package:orders_project/core/services/order_services.dart';
@@ -21,7 +21,6 @@ class OrderOverview extends StatefulWidget {
 
 class _OrderOverviewState extends State<OrderOverview>
     with TickerProviderStateMixin {
-  final bool _isLoading = true;
   late final AnimationController _controller = AnimationController(
     duration: const Duration(seconds: 2),
     vsync: this,
@@ -39,48 +38,35 @@ class _OrderOverviewState extends State<OrderOverview>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 240, 240, 240),
+      backgroundColor: const Color.fromARGB(255, 240, 240, 240),
       appBar: AppBar(
-        title: const Text('Ordens de serviço'),
         actions: [
           IconButton(
-            onPressed: () async {
-              Navigator.of(context).pushNamed(AppRoutes.ADD_ORDER_PAGE);
-            },
+            onPressed: () =>
+                Navigator.pushNamed(context, AppRoutes.ADD_ORDER_PAGE),
             icon: const Icon(Icons.add),
           ),
           IconButton(
-            onPressed: () async {
-              Navigator.of(context).pushNamed(AppRoutes.ADD_EMPLOYEES_PAGE);
-            },
-            icon: const Icon(Icons.add_alarm),
-          ),
-          IconButton(
-            onPressed: () async {
-              Navigator.of(context).pushNamed(AppRoutes.ADD_COMPANY_PAGE);
-            },
-            icon: const Icon(Icons.add_a_photo),
-          ),
-          IconButton(
-            onPressed: () async {
-              Provider.of<Auth>(context, listen: false).logout();
-            },
+            onPressed: () => Provider.of<Auth>(context, listen: false).logout(),
             icon: const Icon(Icons.logout),
           ),
-          IconButton(
-            onPressed: () async {
-              Navigator.of(context).pushNamed(AppRoutes.COMPLETED_ORDER_OVERVIEW_PAGE);
-            },
-            icon: const Icon(Icons.check),
-          ),
         ],
+        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: const Color.fromARGB(255, 240, 240, 240),
+        centerTitle: true,
+        elevation: 0,
+        title: const Text(
+          'Minhas ordens de serviço',
+          style: TextStyle(color: Colors.black),
+        ),
       ),
+      drawer: const MenuDrawer(),
       body: FutureBuilder(
         future: Provider.of<FirebaseServices>(context, listen: false)
             .fetchAllData(context),
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: LoadingComponent(),
             );
           } else if (snapshot.error != null) {

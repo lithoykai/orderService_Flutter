@@ -10,15 +10,17 @@ import 'package:orders_project/pages/add_order_page.dart';
 import 'package:orders_project/pages/auth_or_home.dart';
 import 'package:orders_project/pages/completed_order_page.dart';
 import 'package:orders_project/pages/completed_overview_page.dart';
+import 'package:orders_project/pages/detail_order_page.dart';
 import 'package:orders_project/pages/orders_overview_page.dart';
 import 'package:orders_project/utils/app_routers.dart';
 import 'package:provider/provider.dart';
 import 'core/models/auth.dart';
 import 'core/models/map_adress.dart';
 import 'pages/add_company_page.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
-  runApp(MyApp());
+  initializeDateFormatting('pt_BR', null).then((_) => runApp(MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -83,11 +85,13 @@ class MyApp extends StatelessWidget {
           AppRoutes.AUTH_OR_HOME: (ctx) => const AuthOrHomePage(),
           AppRoutes.ORDERS_OVERVIEW_PAGE: (ctx) => const OrderOverview(),
           AppRoutes.ADD_ORDER_PAGE: (ctx) => const AddOrderPage(),
+          AppRoutes.DETAIL_ORDER_PAGE: (ctx) => const DetailOrderPage(),
           AppRoutes.COMPLETED_ORDER_PAGE: (ctx) => const CompletedOrderForm(),
           AppRoutes.ADD_EMPLOYEES_PAGE: (ctx) => const AddEmployeePage(),
           AppRoutes.ADD_COMPANY_PAGE: (ctx) => const AddCompanyPage(),
           AppRoutes.BATTERY_PLACE_FORM: (ctx) => const BatteryPlaceForm(),
-          AppRoutes.COMPLETED_ORDER_OVERVIEW_PAGE: (ctx) =>  CompletedOrderOverviewPage(),
+          AppRoutes.COMPLETED_ORDER_OVERVIEW_PAGE: (ctx) =>
+              const CompletedOrderOverviewPage(),
         },
         debugShowCheckedModeBanner: false,
       ),

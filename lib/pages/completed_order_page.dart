@@ -19,20 +19,20 @@ class _CompletedOrderFormState extends State<CompletedOrderForm> {
     List<Widget> _flowFormPages = [
       const BatteryForm(),
       const BatteryPlaceForm(),
-      NobreakForm(),
+      const NobreakForm(),
     ];
 
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 240, 240, 240),
       appBar: AppBar(
-        title: const Text('Finalizar ordem de serviço.'),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Provider.of<CompletedOrderServices>(context, listen: false)
-                    .switchPageForm();
-              },
-              icon: Icon(Icons.arrow_forward_ios))
-        ],
+        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: const Color.fromARGB(255, 240, 240, 240),
+        centerTitle: true,
+        elevation: 0,
+        title: const Text(
+          'Finalizar ordem.',
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       body: SingleChildScrollView(
         child: Consumer<CompletedOrderServices>(

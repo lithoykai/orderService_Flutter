@@ -6,31 +6,47 @@ class AuthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              color: Colors.blue,
-              // gradient: LinearGradient(
-              //   colors: [
-              //     Color.fromARGB(124, 137, 173, 252),
-              //     Color.fromARGB(255, 248, 183, 109),
-              //   ],
-              //   begin: Alignment.topLeft,
-              //   end: Alignment.bottomRight,
-              // ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                // color: Colors.white,
+                gradient: LinearGradient(
+                  colors: [
+                    Color.fromARGB(124, 137, 173, 252),
+                    Color.fromARGB(255, 255, 255, 255),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
             ),
-          ),
-          SizedBox(
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [AuthForm()],
-            ),
-          )
-        ],
+            Center(
+              child: SizedBox(
+                width: double.infinity,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: mediaQuery.size.height * 0.3,
+                        child: Image.asset('assets/img/logo.png'),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const AuthForm()
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

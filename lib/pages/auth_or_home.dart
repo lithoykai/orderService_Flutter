@@ -30,8 +30,8 @@ class AuthOrHomePage extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.error != null) {
-          return Scaffold(
-            body: const Center(
+          return const Scaffold(
+            body: Center(
               child: Text('Ocorreu um erro!!'),
             ),
           );

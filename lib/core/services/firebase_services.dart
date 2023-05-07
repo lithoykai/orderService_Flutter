@@ -39,8 +39,6 @@ class FirebaseServices with ChangeNotifier {
         .fetchData();
     await Provider.of<EmployeeServices>(context, listen: false).fetchData();
     await Provider.of<OrderService>(context, listen: false).fetchOrdersData();
-    // await Provider.of<CompletedOrderServices>(context, listen: false)
-    // .fetchCompletedOrdersData();
 
     notifyListeners();
   }

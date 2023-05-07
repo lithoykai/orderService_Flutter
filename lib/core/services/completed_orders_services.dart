@@ -7,8 +7,6 @@ import 'package:orders_project/core/models/completed_order.dart';
 import 'package:http/http.dart' as http;
 import 'package:orders_project/core/models/nobreak.dart';
 import 'package:orders_project/core/models/order.dart';
-import 'package:orders_project/core/services/order_services.dart';
-import 'package:provider/provider.dart';
 import '../../utils/constants.dart';
 import 'firebase_services.dart';
 import 'dart:io';
@@ -67,6 +65,8 @@ class CompletedOrderServices with ChangeNotifier {
         orderData == null) return null;
     CompletedOrder _completedOrder = CompletedOrder(
       id: UniqueKey().toString(),
+      title: orderData?.title ?? UniqueKey().toString(),
+      finishDate: DateTime.now(),
       employeeID: orderData?.technicalID ?? UniqueKey().toString(),
       clientID: orderData?.clientID ?? UniqueKey().toString(),
       battery: battery!,
@@ -85,8 +85,9 @@ class CompletedOrderServices with ChangeNotifier {
 // Get CompletedOrders from Firebase to _items;
   Future<void> fetchCompletedOrdersData() async {
     _items.clear();
-    final response = await http
-        .get(Uri.parse('${Constants.URL_ORDER_COMPLETED}.json?auth=$_token'));
+    items.clear();
+    final response = await http.get(Uri.parse(
+        '${Constants.URL_ORDER_COMPLETED}/$userID.json?auth=$_token'));
 
     if (response.body == 'null') return;
 
@@ -95,6 +96,8 @@ class CompletedOrderServices with ChangeNotifier {
       data.forEach((orderId, orderData) {
         CompletedOrder _completedOrder = CompletedOrder(
           id: orderId,
+          title: orderData['title'],
+          finishDate: DateTime.parse(orderData['finishDate']),
           clientID: orderData['clientID'],
           employeeID: orderData['employeeID'],
           battery: Battery.fromJson(
@@ -115,8 +118,8 @@ class CompletedOrderServices with ChangeNotifier {
   Future<void> addDataInFirebase() async {
     CompletedOrder? completedOrder = await saveCompletedOrder();
     Map<String, dynamic> orderJson = completedOrder!.toJson();
-    FirebaseServices()
-        .addDataInFirebase(orderJson, Constants.URL_ORDER_COMPLETED, _token);
+    FirebaseServices().addDataInFirebase(
+        orderJson, '${Constants.URL_ORDER_COMPLETED}/$userID', _token);
     _items.add(completedOrder);
 
     battery = null;

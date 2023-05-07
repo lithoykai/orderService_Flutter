@@ -1,5 +1,6 @@
 class Order {
   String id;
+  String title;
   String firebaseID;
   String problem;
   String clientID;
@@ -9,6 +10,7 @@ class Order {
 
   Order({
     required this.id,
+    required this.title,
     required this.firebaseID,
     required this.problem,
     required this.creationDate,
@@ -21,6 +23,7 @@ class Order {
     return Order(
       id: json['id'],
       firebaseID: firebaseID,
+      title: json['title'],
       clientID: json['clientID'],
       problem: json['problem'],
       technicalID: json['technicalID'],
@@ -31,6 +34,7 @@ class Order {
 
   Map<String, dynamic> toJson() => {
         'id': id,
+        'title': title,
         'firebaseID': firebaseID,
         'problem': problem,
         'clientID': clientID,

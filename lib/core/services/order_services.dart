@@ -28,8 +28,14 @@ class OrderService with ChangeNotifier {
   Future<void> fetchOrdersData() async {
     _items.clear();
 
-    final response = await http
-        .get(Uri.parse('${Constants.URL_ORDER}/$_userId.json?auth=$_token'));
+    final response = await http.get(
+      Uri.parse('${Constants.URL_ORDER}/$_userId.json?auth=$_token'),
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'Authorization': 'Bearer $_token',
+      },
+    );
 
     if (response.body == 'null') return;
 
@@ -39,6 +45,7 @@ class OrderService with ChangeNotifier {
       data.forEach((orderId, orderData) {
         Order _order = Order(
           id: orderData['id'],
+          title: orderData['title'],
           firebaseID: orderId,
           problem: orderData['problem'],
           clientID: orderData['clientID'],
@@ -51,6 +58,9 @@ class OrderService with ChangeNotifier {
     } else {
       throw Exception('Falha em carregar as ordens finalizadas.');
     }
+
+    _items.reversed;
+    items.reversed;
     notifyListeners();
   }
 
@@ -70,19 +80,14 @@ class OrderService with ChangeNotifier {
 
   Future<void> removeOrder(Order order) async {
     int index = _items.indexWhere((e) => e.id == order.id);
-    print(order.id);
-    print(
-        'INICIADO REMOÇÃO DA ORDEM DE SERVIÇO, ORDEM RECEBIDA DE ID: ${order.id}');
     if (index >= 0) {
       final order = _items[index];
       _items.remove(order);
-      print('ORDEM REMOVIDA');
       final response = await http.delete(
         Uri.parse(
             '${Constants.URL_ORDER}/$_userId/${order.firebaseID}.json?auth=$_token'),
       );
 
-      print('STATUSCODE: ${response.statusCode}');
       notifyListeners();
     }
   }
@@ -98,8 +103,9 @@ class OrderService with ChangeNotifier {
     Order newOrder = Order(
       firebaseID:
           hasId ? formData['firebaseID'] : Random().nextDouble().toString(),
-      id: ids.isEmpty ? 1.toString() : (int.parse(ids.last) + 1).toString(),
+      id: Random().nextDouble().toString(),
       problem: formData['problem'] as String,
+      title: formData['title'] as String,
       clientID: formData['clientID'] as String,
       technicalID: formData['technicalID'] as String,
       creationDate: formData['creationDate'] as DateTime,
@@ -118,16 +124,7 @@ class OrderService with ChangeNotifier {
     FirebaseServices().addDataInFirebase(
         orderJson, '${Constants.URL_ORDER}/${order.technicalID}', _token);
 
-    Order jsonData = Order(
-      id: order.id,
-      firebaseID: order.firebaseID,
-      problem: order.problem,
-      clientID: order.clientID,
-      technicalID: order.technicalID,
-      creationDate: order.creationDate,
-      deadline: order.deadline,
-    );
-    _items.add(jsonData);
+    _items.add(order);
     notifyListeners();
   }
 }

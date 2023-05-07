@@ -35,7 +35,6 @@ class _BatteryPlaceFormState extends State<BatteryPlaceForm> {
     _formKey.currentState!.save();
 
     _formData['id'] = UniqueKey().toString();
-    print(_formData);
     Provider.of<CompletedOrderServices>(context, listen: false)
         .saveBatteryPlaceFormData(_formData)
         .then((value) =>
@@ -43,8 +42,8 @@ class _BatteryPlaceFormState extends State<BatteryPlaceForm> {
                 .switchPageForm());
   }
 
-  Ventilation? _ventilationValue;
-  Ilumination? _illuminationValue;
+  Ventilation _ventilationValue = Ventilation.naotem;
+  Ilumination _illuminationValue = Ilumination.normal;
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +66,7 @@ class _BatteryPlaceFormState extends State<BatteryPlaceForm> {
                       color: Colors.black38,
                     ),
                   ),
+                  const Divider(),
                   const SizedBox(height: 16),
                   textFieldFormPattern(
                     focusNode: _tempFocus,
@@ -80,6 +80,7 @@ class _BatteryPlaceFormState extends State<BatteryPlaceForm> {
                   _dropDownLight(),
                   const SizedBox(height: 16),
                   CheckboxListTile(
+                    focusNode: _cleanPlaceFocus,
                     title: const Text('Local limpo.'),
                     value: _formData['cleanPlace'] ?? false,
                     onChanged: (value) {
@@ -89,6 +90,7 @@ class _BatteryPlaceFormState extends State<BatteryPlaceForm> {
                     },
                   ),
                   CheckboxListTile(
+                    focusNode: _reverseKeyFocus,
                     title: const Text('Chave reversora externa'),
                     value: _formData['reverseKey'] ?? false,
                     onChanged: (value) {
@@ -98,6 +100,7 @@ class _BatteryPlaceFormState extends State<BatteryPlaceForm> {
                     },
                   ),
                   CheckboxListTile(
+                    focusNode: _inputFrameFocus,
                     title: const Text('Quadro de Entrada'),
                     value: _formData['inputFrame'] ?? false,
                     onChanged: (value) {
@@ -107,6 +110,7 @@ class _BatteryPlaceFormState extends State<BatteryPlaceForm> {
                     },
                   ),
                   CheckboxListTile(
+                    focusNode: _outputFrameFocus,
                     title: const Text('Quadro de Saída'),
                     value: _formData['outputFrame'] ?? false,
                     onChanged: (value) {
@@ -116,6 +120,7 @@ class _BatteryPlaceFormState extends State<BatteryPlaceForm> {
                     },
                   ),
                   CheckboxListTile(
+                    focusNode: _hasMaterialsCloseFocus,
                     title: const Text('Materiais próximos ao equipamento?'),
                     value: _formData['hasMaterialsClose'] ?? false,
                     onChanged: (value) {
@@ -126,6 +131,7 @@ class _BatteryPlaceFormState extends State<BatteryPlaceForm> {
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
+                    focusNode: _materialsCloseFocus,
                     textInputAction: TextInputAction.next,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -193,6 +199,7 @@ class _BatteryPlaceFormState extends State<BatteryPlaceForm> {
   Widget _dropDownVentilation() {
     return DropdownButtonFormField<Ventilation>(
       borderRadius: BorderRadius.circular(8),
+      focusNode: _ventilationFocus,
       elevation: 0,
       focusColor: Colors.transparent,
       style: const TextStyle(
@@ -206,11 +213,11 @@ class _BatteryPlaceFormState extends State<BatteryPlaceForm> {
       value: _ventilationValue,
       onChanged: (value) {
         setState(() {
-          _ventilationValue = value;
+          _ventilationValue = value!;
         });
       },
       onSaved: (value) {
-        _formData['Ventilação do local.'] = value;
+        _formData['ventilation'] = value!.index;
       },
       validator: (value) {
         if (value == null) {
@@ -238,6 +245,7 @@ class _BatteryPlaceFormState extends State<BatteryPlaceForm> {
   Widget _dropDownLight() {
     return DropdownButtonFormField<Ilumination>(
       borderRadius: BorderRadius.circular(8),
+      focusNode: _lightFocus,
       elevation: 0,
       focusColor: Colors.transparent,
       style: const TextStyle(
@@ -246,16 +254,16 @@ class _BatteryPlaceFormState extends State<BatteryPlaceForm> {
           fontWeight: FontWeight.w400),
       decoration: const InputDecoration(
         border: OutlineInputBorder(),
-        labelText: 'Ventilação do local.',
+        labelText: 'Iluminação do local.',
       ),
       value: _illuminationValue,
       onChanged: (value) {
         setState(() {
-          _illuminationValue = value;
+          _illuminationValue = value!;
         });
       },
       onSaved: (value) {
-        _formData['lights'] = value;
+        _formData['lights'] = value!.index;
       },
       validator: (value) {
         if (value == null) {

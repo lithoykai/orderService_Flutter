@@ -37,8 +37,8 @@ class _BatteryFormState extends State<BatteryForm> {
     _pickedImage = pickedImage;
   }
 
-  BatteryType _dropDownValue = BatteryType.estacionaria;
-  BatteryType _selectedValue = BatteryType.estacionaria;
+  int _dropDownValue = BatteryType.estacionaria.index;
+  int _selectedValue = BatteryType.estacionaria.index;
 
   @override
   void didChangeDependencies() {
@@ -93,7 +93,7 @@ class _BatteryFormState extends State<BatteryForm> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Card(
-          margin: EdgeInsets.all(5),
+          margin: const EdgeInsets.all(5),
           child: Padding(
             padding: const EdgeInsets.all(15),
             child: Form(
@@ -109,6 +109,7 @@ class _BatteryFormState extends State<BatteryForm> {
                       color: Colors.black38,
                     ),
                   ),
+                  const Divider(),
                   const SizedBox(height: 16.0),
                   _batteryTypeDropdown(),
                   const SizedBox(height: 16.0),
@@ -176,6 +177,7 @@ class _BatteryFormState extends State<BatteryForm> {
                       color: Colors.black38,
                     ),
                   ),
+                  const Divider(),
                   const SizedBox(height: 16.0),
                   chargerCurrent(),
                   const SizedBox(height: 16.0),
@@ -219,24 +221,24 @@ class _BatteryFormState extends State<BatteryForm> {
           color: Colors.black,
           fontWeight: FontWeight.w400),
       onSaved: (whatType) =>
-          _formData['whatType'] = whatType ?? BatteryType.estacionaria,
+          _formData['whatType'] = whatType ?? BatteryType.estacionaria.index,
       // elevation: 5,
       decoration: const InputDecoration(
         border: OutlineInputBorder(),
         labelText: 'Tipo da bateria',
       ),
-      items: const [
+      items: [
         DropdownMenuItem(
-          child: Text('Estacionária'),
-          value: BatteryType.estacionaria,
+          child: const Text('Estacionária'),
+          value: BatteryType.estacionaria.index,
         ),
         DropdownMenuItem(
-          child: Text('Lítio'),
-          value: BatteryType.litio,
+          child: const Text('Lítio'),
+          value: BatteryType.litio.index,
         ),
         DropdownMenuItem(
-          child: Text('Selada'),
-          value: BatteryType.selada,
+          child: const Text('Selada'),
+          value: BatteryType.selada.index,
         ),
       ],
       value: _dropDownValue,
@@ -244,8 +246,8 @@ class _BatteryFormState extends State<BatteryForm> {
     );
   }
 
-  void dropDownCallBack(BatteryType? selectedValue) {
-    if (selectedValue is Type) {
+  void dropDownCallBack(int? selectedValue) {
+    if (selectedValue is BatteryType) {
       _dropDownValue = selectedValue!;
       setState(() {
         _selectedValue = selectedValue;
@@ -399,8 +401,6 @@ class _BatteryFormState extends State<BatteryForm> {
     _formData['id'] = UniqueKey().toString();
     _formData['manufacturingDate'] = _selectedDate.toIso8601String();
     _formKey.currentState!.save();
-    print(_formData['rightPlaceImage'] ?? 'BATTERY_FORM: NO IMAGE');
-    print(_formData['rightPlaceImage']?.path ?? 'BATTERY_FORM: NO IMAGEPATH');
     Provider.of<CompletedOrderServices>(context, listen: false)
         .saveBatteryFormData(_formData, _formData['rightPlaceImage'])
         .then((value) =>

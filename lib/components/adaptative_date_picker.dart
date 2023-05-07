@@ -9,12 +9,13 @@ class AdaptativeDatePicker extends StatelessWidget {
   final DateTime selectedDate;
   final Function(DateTime) onChangeDate;
 
-  AdaptativeDatePicker({
+  const AdaptativeDatePicker({
+    Key? key,
     required this.selectedDate,
     required this.onChangeDate,
     required this.firstData,
     required this.lastDate,
-  });
+  }) : super(key: key);
 
   _showDatePicker(
     BuildContext context,
@@ -53,10 +54,9 @@ class AdaptativeDatePicker extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  // flex: 1,
-                  // ignore: unnecessary_null_comparison
                   child: Text(
-                    selectedDate == null
+                    // ignore: unnecessary_null_comparison
+                    selectedDate == 'null'
                         ? 'Nenhuma data de fabricação foi selecionada.'
                         : 'Data selecionada: ${DateFormat('dd/MM/yy').format(selectedDate)}',
                     style: const TextStyle(fontFamily: 'AvenirNext'),
@@ -66,7 +66,7 @@ class AdaptativeDatePicker extends StatelessWidget {
                   onPressed: () =>
                       _showDatePicker(context, firstData, lastDate),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
+                    backgroundColor: Colors.white,
                   ),
                   child: const Text(
                     'Selecionar data',

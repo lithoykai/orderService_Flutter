@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 class UserImagePicker extends StatefulWidget {
   final void Function(File image) onImagePick;
 
-  UserImagePicker({
+  const UserImagePicker({
     Key? key,
     required this.onImagePick,
   }) : super(key: key);
@@ -57,7 +57,7 @@ class _UserImagePickerState extends State<UserImagePicker> {
     return Row(
       children: [
         Container(
-          width: 180,
+          width: 150,
           height: 100,
           decoration: BoxDecoration(
             border: Border.all(width: 1, color: Colors.grey),
@@ -82,7 +82,7 @@ class _UserImagePickerState extends State<UserImagePicker> {
             ),
             TextButton.icon(
               icon: const Icon(Icons.image),
-              label: const Text('Escolher da galeria.'),
+              label: const Text('Galeria'),
               onPressed: _pickerImageGallery,
             ),
           ],

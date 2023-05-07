@@ -8,7 +8,7 @@ import '../core/services/completed_orders_services.dart';
 
 class NobreakForm extends StatefulWidget {
   // Order order;
-  NobreakForm({
+  const NobreakForm({
     Key? key,
   }) : super(key: key);
 
@@ -61,7 +61,8 @@ class _NobreakFormState extends State<NobreakForm> {
           .then((value) async =>
               await Provider.of<OrderService>(context, listen: false)
                   .removeOrder(order));
-      Navigator.popUntil(context, ModalRoute.withName('/'));
+      Navigator.pushNamedAndRemoveUntil(
+          context, AppRoutes.COMPLETED_ORDER_OVERVIEW_PAGE, (route) => false);
     } catch (error) {
       if (mounted) {
         await showDialog<void>(
@@ -77,10 +78,7 @@ class _NobreakFormState extends State<NobreakForm> {
             ],
           ),
         );
-      } else {
-        print('Deu bronca, amigo');
-        print(error);
-      }
+      } else {}
     } finally {}
   }
 
@@ -105,6 +103,7 @@ class _NobreakFormState extends State<NobreakForm> {
                       color: Colors.black38,
                     ),
                   ),
+                  const Divider(),
                   const SizedBox(height: 16.0),
                   Row(
                     children: [
@@ -136,6 +135,7 @@ class _NobreakFormState extends State<NobreakForm> {
                       color: Colors.black38,
                     ),
                   ),
+                  const Divider(),
                   const SizedBox(height: 16.0),
                   Row(
                     children: [

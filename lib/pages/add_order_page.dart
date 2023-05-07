@@ -25,23 +25,10 @@ class _AddOrderPageState extends State<AddOrderPage> {
 
   final _formData = <String, Object>{};
   final _formKey = GlobalKey<FormState>();
-
+  final _titleFocus = FocusNode();
   final _clientFocus = FocusNode();
   final _problemFocus = FocusNode();
   final _employeeFocus = FocusNode();
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   Provider.of<CompanyClientServices>(context, listen: false).fetchData().then(
-  //       (_) => Provider.of<EmployeeServices>(context, listen: false)
-  //               .fetchData()
-  //               .then((_) {
-  //             setState(() {
-  //               _isLoading = false;
-  //             });
-  //           }));
-  // }
 
   @override
   void didChangeDependencies() {
@@ -56,6 +43,7 @@ class _AddOrderPageState extends State<AddOrderPage> {
         _formData['_employeeFocus'] = order.technicalID;
         _formData['_problemFocus'] = order.problem;
         _formData['id'] = order.id;
+        _formData['title'] = order.title;
       }
     }
   }
@@ -120,105 +108,132 @@ class _AddOrderPageState extends State<AddOrderPage> {
         : 'Sem dados.';
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Adicionar ordem de Serviço.'),
+        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: const Color.fromARGB(255, 240, 240, 240),
+        centerTitle: true,
+        elevation: 0,
+        title: const Text(
+          'Adicionar ordem de serviço.',
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
+          ? Container(
+              color: const Color.fromARGB(255, 240, 240, 240),
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
             )
-          : SafeArea(
-              child: SingleChildScrollView(
-                child: Card(
-                  margin: const EdgeInsets.all(5),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    child: Form(
-                      key: _formKey,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              const SizedBox(height: 16.0),
-                              Text(
-                                'Qual técnico efetuará o serviço?'
-                                    .toUpperCase(),
-                                style: const TextStyle(
-                                  fontSize: 15.0,
-                                  fontFamily: 'AvenirNext',
-                                  color: Colors.black38,
-                                ),
-                              ),
-                              const SizedBox(height: 16.0),
-                              dropDowntechnical(employees),
-                              const SizedBox(height: 16.0),
-                              Text(
-                                'Qual cliente está com problemas?'
-                                    .toUpperCase(),
-                                style: const TextStyle(
-                                  fontSize: 15.0,
-                                  fontFamily: 'AvenirNext',
-                                  color: Colors.black38,
-                                ),
-                              ),
-                              const SizedBox(height: 16.0),
-                              _dropDownClient(companyNames),
-                              const SizedBox(height: 16.0),
-                              Text(
-                                'Detalhe o problema.'.toUpperCase(),
-                                style: const TextStyle(
-                                  fontSize: 15.0,
-                                  fontFamily: 'AvenirNext',
-                                  color: Colors.black38,
-                                ),
-                              ),
-                              const SizedBox(height: 16.0),
-                              textFieldFormPattern(
-                                focusNode: _problemFocus,
-                                isOptional: false,
-                                label: 'Detalhe o problema.',
-                                nameData: 'problem',
-                                isNumber: false,
-                                msgValidator:
-                                    'Por favor, detalhe qual problema está ocorrendo.',
-                              ),
-                              const SizedBox(height: 16.0),
-                              const Text(
-                                'Prazo estimado:',
-                                style: TextStyle(
+          : Container(
+              color: const Color.fromARGB(255, 240, 240, 240),
+              child: SafeArea(
+                child: SingleChildScrollView(
+                  child: Card(
+                    elevation: 1,
+                    borderOnForeground: true,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Form(
+                        key: _formKey,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                const SizedBox(height: 16.0),
+                                Text(
+                                  'Qual técnico efetuará o serviço?'
+                                      .toUpperCase(),
+                                  style: const TextStyle(
                                     fontSize: 15.0,
                                     fontFamily: 'AvenirNext',
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              AdaptativeDatePicker(
-                                  firstData: DateTime(2022),
-                                  lastDate: DateTime(2023),
-                                  selectedDate: _selectedDate,
-                                  onChangeDate: (newDate) {
-                                    setState(() {
-                                      _selectedDate = newDate;
-                                    });
-                                  }),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 16),
-                                child: SizedBox(
-                                  height: 45,
-                                  child: ElevatedButton(
-                                    child: Text(
-                                      'Salvar'.toUpperCase(),
-                                      style: const TextStyle(
-                                        fontFamily: 'AvenirNext',
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    onPressed: onSubmit,
+                                    color: Colors.black38,
                                   ),
                                 ),
-                              ),
-                            ],
+                                const SizedBox(height: 16.0),
+                                dropDowntechnical(employees),
+                                const SizedBox(height: 16.0),
+                                Text(
+                                  'Qual cliente está com problemas?'
+                                      .toUpperCase(),
+                                  style: const TextStyle(
+                                    fontSize: 15.0,
+                                    fontFamily: 'AvenirNext',
+                                    color: Colors.black38,
+                                  ),
+                                ),
+                                const SizedBox(height: 16.0),
+                                _dropDownClient(companyNames),
+                                const SizedBox(height: 16.0),
+                                textFieldFormPattern(
+                                  focusNode: _titleFocus,
+                                  isOptional: false,
+                                  label: 'Título da Ordem',
+                                  nameData: 'title',
+                                  isNumber: false,
+                                  msgValidator:
+                                      'Por favor, detalhe com poucas palavras o título para ordem de serviço.',
+                                ),
+                                const SizedBox(height: 16.0),
+                                Text(
+                                  'Detalhe o problema.'.toUpperCase(),
+                                  style: const TextStyle(
+                                    fontSize: 15.0,
+                                    fontFamily: 'AvenirNext',
+                                    color: Colors.black38,
+                                  ),
+                                ),
+                                const SizedBox(height: 16.0),
+                                textFieldFormPattern(
+                                  maxLines: true,
+                                  focusNode: _problemFocus,
+                                  isOptional: false,
+                                  label: 'Detalhe o problema.',
+                                  nameData: 'problem',
+                                  isNumber: false,
+                                  msgValidator:
+                                      'Por favor, detalhe qual problema está ocorrendo.',
+                                ),
+                                const SizedBox(height: 16.0),
+                                const Text(
+                                  'Prazo estimado:',
+                                  style: TextStyle(
+                                      fontSize: 15.0,
+                                      fontFamily: 'AvenirNext',
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                AdaptativeDatePicker(
+                                    firstData: DateTime(2022),
+                                    lastDate: DateTime(2023),
+                                    selectedDate: _selectedDate,
+                                    onChangeDate: (newDate) {
+                                      setState(() {
+                                        _selectedDate = newDate;
+                                      });
+                                    }),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 16),
+                                  child: SizedBox(
+                                    height: 45,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.lightGreen),
+                                      child: Text(
+                                        'Salvar'.toUpperCase(),
+                                        style: const TextStyle(
+                                          fontFamily: 'AvenirNext',
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      onPressed: onSubmit,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -230,17 +245,17 @@ class _AddOrderPageState extends State<AddOrderPage> {
     );
   }
 
-  Widget textFieldFormPattern({
-    required FocusNode focusNode,
-    required String label,
-    required String nameData,
-    String? msgValidator,
-    required bool isOptional,
-    bool? isNumber = false,
-    bool? enabled,
-  }) {
+  Widget textFieldFormPattern(
+      {required FocusNode focusNode,
+      required String label,
+      required String nameData,
+      String? msgValidator,
+      required bool isOptional,
+      bool? isNumber = false,
+      bool? enabled,
+      bool? maxLines}) {
     return TextFormField(
-      maxLines: 5,
+      maxLines: maxLines == true ? 5 : null,
       enabled: enabled,
       focusNode: focusNode,
       keyboardType: isNumber == true ? TextInputType.number : null,

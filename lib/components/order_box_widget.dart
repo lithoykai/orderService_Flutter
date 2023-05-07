@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:orders_project/core/services/company_client_services.dart';
-import 'package:orders_project/core/services/completed_orders_services.dart';
-import 'package:orders_project/utils/app_routers.dart';
+
 import 'package:provider/provider.dart';
 
 import '../core/models/order.dart';
+import '../core/services/completed_orders_services.dart';
+import '../utils/app_routers.dart';
 
 class OrderBoxWidget extends StatelessWidget {
   final Order order;
@@ -13,89 +14,101 @@ class OrderBoxWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     final company = Provider.of<CompanyClientServices>(context);
     return Padding(
       padding: const EdgeInsets.all(5.0),
-      child: SizedBox(
-        height: 110,
-        child: Card(
-          margin: const EdgeInsets.all(5.0),
-          elevation: 2,
-          child: ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  company.clients
-                      .firstWhere((element) => element.id == order.clientID)
-                      .name
-                      .toString(),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    fontFamily: 'Oswald',
-                  ),
+      child: Card(
+        margin: const EdgeInsets.all(5.0),
+        elevation: 2,
+        child: Container(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                order.title,
+                style: const TextStyle(
+                  // fontFamily: 'Gotham',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
                 ),
-              ],
-            ),
-            subtitle: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              ),
+              Row(
                 children: [
+                  const Icon(Icons.business, size: 15),
+                  const SizedBox(
+                    width: 5,
+                  ),
                   Text(
                     company.clients
                         .firstWhere((element) => element.id == order.clientID)
-                        .address
+                        .name
                         .toString(),
-                    style: const TextStyle(fontFamily: 'Lora'),
                   ),
-                  Text(
-                      'Data estimada: ${DateFormat('d/MM').format(order.deadline)}'),
                 ],
               ),
-            ),
-            trailing: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Ordem: #${order.id}',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Theme.of(context).hintColor,
+              Row(
+                children: [
+                  const Icon(Icons.date_range_rounded, size: 15),
+                  const SizedBox(
+                    width: 5,
                   ),
-                  textAlign: TextAlign.start,
-                ),
-                const SizedBox(
-                  height: 2,
-                ),
-                ElevatedButton.icon(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateColor.resolveWith(
-                        (states) => Colors.white),
+                  Text(
+                      'Prazo: ${DateFormat(DateFormat.YEAR_MONTH_DAY, 'pt_Br').format(order.deadline)}'),
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  SizedBox(
+                    width: mediaQuery.size.width * 0.40,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(AppRoutes.DETAIL_ORDER_PAGE, arguments: [
+                          company.clients.firstWhere(
+                              (element) => element.id == order.clientID),
+                          order
+                        ]);
+                      },
+                      child: const Text('DETALHES'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 124, 170, 251),
+                      ),
+                    ),
                   ),
-                  onPressed: () {
-                    Provider.of<CompletedOrderServices>(context, listen: false)
-                        .addOrderData(order);
-                    Provider.of<CompletedOrderServices>(context, listen: false)
-                        .indexToSwitch = 0;
-                    Navigator.of(context).pushNamed(
-                      AppRoutes.COMPLETED_ORDER_PAGE,
-                      arguments: order,
-                    );
-                  },
-                  icon: const Icon(
-                    Icons.forward,
-                    color: Colors.green,
+                  SizedBox(
+                    width: mediaQuery.size.width * 0.40,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Provider.of<CompletedOrderServices>(context,
+                                listen: false)
+                            .addOrderData(order);
+                        Provider.of<CompletedOrderServices>(context,
+                                listen: false)
+                            .indexToSwitch = 0;
+                        Navigator.of(context).pushNamed(
+                          AppRoutes.COMPLETED_ORDER_PAGE,
+                          arguments: order,
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                      ),
+                      child: const Text('FINALIZAR',
+                          style: TextStyle(
+                            // fontFamily: 'Gotham',
+                            fontFamily: 'AvenirNext',
+                          )),
+                    ),
                   ),
-                  label: const Text(
-                    'Finalizar.',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ),
-              ],
-            ),
+                ],
+              )
+            ],
           ),
         ),
       ),

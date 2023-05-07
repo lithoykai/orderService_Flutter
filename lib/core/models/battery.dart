@@ -1,4 +1,3 @@
-import 'dart:io';
 
 enum BatteryType { estacionaria, selada, litio }
 
