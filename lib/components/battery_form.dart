@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:orders_project/components/image_input.dart';
+import 'package:orders_project/utils/image_input.dart';
 import 'package:provider/provider.dart';
 
 import '../core/models/battery.dart';
 import '../core/services/completed_orders_services.dart';
-import 'adaptative_date_picker.dart';
+import '../utils/adaptative_date_picker.dart';
 
 class BatteryForm extends StatefulWidget {
   const BatteryForm({Key? key}) : super(key: key);

@@ -55,10 +55,7 @@ class AdaptativeDatePicker extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    // ignore: unnecessary_null_comparison
-                    selectedDate == 'null'
-                        ? 'Nenhuma data de fabricação foi selecionada.'
-                        : 'Data selecionada: ${DateFormat('dd/MM/yy').format(selectedDate)}',
+                    'Data selecionada: ${DateFormat('dd/MM/yy').format(selectedDate)}',
                     style: const TextStyle(fontFamily: 'AvenirNext'),
                   ),
                 ),

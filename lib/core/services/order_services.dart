@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:orders_project/core/models/order.dart';
 import 'package:http/http.dart' as http;
 import 'package:orders_project/utils/constants.dart';
+import 'package:orders_project/utils/db_util.dart';
 
 import 'firebase_services.dart';
 
@@ -28,13 +29,25 @@ class OrderService with ChangeNotifier {
   Future<void> fetchOrdersData() async {
     _items.clear();
 
+    final dbOrdersList = await DbUtil.getData('orders');
+    List databaseListTest;
+
+    databaseListTest = dbOrdersList
+        .map(
+          (item) => Order(
+              id: item['id'],
+              title: item['title'],
+              firebaseID: item['firebaseID'],
+              problem: item['problem'],
+              creationDate: DateTime.parse(item['creationDate']),
+              deadline: DateTime.parse(item['deadline']),
+              clientID: item['clientID'],
+              technicalID: item['technicalID']),
+        )
+        .toList();
+
     final response = await http.get(
       Uri.parse('${Constants.URL_ORDER}/$_userId.json?auth=$_token'),
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        'Authorization': 'Bearer $_token',
-      },
     );
 
     if (response.body == 'null') return;
@@ -59,8 +72,8 @@ class OrderService with ChangeNotifier {
       throw Exception('Falha em carregar as ordens finalizadas.');
     }
 
-    _items.reversed;
-    items.reversed;
+    _items = items.reversed.toList();
+
     notifyListeners();
   }
 

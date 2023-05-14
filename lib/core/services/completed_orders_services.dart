@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:orders_project/core/models/battery.dart';
 import 'package:orders_project/core/models/battery_place.dart';
 import 'package:orders_project/core/models/completed_order.dart';
@@ -26,7 +27,8 @@ class CompletedOrderServices with ChangeNotifier {
 
   Future<void> saveBatteryFormData(
       Map<String, dynamic> _batteryForm, File? image) async {
-    final imageName = '${orderData?.clientID}.jpg';
+    final imageName =
+        '${orderData?.clientID}-${DateFormat('dd-MM-yyyy-ms').format(DateTime.now())}.jpg';
     final imageURL = await _uploadImage(image, imageName);
     _batteryForm['rightPlaceImage'] = imageURL ?? 'Imagem não encontrada';
     battery = Battery.fromJson(_batteryForm);
@@ -112,6 +114,7 @@ class CompletedOrderServices with ChangeNotifier {
     } else {
       throw Exception('Falha em carregar as ordens finalizadas.');
     }
+    _items = items.reversed.toList();
     notifyListeners();
   }
 

@@ -41,11 +41,11 @@ class _OrderOverviewState extends State<OrderOverview>
       backgroundColor: const Color.fromARGB(255, 240, 240, 240),
       appBar: AppBar(
         actions: [
-          IconButton(
-            onPressed: () =>
-                Navigator.pushNamed(context, AppRoutes.ADD_ORDER_PAGE),
-            icon: const Icon(Icons.add),
-          ),
+          // IconButton(
+          //   onPressed: () =>
+          //       Navigator.of(context).pushNamed(AppRoutes.ADD_ORDER_PAGE),
+          //   icon: const Icon(Icons.add),
+          // ),
           IconButton(
             onPressed: () => Provider.of<Auth>(context, listen: false).logout(),
             icon: const Icon(Icons.logout),
@@ -66,6 +66,8 @@ class _OrderOverviewState extends State<OrderOverview>
             .fetchAllData(context),
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
+            print(snapshot.error);
+            print(snapshot.connectionState);
             return const Center(
               child: LoadingComponent(),
             );

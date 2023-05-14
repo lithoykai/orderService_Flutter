@@ -13,9 +13,9 @@ import 'package:orders_project/pages/completed_overview_page.dart';
 import 'package:orders_project/pages/detail_order_page.dart';
 import 'package:orders_project/pages/orders_overview_page.dart';
 import 'package:orders_project/utils/app_routers.dart';
+import 'package:orders_project/utils/map_adress.dart';
 import 'package:provider/provider.dart';
 import 'core/models/auth.dart';
-import 'core/models/map_adress.dart';
 import 'pages/add_company_page.dart';
 import 'package:intl/date_symbol_data_local.dart';
 

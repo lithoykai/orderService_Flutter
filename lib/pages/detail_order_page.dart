@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:orders_project/core/models/company_client.dart';
-import 'package:orders_project/core/models/map_adress.dart';
+import 'package:orders_project/utils/map_adress.dart';
 import 'package:orders_project/utils/location_util.dart';
 
 import '../core/models/order.dart';
