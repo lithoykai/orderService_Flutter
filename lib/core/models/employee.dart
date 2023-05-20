@@ -23,8 +23,7 @@ class Employee {
     this.landmark,
   });
 
-  factory Employee.fromJson(
-      Map<String, dynamic> json, String id, String? userID) {
+  factory Employee.fromJson(Map json, String id, String? userID) {
     return Employee(
       id: id,
       userID: userID ?? json['userID'],

@@ -22,7 +22,7 @@ class CompanyClient {
       this.complement,
       this.landmark});
 
-  factory CompanyClient.fromJson(Map<String, dynamic> json, id) {
+  factory CompanyClient.fromJson(Map json, id) {
     return CompanyClient(
       id: id,
       name: json['name'],

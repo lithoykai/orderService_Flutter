@@ -30,6 +30,13 @@
             {
               "client_id": "1007066030066-d2fu7uda2jamhq8ed0jun1mbjinqgksp.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1007066030066-cegefbcj8mf514s41mv3he5tkmcrqegb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "br.com.ordens"
+              }
             }
           ]
         }

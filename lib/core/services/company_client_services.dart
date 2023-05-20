@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:orders_project/core/models/company_client.dart';
 import 'package:http/http.dart' as http;
@@ -36,22 +37,22 @@ class CompanyClientServices with ChangeNotifier {
   // Get CompanyClients from Firebase to _clients;
   Future<void> fetchData() async {
     _clients.clear();
+    FirebaseDatabase databaseInstance = FirebaseDatabase.instance;
 
-    final response =
-        await http.get(Uri.parse('${Constants.URL_CLIENTS}.json?auth=$_token'));
-
-    if (response.body == 'null') return;
-
-    if (response.statusCode == 200) {
-      Map<String, dynamic> data = jsonDecode(response.body);
-      data.forEach((clientId, clientData) {
-        CompanyClient _companyClient = CompanyClient.fromJson(
-          clientData as Map<String, dynamic>,
-          clientId,
-        );
-        _clients.add(_companyClient);
-      });
-    } else {
+    try {
+      final ref = databaseInstance.ref();
+      final snapshotData = await ref.child('clients').get();
+      if (snapshotData.exists) {
+        Map data = snapshotData.value as Map;
+        data.forEach((clientId, clientData) {
+          CompanyClient _companyClient = CompanyClient.fromJson(
+            clientData as Map,
+            clientId,
+          );
+          _clients.add(_companyClient);
+        });
+      }
+    } catch (error) {
       throw Exception('Falha em carregar os clients.');
     }
     notifyListeners();

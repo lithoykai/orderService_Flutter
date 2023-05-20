@@ -1,4 +1,3 @@
-
 enum BatteryType { estacionaria, selada, litio }
 
 class Battery {
@@ -30,7 +29,7 @@ class Battery {
     required this.whatType,
   });
 
-  factory Battery.fromJson(Map<String, dynamic> json) {
+  factory Battery.fromJson(Map json) {
     return Battery(
       id: json['id'],
       rightPlace: json['rightPlace'],
@@ -64,8 +63,8 @@ class Battery {
 }
 
 class Charger {
-  final double voltage;
-  final double current;
+  final num voltage;
+  final num current;
 
   Charger({
     required this.voltage,

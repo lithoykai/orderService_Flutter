@@ -1,14 +1,12 @@
-import 'dart:convert';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../models/order.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:orders_project/core/models/battery.dart';
 import 'package:orders_project/core/models/battery_place.dart';
 import 'package:orders_project/core/models/completed_order.dart';
-import 'package:http/http.dart' as http;
 import 'package:orders_project/core/models/nobreak.dart';
-import 'package:orders_project/core/models/order.dart';
-import '../../utils/constants.dart';
 import 'firebase_services.dart';
 import 'dart:io';
 
@@ -86,34 +84,39 @@ class CompletedOrderServices with ChangeNotifier {
 
 // Get CompletedOrders from Firebase to _items;
   Future<void> fetchCompletedOrdersData() async {
+    FirebaseDatabase.instance.setPersistenceEnabled(true);
+
     _items.clear();
-    items.clear();
-    final response = await http.get(Uri.parse(
-        '${Constants.URL_ORDER_COMPLETED}/$userID.json?auth=$_token'));
+    FirebaseDatabase databaseInstance = FirebaseDatabase.instance;
 
-    if (response.body == 'null') return;
-
-    if (response.statusCode == 200) {
-      Map<String, dynamic> data = jsonDecode(response.body);
-      data.forEach((orderId, orderData) {
-        CompletedOrder _completedOrder = CompletedOrder(
-          id: orderId,
-          title: orderData['title'],
-          finishDate: DateTime.parse(orderData['finishDate']),
-          clientID: orderData['clientID'],
-          employeeID: orderData['employeeID'],
-          battery: Battery.fromJson(
-            orderData['battery'],
-          ),
-          nobreak: Nobreak.fromJson(orderData['nobreak']),
-          place: BatteryPlace.fromJson(orderData['place']),
-        );
-
-        _items.add(_completedOrder);
-      });
-    } else {
-      throw Exception('Falha em carregar as ordens finalizadas.');
+    try {
+      final ref = databaseInstance.ref();
+      final snapshotData = await ref.child('completedOrders/$userID').get();
+      if (snapshotData.exists) {
+        Map data = snapshotData.value as Map;
+        data.forEach((orderId, orderData) {
+          print(orderData);
+          CompletedOrder _completedOrder = CompletedOrder(
+            id: orderId,
+            title: orderData['title'],
+            finishDate: DateTime.parse(orderData['finishDate']),
+            clientID: orderData['clientID'],
+            employeeID: orderData['employeeID'],
+            battery: Battery.fromJson(
+              orderData['battery'],
+            ),
+            nobreak: Nobreak.fromJson(orderData['nobreak']),
+            place: BatteryPlace.fromJson(orderData['place']),
+          );
+          print('Esse não deu erro: $orderData');
+          _items.add(_completedOrder);
+        });
+      }
+    } catch (error) {
+      print(error);
+      throw Exception(error);
     }
+
     _items = items.reversed.toList();
     notifyListeners();
   }
@@ -121,8 +124,8 @@ class CompletedOrderServices with ChangeNotifier {
   Future<void> addDataInFirebase() async {
     CompletedOrder? completedOrder = await saveCompletedOrder();
     Map<String, dynamic> orderJson = completedOrder!.toJson();
-    FirebaseServices().addDataInFirebase(
-        orderJson, '${Constants.URL_ORDER_COMPLETED}/$userID', _token);
+    FirebaseServices()
+        .addDataInFirebase(orderJson, 'completedOrders/$userID/', _token);
     _items.add(completedOrder);
 
     battery = null;

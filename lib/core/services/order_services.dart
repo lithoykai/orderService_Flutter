@@ -1,12 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:math';
-
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:orders_project/core/models/order.dart';
-import 'package:http/http.dart' as http;
-import 'package:orders_project/utils/constants.dart';
-import 'package:orders_project/utils/db_util.dart';
 
 import 'firebase_services.dart';
 
@@ -25,51 +21,31 @@ class OrderService with ChangeNotifier {
     this._items,
   );
 
-  // Get Orders from Firebase to _items;
   Future<void> fetchOrdersData() async {
     _items.clear();
+    FirebaseDatabase databaseInstance = FirebaseDatabase.instance;
 
-    final dbOrdersList = await DbUtil.getData('orders');
-    List databaseListTest;
-
-    databaseListTest = dbOrdersList
-        .map(
-          (item) => Order(
-              id: item['id'],
-              title: item['title'],
-              firebaseID: item['firebaseID'],
-              problem: item['problem'],
-              creationDate: DateTime.parse(item['creationDate']),
-              deadline: DateTime.parse(item['deadline']),
-              clientID: item['clientID'],
-              technicalID: item['technicalID']),
-        )
-        .toList();
-
-    final response = await http.get(
-      Uri.parse('${Constants.URL_ORDER}/$_userId.json?auth=$_token'),
-    );
-
-    if (response.body == 'null') return;
-
-    if (response.statusCode == 200) {
-      Map<String, dynamic> data = jsonDecode(response.body);
-
-      data.forEach((orderId, orderData) {
-        Order _order = Order(
-          id: orderData['id'],
-          title: orderData['title'],
-          firebaseID: orderId,
-          problem: orderData['problem'],
-          clientID: orderData['clientID'],
-          technicalID: orderData['technicalID'],
-          creationDate: DateTime.parse(orderData['creationDate']),
-          deadline: DateTime.parse(orderData['deadline']),
-        );
-        _items.add(_order);
-      });
-    } else {
-      throw Exception('Falha em carregar as ordens finalizadas.');
+    try {
+      final ref = databaseInstance.ref();
+      final snapshotData = await ref.child('order/$_userId').get();
+      if (snapshotData.exists) {
+        Map data = snapshotData.value as Map;
+        data.forEach((orderId, orderData) {
+          Order _order = Order(
+            id: orderData['id'],
+            title: orderData['title'],
+            firebaseID: orderId,
+            problem: orderData['problem'],
+            clientID: orderData['clientID'],
+            technicalID: orderData['technicalID'],
+            creationDate: DateTime.parse(orderData['creationDate']),
+            deadline: DateTime.parse(orderData['deadline']),
+          );
+          _items.add(_order);
+        });
+      }
+    } catch (error) {
+      throw Exception('Falha em carregar as ordens.');
     }
 
     _items = items.reversed.toList();
@@ -83,7 +59,7 @@ class OrderService with ChangeNotifier {
       index: index,
       dataId: order.id,
       items: _items,
-      url: Constants.URL_ORDER,
+      url: 'order/$_userId',
       jsonData: order.toJson(),
     );
 
@@ -96,10 +72,9 @@ class OrderService with ChangeNotifier {
     if (index >= 0) {
       final order = _items[index];
       _items.remove(order);
-      final response = await http.delete(
-        Uri.parse(
-            '${Constants.URL_ORDER}/$_userId/${order.firebaseID}.json?auth=$_token'),
-      );
+      DatabaseReference ref =
+          FirebaseDatabase.instance.ref(("order/$_userId/${order.firebaseID}"));
+      ref.remove();
 
       notifyListeners();
     }
@@ -134,8 +109,8 @@ class OrderService with ChangeNotifier {
 
   Future<void> addData(Order order) async {
     Map<String, dynamic> orderJson = order.toJson();
-    FirebaseServices().addDataInFirebase(
-        orderJson, '${Constants.URL_ORDER}/${order.technicalID}', _token);
+    FirebaseServices()
+        .addDataInFirebase(orderJson, 'order/${order.technicalID}/', _token);
 
     _items.add(order);
     notifyListeners();

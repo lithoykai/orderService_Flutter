@@ -1,7 +1,5 @@
-import 'dart:convert';
-
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:orders_project/core/services/company_client_services.dart';
 import 'package:orders_project/core/services/employee_services.dart';
 import 'package:orders_project/core/services/order_services.dart';
@@ -13,10 +11,10 @@ class FirebaseServices with ChangeNotifier {
     String _url,
     String _token,
   ) async {
-    final response = await http.post(
-      Uri.parse('$_url.json?auth=$_token'),
-      body: jsonEncode(dataJson),
-    );
+    FirebaseDatabase databasInstance = FirebaseDatabase.instance;
+    final firebaseRef = databasInstance.ref(_url);
+    DatabaseReference newPushData = firebaseRef.push();
+    newPushData.set(dataJson);
   }
 
   Future<void> updateDataInFirebase({
@@ -27,14 +25,14 @@ class FirebaseServices with ChangeNotifier {
     required Map<String, dynamic> jsonData,
   }) async {
     if (index >= 0) {
-      await http.patch(Uri.parse('$url/$dataId.json'),
-          body: jsonEncode(
-            {jsonData},
-          ));
+      DatabaseReference ref = FirebaseDatabase.instance.ref(('$url/$dataId'));
+      ref.update(jsonData);
     }
   }
 
   Future<void> fetchAllData(BuildContext context) async {
+    FirebaseDatabase.instance.setPersistenceEnabled(true);
+
     await Provider.of<CompanyClientServices>(context, listen: false)
         .fetchData();
     await Provider.of<EmployeeServices>(context, listen: false).fetchData();

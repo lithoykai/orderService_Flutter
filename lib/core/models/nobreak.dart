@@ -21,7 +21,7 @@ class Nobreak {
     this.passwordCommunication,
   });
 
-  factory Nobreak.fromJson(Map<String, dynamic> json) {
+  factory Nobreak.fromJson(Map json) {
     return Nobreak(
       id: json['id'],
       display: json['display'] ?? false,

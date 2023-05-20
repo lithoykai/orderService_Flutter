@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:orders_project/components/battery_place_form.dart';
 import 'package:orders_project/core/services/company_client_services.dart';
@@ -5,6 +7,7 @@ import 'package:orders_project/core/services/completed_orders_services.dart';
 import 'package:orders_project/core/services/employee_services.dart';
 import 'package:orders_project/core/services/firebase_services.dart';
 import 'package:orders_project/core/services/order_services.dart';
+import 'package:orders_project/firebase_options.dart';
 import 'package:orders_project/pages/add_employee_page.dart';
 import 'package:orders_project/pages/add_order_page.dart';
 import 'package:orders_project/pages/auth_or_home.dart';
@@ -19,7 +22,11 @@ import 'core/models/auth.dart';
 import 'pages/add_company_page.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   initializeDateFormatting('pt_BR', null).then((_) => runApp(MyApp()));
 }
 

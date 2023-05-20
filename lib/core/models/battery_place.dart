@@ -27,7 +27,7 @@ class BatteryPlace {
     this.materialsClose,
   });
 
-  factory BatteryPlace.fromJson(Map<String, dynamic> json) {
+  factory BatteryPlace.fromJson(Map json) {
     return BatteryPlace(
       id: json['id'],
       cleanPlace: json['cleanPlace'] ?? false,
@@ -37,7 +37,7 @@ class BatteryPlace {
       hasMaterialsClose: json['hasMaterialsClose'] ?? false,
       temp: json['temp'] ?? '',
       lights: Ilumination.values.elementAt(json['lights']),
-      ventilation: Ventilation.values.elementAt(json['ventilation']) ,
+      ventilation: Ventilation.values.elementAt(json['ventilation']),
       materialsClose: json['materialsClose'] ?? '',
     );
   }
